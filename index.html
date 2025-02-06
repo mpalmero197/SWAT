@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Dark Mode Multi-Page Site Builder (with Royalty-Free Images)</title>
+  <title>Web Builder - Per-Element Colors & Graphics</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap');
 
@@ -241,7 +241,6 @@
     .has-submenu:hover .submenu {
       display: flex;
     }
-    /* Dropdown arrow for parent item */
     .has-submenu > a::after {
       content: " \25BC";
       margin-left: 5px;
@@ -297,7 +296,7 @@
 </head>
 <body>
   <div class="wrapper">
-    <h1>Dark Mode Multi-Page Site Builder</h1>
+    <h1>Web Builder</h1>
     <div class="tab-nav">
       <button class="tab-btn active" data-tab="basicTab">Basic Settings</button>
       <button class="tab-btn" data-tab="pagesTab">Pages & Navigation</button>
@@ -350,22 +349,18 @@
 
     <!-- REFERENCE LAYOUT TAB -->
     <div id="referenceTab" class="tab-content">
-      <h2>Reference Layout</h2>
-      <p>Fetch layout data from an external site and apply it to one of your pages.</p>
+      <h2>Reference Layout via Paste</h2>
+      <p>Copy HTML code from another site’s source and paste it here to extract headings/paragraphs as sections. Basic layout is named "ReferencedSiteLayout."</p>
       <div class="field">
-        <label for="referencePageSelect">Select Page to Import Layout Into:</label>
-        <select id="referencePageSelect">
-          <option value="">(No pages yet)</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="referenceURL">External Site URL:</label>
-        <input type="text" id="referenceURL" placeholder="https://example.com" />
+        <label for="manualHtmlInput">Paste HTML Code Here:</label>
+        <textarea id="manualHtmlInput" rows="10" placeholder="Copy &amp; paste HTML source from another site..."></textarea>
       </div>
       <div class="buttons">
-        <button id="fetchLayoutBtn">Fetch Layout</button>
+        <button id="importHtmlBtn">Import Layout from Pasted HTML</button>
       </div>
-      <p id="referenceStatus" style="margin-top:10px; color:#bbb;"></p>
+      <p style="font-size:0.85rem; color:#bbb;">
+        This bypasses CORS since you, the user, provide the HTML manually.
+      </p>
     </div>
 
     <!-- IMAGES & MEDIA TAB -->
@@ -380,7 +375,7 @@
         <button id="imageSearchBtn">Search Images</button>
       </div>
       <p style="font-size:0.85rem; color:#bbb;">
-        Replace the placeholder fetch URL and API key in the code with your actual Pexels/Unsplash endpoint.
+        Replace the placeholder fetch URL and API key in the code with your actual Pexels/Unsplash credentials.
       </p>
       <div id="imageResults" class="results-grid"></div>
     </div>
@@ -388,9 +383,7 @@
     <!-- PREVIEW TAB -->
     <div id="previewTab" class="tab-content">
       <h2>Live Preview (Home Page)</h2>
-      <p>
-        This preview shows only the first top-level page. Nav links are intercepted so you can click sub-pages too.
-      </p>
+      <p>This preview shows only the first top-level page. Nav links are intercepted so you can click sub-pages too.</p>
       <button id="previewBtn" style="margin-bottom:20px;">Update Preview</button>
       <iframe id="previewFrame"></iframe>
     </div>
@@ -398,9 +391,7 @@
     <!-- GENERATED CODE TAB -->
     <div id="codeTab" class="tab-content">
       <h2>Generated Code (All Pages)</h2>
-      <p>
-        Each top-level page has exactly one nav bar. Sub-pages appear in a dropdown. Copy each block to a separate .html file.
-      </p>
+      <p>Each top-level page has exactly one nav bar. Sub-pages appear in a dropdown. Copy each block to a separate .html file.</p>
       <div class="buttons">
         <button id="generateBtn">Generate Site Code</button>
         <button id="clearBtn" style="background:#d9534f;">Clear All</button>
@@ -449,7 +440,6 @@
 
     addPageBtn.addEventListener('click', () => {
       createPageEditor(null);
-      refreshReferencePageSelect();
     });
 
     function createPageEditor(parentPage) {
@@ -459,7 +449,11 @@
         title: "Untitled Page",
         layout: "single",
         sections: [],
-        subPages: []
+        subPages: [],
+        importedLayoutColors: {
+          background: "",
+          textColor: "",
+        }
       };
 
       if (parentPage) {
@@ -494,6 +488,7 @@
             <option value="heroGrid">Hero + Grid</option>
             <option value="splitBanner">Split Banner</option>
             <option value="minimalist">Minimalist</option>
+            <option value="ReferencedSiteLayout">ReferencedSiteLayout</option>
           </select>
         </div>
         <h4 style="margin:10px 0;">Sections</h4>
@@ -504,7 +499,6 @@
         </div>
       `;
 
-      // Place in DOM
       if (parentPage) {
         const parentDiv = pagesContainer.querySelector(`.pageItem[data-pageid="${parentPage.id}"]`);
         if (!parentDiv) {
@@ -520,7 +514,6 @@
       const removeBtn = pageDiv.querySelector('.removePageBtn');
       removeBtn.addEventListener('click', () => {
         removePage(pageObj, pageDiv);
-        refreshReferencePageSelect();
       });
 
       const titleInput = pageDiv.querySelector('.pageTitleInput');
@@ -545,7 +538,6 @@
         const addSubPageBtn = pageDiv.querySelector('.addSubPageBtn');
         addSubPageBtn?.addEventListener('click', () => {
           createPageEditor(pageObj);
-          refreshReferencePageSelect();
         });
       }
     }
@@ -570,19 +562,24 @@
       return false;
     }
 
-    // Create a single Section Editor
+    // --------------------------
+    // SECTION EDITOR (With color/graphic background + text color)
+    // --------------------------
     function createSectionEditor(pageObj, containerEl, fetchedSectionData = null) {
-      // If a fetched section is provided, pre-populate from that data
       const sectionData = fetchedSectionData || {
         heading: "",
         paragraph: "",
-        iconLibrary: "none",   // none, fontAwesome, materialIcons, nounProject
-        iconValue: "",         // "fa fa-user", "face", or a URL
+        iconLibrary: "none",
+        iconValue: "",
         art: "",
-        image: ""
+        image: "",
+        bgType: "none",        // "none", "color", "graphic"
+        bgColor: "#ffffff",
+        bgImage: "",
+        headingColor: "",
+        paragraphColor: ""
       };
 
-      // Keep track of sections in pageObj
       pageObj.sections.push(sectionData);
 
       const secDiv = document.createElement('div');
@@ -603,7 +600,6 @@
         </select>
 
         <div class="iconValueContainer" style="margin: 5px 0;">
-          <!-- We'll dynamically show the relevant input based on library selection -->
           <div class="iconValueFields"></div>
         </div>
 
@@ -613,26 +609,113 @@
         <label>Image URL (Optional):</label>
         <input type="text" class="secImage" placeholder="Another optional image URL" />
 
+        <hr style="margin:10px 0; border:none; border-top:1px solid #555;" />
+
+        <label>Section Background Type:</label>
+        <select class="bgTypeSelect">
+          <option value="none">No Override</option>
+          <option value="color">Color</option>
+          <option value="graphic">Graphic</option>
+        </select>
+
+        <div class="field bgColorField" style="display:none;">
+          <label>Section Background Color:</label>
+          <input type="color" class="secBgColor" value="#ffffff" />
+        </div>
+        <div class="field bgImageField" style="display:none;">
+          <label>Section Background Image URL:</label>
+          <input type="text" class="secBgImage" placeholder="https://example.com/background.jpg" />
+        </div>
+
+        <label>Heading Text Color (optional):</label>
+        <input type="color" class="secHeadingColor" value="" />
+
+        <label>Paragraph Text Color (optional):</label>
+        <input type="color" class="secParagraphColor" value="" />
+
         <button class="removeSectionBtn" style="background:#d9534f; margin-top:8px;">Remove Section</button>
       `;
 
       containerEl.appendChild(secDiv);
 
+      // DOM References
       const headingInput = secDiv.querySelector('.secHeading');
       const paragraphInput = secDiv.querySelector('.secParagraph');
       const iconLibrarySelect = secDiv.querySelector('.iconLibrarySelect');
       const iconValueContainer = secDiv.querySelector('.iconValueContainer .iconValueFields');
       const artInput = secDiv.querySelector('.secArt');
       const imageInput = secDiv.querySelector('.secImage');
+      const bgTypeSelect = secDiv.querySelector('.bgTypeSelect');
+      const bgColorField = secDiv.querySelector('.bgColorField');
+      const bgImageField = secDiv.querySelector('.bgImageField');
+      const secBgColor = secDiv.querySelector('.secBgColor');
+      const secBgImage = secDiv.querySelector('.secBgImage');
+      const secHeadingColor = secDiv.querySelector('.secHeadingColor');
+      const secParagraphColor = secDiv.querySelector('.secParagraphColor');
+      const removeSectionBtn = secDiv.querySelector('.removeSectionBtn');
 
-      // Initialize from data
+      // Initialize values
       headingInput.value = sectionData.heading || "";
       paragraphInput.value = sectionData.paragraph || "";
       iconLibrarySelect.value = sectionData.iconLibrary || "none";
       artInput.value = sectionData.art || "";
       imageInput.value = sectionData.image || "";
+      bgTypeSelect.value = sectionData.bgType || "none";
+      secBgColor.value = sectionData.bgColor || "#ffffff";
+      secBgImage.value = sectionData.bgImage || "";
+      secHeadingColor.value = sectionData.headingColor || "";
+      secParagraphColor.value = sectionData.paragraphColor || "";
 
-      // Rendering logic for the icon input(s)
+      // Show/hide color/image fields based on bgType
+      function updateBgFields() {
+        if (bgTypeSelect.value === "color") {
+          bgColorField.style.display = "block";
+          bgImageField.style.display = "none";
+        } else if (bgTypeSelect.value === "graphic") {
+          bgColorField.style.display = "none";
+          bgImageField.style.display = "block";
+        } else {
+          bgColorField.style.display = "none";
+          bgImageField.style.display = "none";
+        }
+      }
+      updateBgFields();
+
+      // Events
+      bgTypeSelect.addEventListener('change', () => {
+        sectionData.bgType = bgTypeSelect.value;
+        updateBgFields();
+      });
+      secBgColor.addEventListener('input', (e) => {
+        sectionData.bgColor = e.target.value;
+      });
+      secBgImage.addEventListener('input', (e) => {
+        sectionData.bgImage = e.target.value.trim();
+      });
+      secHeadingColor.addEventListener('input', (e) => {
+        sectionData.headingColor = e.target.value;
+      });
+      secParagraphColor.addEventListener('input', (e) => {
+        sectionData.paragraphColor = e.target.value;
+      });
+
+      headingInput.addEventListener('input', e => {
+        sectionData.heading = e.target.value.trim();
+      });
+      paragraphInput.addEventListener('input', e => {
+        sectionData.paragraph = e.target.value.trim();
+      });
+      artInput.addEventListener('input', e => {
+        sectionData.art = e.target.value.trim();
+      });
+      imageInput.addEventListener('input', e => {
+        sectionData.image = e.target.value.trim();
+      });
+
+      iconLibrarySelect.addEventListener('change', () => {
+        sectionData.iconLibrary = iconLibrarySelect.value;
+        renderIconField();
+      });
       function renderIconField() {
         iconValueContainer.innerHTML = "";
         const currentLib = iconLibrarySelect.value;
@@ -677,29 +760,8 @@
           iconValueContainer.appendChild(inputEl);
         }
       }
-
-      // Initial render
       renderIconField();
 
-      // Handlers
-      headingInput.addEventListener('input', e => {
-        sectionData.heading = e.target.value.trim();
-      });
-      paragraphInput.addEventListener('input', e => {
-        sectionData.paragraph = e.target.value.trim();
-      });
-      artInput.addEventListener('input', e => {
-        sectionData.art = e.target.value.trim();
-      });
-      imageInput.addEventListener('input', e => {
-        sectionData.image = e.target.value.trim();
-      });
-      iconLibrarySelect.addEventListener('change', () => {
-        sectionData.iconLibrary = iconLibrarySelect.value;
-        renderIconField();
-      });
-
-      const removeSectionBtn = secDiv.querySelector('.removeSectionBtn');
       removeSectionBtn.addEventListener('click', () => {
         const idx = pageObj.sections.indexOf(sectionData);
         if (idx !== -1) {
@@ -710,84 +772,81 @@
     }
 
     // --------------------------
-    // REFERENCE LAYOUT
+    // IMPORT LAYOUT BY PASTING HTML
     // --------------------------
-    const referencePageSelect = document.getElementById('referencePageSelect');
-    const referenceURL = document.getElementById('referenceURL');
-    const fetchLayoutBtn = document.getElementById('fetchLayoutBtn');
-    const referenceStatus = document.getElementById('referenceStatus');
+    const importHtmlBtn = document.getElementById('importHtmlBtn');
+    const manualHtmlInput = document.getElementById('manualHtmlInput');
 
-    fetchLayoutBtn.addEventListener('click', async () => {
-      const pageId = referencePageSelect.value.trim();
-      if (!pageId) {
-        referenceStatus.textContent = "Please select a page to import into.";
+    importHtmlBtn.addEventListener('click', () => {
+      const htmlString = manualHtmlInput.value.trim();
+      if (!htmlString) {
+        alert("Please paste some HTML code first.");
         return;
       }
-      const urlValue = referenceURL.value.trim();
-      if (!urlValue) {
-        referenceStatus.textContent = "Please enter a valid URL.";
-        return;
-      }
-      try {
-        referenceStatus.textContent = "Fetching layout...";
 
-        // Example fetch to your actual backend
-        // Replace the URL below with your own server endpoint
-        const response = await fetch("https://your-backend.example.com/api/fetch-layout", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ url: urlValue })
+      // Convert the pasted HTML string to a DOM
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(htmlString, "text/html");
+
+      // A simple example: find <h2> and <p> tags
+      const foundHeadings = doc.querySelectorAll('h2');
+      const foundParagraphs = doc.querySelectorAll('p');
+
+      const sections = [];
+      foundHeadings.forEach((h2El, index) => {
+        const headingText = h2El.textContent.trim();
+        const paragraphText = foundParagraphs[index]
+          ? foundParagraphs[index].textContent.trim()
+          : "";
+
+        sections.push({
+          heading: headingText,
+          paragraph: paragraphText,
+          iconLibrary: "none",
+          iconValue: "",
+          art: "",
+          image: "",
+          bgType: "none",
+          bgColor: "#ffffff",
+          bgImage: "",
+          headingColor: "",
+          paragraphColor: ""
         });
+      });
 
-        if (!response.ok) {
-          referenceStatus.textContent = "Error fetching layout from the server.";
-          return;
-        }
-
-        const layoutData = await response.json();
-        // e.g. layoutData = [{ heading, paragraph, iconLibrary, iconValue, art, image }, ...]
-
-        const targetPage = findPageById(parseInt(pageId, 10), pages);
-        if (!targetPage) {
-          referenceStatus.textContent = "Selected page not found in data.";
-          return;
-        }
-
-        // Clear existing
-        targetPage.sections = [];
-        const pageDiv = document.querySelector(`.pageItem[data-pageid="${targetPage.id}"]`);
-        if (pageDiv) {
-          const sectionContainer = pageDiv.querySelector('.sectionContainer');
-          sectionContainer.innerHTML = "";
-        }
-
-        if (Array.isArray(layoutData)) {
-          layoutData.forEach(ld => {
-            const newSection = {
-              heading: ld.heading || "",
-              paragraph: ld.paragraph || "",
-              iconLibrary: ld.iconLibrary || "none",
-              iconValue: ld.iconValue || "",
-              art: ld.art || "",
-              image: ld.image || ""
-            };
-            targetPage.sections.push(newSection);
-          });
-        }
-
-        if (pageDiv) {
-          const sectionContainer = pageDiv.querySelector('.sectionContainer');
-          sectionContainer.innerHTML = "";
-          targetPage.sections.forEach(secObj => {
-            createSectionEditor(targetPage, sectionContainer, secObj);
-          });
-        }
-
-        referenceStatus.textContent = "Layout imported successfully!";
-      } catch (error) {
-        console.error(error);
-        referenceStatus.textContent = "An error occurred while fetching layout.";
+      if (!sections.length) {
+        alert("No <h2> tags found or no matching paragraphs. Try adjusting your HTML or parsing logic.");
       }
+
+      // Prompt user for Page ID
+      const pageId = prompt("Enter the Page ID to insert these sections (e.g., 0, 1, etc.):");
+      if (pageId === null) return; // user cancelled
+
+      const targetPage = findPageById(parseInt(pageId, 10), pages);
+      if (!targetPage) {
+        alert("Page not found.");
+        return;
+      }
+
+      // Insert sections & rebuild UI
+      const pageDiv = document.querySelector(`.pageItem[data-pageid="${targetPage.id}"]`);
+      const sectionContainer = pageDiv?.querySelector('.sectionContainer');
+
+      sections.forEach(secObj => {
+        targetPage.sections.push(secObj);
+        if (sectionContainer) {
+          createSectionEditor(targetPage, sectionContainer, secObj);
+        }
+      });
+
+      // Additionally set the layout to ReferencedSiteLayout:
+      targetPage.layout = "ReferencedSiteLayout";
+      const layoutSelect = pageDiv.querySelector('.pageLayoutSelect');
+      if (layoutSelect) {
+        layoutSelect.value = "ReferencedSiteLayout";
+      }
+
+      alert("Layout imported from pasted HTML!");
     });
 
     function findPageById(id, pageArr) {
@@ -799,21 +858,6 @@
         }
       }
       return null;
-    }
-
-    function refreshReferencePageSelect() {
-      const allPages = flattenPages(pages);
-      referencePageSelect.innerHTML = "";
-      if (allPages.length === 0) {
-        referencePageSelect.innerHTML = '<option value="">(No pages yet)</option>';
-      } else {
-        allPages.forEach(pg => {
-          const opt = document.createElement('option');
-          opt.value = pg.id;
-          opt.textContent = pg.title || `Page ${pg.id}`;
-          referencePageSelect.appendChild(opt);
-        });
-      }
     }
 
     // --------------------------
@@ -829,72 +873,33 @@
         imageResults.innerHTML = "<p style='color:red;'>Please enter a search term.</p>";
         return;
       }
-      // Clear old results
       imageResults.innerHTML = "Searching...";
 
       try {
-        // EXAMPLE for Pexels:
-        // let response = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}`, {
-        //   headers: {
-        //     Authorization: "Bearer YOUR_PEXELS_API_KEY"
-        //   }
-        // });
-
-        // EXAMPLE for Unsplash (search photos endpoint):
-        // let response = await fetch(`https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&client_id=YOUR_UNSPLASH_ACCESS_KEY`);
-
-        // For demonstration, we just simulate a response object:
-        let response = {
-          ok: true,
-          json: async () => ({
-            // Mock data with 'photos' array to simulate Unsplash or Pexels
-            results: [
-              {
-                id: "img1",
-                urls: { small: "https://via.placeholder.com/300?text=Sample+1" },
-                alt_description: "Sample Image 1"
-              },
-              {
-                id: "img2",
-                urls: { small: "https://via.placeholder.com/300?text=Sample+2" },
-                alt_description: "Sample Image 2"
-              },
-              {
-                id: "img3",
-                urls: { small: "https://via.placeholder.com/300?text=Sample+3" },
-                alt_description: "Sample Image 3"
-              }
-            ]
-          })
-        };
+        // Replace with your real endpoint / valid API key
+        let response = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=12`, {
+          headers: {
+            Authorization: "YOUR_PEXELS_API_KEY_HERE"
+          }
+        });
 
         if (!response.ok) {
           imageResults.innerHTML = "<p style='color:red;'>Error fetching images.</p>";
           return;
         }
 
-        // If using Unsplash in real code:
-        // const data = await response.json();
-        // const images = data.results || [];
-
-        // For Pexels in real code: data.photos
-        // For this mock, we do:
         const data = await response.json();
-        const images = data.results || [];
+        const images = data.photos || [];
 
         if (!images.length) {
           imageResults.innerHTML = "<p style='color:#ccc;'>No results found.</p>";
           return;
         }
 
-        // Render the images
         imageResults.innerHTML = "";
         images.forEach(imgObj => {
-          // For Unsplash, you'd use imgObj.urls.small
-          // For Pexels, you'd use imgObj.src.small
-          // We'll assume .urls.small in this mock
-          const imgUrl = imgObj.urls.small;
-          const altText = imgObj.alt_description || "No description";
+          const imgUrl = imgObj.src.small;
+          const altText = imgObj.alt || "No description";
 
           const wrapper = document.createElement('div');
           wrapper.classList.add('imageResult');
@@ -907,7 +912,6 @@
           `;
           imageResults.appendChild(wrapper);
 
-          // Handlers for assigning images
           const assignArtBtn = wrapper.querySelector('.assignArtBtn');
           const assignImageBtn = wrapper.querySelector('.assignImageBtn');
           assignArtBtn.addEventListener('click', () => openAssignModal(imgUrl, "art"));
@@ -920,17 +924,12 @@
     });
 
     function openAssignModal(imgUrl, targetField) {
-      // This opens a small prompt: pick which page/section to assign to
-      // We'll keep it simple: we generate a small overlay or do a window.prompt approach
-      // For more advanced usage, you'd create a custom modal, etc.
-
       const allPages = flattenPages(pages);
       if (!allPages.length) {
-        alert("No pages/sections available to assign images. Please add some pages first.");
+        alert("No pages/sections available. Please add some pages first.");
         return;
       }
 
-      // Build a quick selection prompt
       const sectionSelectData = [];
       allPages.forEach(pg => {
         pg.sections.forEach((sec, idx) => {
@@ -942,11 +941,10 @@
         });
       });
       if (!sectionSelectData.length) {
-        alert("No sections available to assign images. Please add a section first.");
+        alert("No sections available. Please add a section first.");
         return;
       }
 
-      // We’ll create a quick user prompt. You can also do a real modal if you prefer.
       let msg = "Select a section to assign the image:\n";
       sectionSelectData.forEach((sd, i) => {
         msg += `${i}) Page "${sd.pageTitle}" - Section ${sd.sectionIndex}\n`;
@@ -969,18 +967,16 @@
         return;
       }
 
-      // Assign the image URL
       if (targetField === "art") {
         targetPage.sections[chosen.sectionIndex].art = imgUrl;
       } else {
         targetPage.sections[chosen.sectionIndex].image = imgUrl;
       }
 
-      // Update the UI input field as well
+      // Update the UI fields if that section is visible
       const pageDiv = document.querySelector(`.pageItem[data-pageid="${targetPage.id}"]`);
       if (pageDiv) {
         const sectionContainer = pageDiv.querySelector('.sectionContainer');
-        // We have to find the correct .sectionItem
         const allSectionItems = sectionContainer.querySelectorAll('.sectionItem');
         const secItem = allSectionItems[chosen.sectionIndex];
         if (secItem) {
@@ -1017,13 +1013,11 @@
         const fname = pageFilename(pg);
         siteMap[fname] = code;
       });
-      // Show the first top-level page
       const homePage = pages[0];
       const homeFilename = pageFilename(homePage);
       previewFrame.srcdoc = siteMap[homeFilename];
     });
 
-    // Intercept nav links in the preview
     window.openPageInPreview = function(filename) {
       if (siteMap[filename]) {
         previewFrame.srcdoc = siteMap[filename];
@@ -1057,7 +1051,7 @@
       pageCount = 0;
       pages = [];
       pagesContainer.innerHTML = "";
-      referencePageSelect.innerHTML = '<option value="">(No pages yet)</option>';
+      manualHtmlInput.value = "";
       imageResults.innerHTML = "";
       previewFrame.srcdoc = "";
       generatedCode.value = "";
@@ -1085,32 +1079,33 @@
       return t + ".html";
     }
 
-    // Check if page is top-level
     function isTopLevel(pageObj) {
       return pages.includes(pageObj);
     }
 
-    // Build final HTML for a page
     function buildPageHTML(pageObj, isPreviewNav) {
       const pageTitle = pageObj.title.trim() || "Untitled Page";
       const sectionsHTML = buildSectionsHTML(pageObj.sections);
 
       let navHTML = "";
-      // Only build a nav if it's a top-level page
       if (includeNav.checked && isTopLevel(pageObj)) {
         navHTML = buildNavHTML(pages, isPreviewNav);
       }
 
-      let layoutCSS = getLayoutCSS(pageObj.layout);
+      // Determine layout CSS (including "ReferencedSiteLayout" if used)
+      let layoutCSS = "";
+      if (pageObj.layout === "ReferencedSiteLayout") {
+        layoutCSS = getReferencedLayoutCSS(pageObj);
+      } else {
+        layoutCSS = getLayoutCSS(pageObj.layout);
+      }
 
-      // We detect usage of FA or Material Icons
       const usedFA = checkIconUse(pageObj, "fontAwesome");
       const usedMI = checkIconUse(pageObj, "materialIcons");
 
       const faLink = usedFA
         ? `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">\n`
         : "";
-
       const materialIconsLink = usedMI
         ? `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />\n`
         : "";
@@ -1134,7 +1129,7 @@
       background-color: ${gBg};
       color: ${gTxt};
       font-family: ${gFont};
-      margin: 0; 
+      margin: 0;
       padding: 0;
     }
     .container {
@@ -1215,6 +1210,7 @@
         const paragraph = sec.paragraph || "Lorem ipsum dolor sit amet.";
         let iconHTML = "";
 
+        // Icons
         if (sec.iconLibrary === "fontAwesome" && sec.iconValue) {
           iconHTML = `<i class="${sec.iconValue}" style="margin-right:8px;"></i>`;
         } else if (sec.iconLibrary === "materialIcons" && sec.iconValue) {
@@ -1223,17 +1219,29 @@
           iconHTML = `<img src="${sec.iconValue}" alt="Icon" style="width:24px; height:auto; margin-right:8px; vertical-align:middle;" />`;
         }
 
+        // Optional images
         let artHTML = sec.art 
-          ? `<img src="${sec.art}" alt="Art" style="max-width:100%; height:auto; margin:15px 0;" />` 
+          ? `<img src="${sec.art}" alt="Art" style="max-width:100%; height:auto; margin:15px 0;" />`
           : "";
         let imageHTML = sec.image
-          ? `<img src="${sec.image}" alt="Section" style="max-width:100%; height:auto; margin:15px 0;" />` 
+          ? `<img src="${sec.image}" alt="Section" style="max-width:100%; height:auto; margin:15px 0;" />`
           : "";
 
+        // Background style
+        let itemStyle = "";
+        if (sec.bgType === "color") {
+          itemStyle = `background:${sec.bgColor};`;
+        } else if (sec.bgType === "graphic") {
+          itemStyle = `background:url('${sec.bgImage}') center center / cover no-repeat;`;
+        }
+        // If user set heading or paragraph colors:
+        const headingStyle = sec.headingColor ? `style="color:${sec.headingColor}; margin-bottom:15px;"` : `style="margin-bottom:15px;"`;
+        const paragraphStyle = sec.paragraphColor ? `style="color:${sec.paragraphColor}; margin-bottom:15px;"` : `style="margin-bottom:15px;"`;
+
         html += `
-          <div class="layout-item">
-            <h2>${iconHTML}${heading}</h2>
-            <p>${paragraph}</p>
+          <div class="layout-item" style="${itemStyle} padding:20px; border-radius:5px; margin-bottom:20px;">
+            <h2 ${headingStyle}>${iconHTML}${heading}</h2>
+            <p ${paragraphStyle}>${paragraph}</p>
             ${artHTML}
             ${imageHTML}
           </div>
@@ -1274,6 +1282,25 @@
       } else {
         return `<a href="${filename}">${label}</a>`;
       }
+    }
+
+    function getReferencedLayoutCSS(pageObj) {
+      // Simple placeholder for "ReferencedSiteLayout" styling:
+      const bg = pageObj.importedLayoutColors.background || "#ffffff";
+      const txt = pageObj.importedLayoutColors.textColor || "#000000";
+
+      return `
+.layout-container {
+  display: block;
+  background-color: ${bg};
+  color: ${txt};
+  padding: 20px;
+  border-radius: 5px;
+}
+.layout-item {
+  margin-bottom: 40px;
+}
+      `;
     }
 
     function getLayoutCSS(layoutValue) {
@@ -1464,7 +1491,7 @@
 }
         `;
       } else {
-        // Default fallback
+        // Default or 'none'
         return `
 .layout-container {
   display: block;
@@ -1477,11 +1504,9 @@
     }
 
     function checkIconUse(pageObj, libraryType) {
-      // Check current page sections for this library
       const pageHasIcons = pageObj.sections.some(s => s.iconLibrary === libraryType && s.iconValue);
       if (pageHasIcons) return true;
 
-      // Check sub-pages recursively
       if (pageObj.subPages && pageObj.subPages.length > 0) {
         for (let sp of pageObj.subPages) {
           if (checkIconUse(sp, libraryType)) return true;

@@ -2,86 +2,88 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Web Builder - Per-Element Colors & Graphics</title>
+  <title>Web Builder - Dark Mode</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap');
 
-    /* Basic Reset & Body */
+    /* Basic Reset */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
+
     body {
-      background: linear-gradient(135deg, #141416 0%, #1F1F22 100%);
-      color: #ffffff;
       font-family: 'Montserrat', sans-serif;
+      background-color: #181818; /* Dark background */
+      color: #cfcfcf;           /* Light text */
       display: flex;
-      justify-content: center;
       min-height: 100vh;
-      padding: 20px;
-    }
-    .wrapper {
-      background: #1E1E22;
-      border-radius: 10px;
-      max-width: 1200px;
-      width: 100%;
-      padding: 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-      margin-top: 40px;
-    }
-    h1, h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      color: #EAEAEA;
-    }
-    h1 {
-      margin-top: 0;
-      font-size: 2rem;
-    }
-    h2 {
-      font-size: 1.3rem;
-      margin-top: 10px;
-      color: #ccc;
-    }
-    p {
-      font-size: 0.95rem;
-      color: #bbb;
-      line-height: 1.4;
     }
 
-    /* Tabs */
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      background-color: #202020; /* Slightly lighter dark for contrast */
+      border-right: 1px solid #2a2a2a;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar h1 {
+      padding: 20px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      border-bottom: 1px solid #2a2a2a;
+      margin-bottom: 0;
+      text-align: center;
+      color: #fff; /* Stand out in the sidebar */
+    }
+
     .tab-nav {
       display: flex;
-      border-bottom: 1px solid #333;
-      margin-bottom: 20px;
+      flex-direction: column;
     }
     .tab-btn {
-      flex: 1;
-      background: #2A2A2E;
+      background: none;
       border: none;
-      padding: 15px;
-      color: #fff;
-      font-weight: 500;
-      text-align: center;
-      transition: background 0.3s, color 0.3s;
-      border-right: 1px solid #333;
-      font-size: 0.95rem;
+      padding: 15px 20px;
+      text-align: left;
+      font-size: 1rem;
       cursor: pointer;
-    }
-    .tab-btn:last-child {
-      border-right: none;
+      border-bottom: 1px solid #2a2a2a;
+      transition: background 0.3s;
+      color: #cfcfcf;
     }
     .tab-btn:hover {
-      background: #3A3A40;
+      background-color: #2e2e2e;
     }
     .tab-btn.active {
-      background: #4A88F6;
-      font-weight: 700;
-      color: #ffffff;
+      background-color: #4A88F6;
+      border-left: 4px solid #4A88F6;
+      font-weight: 600;
+      color: #fff;
     }
+
+    /* Main Content Wrapper */
+    .main-content {
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
+      background-color: #181818;
+    }
+    .main-content h2 {
+      margin-bottom: 10px;
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: #fff;
+    }
+    .main-content p {
+      color: #bbb;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    /* Tab Contents */
     .tab-content {
       display: none;
     }
@@ -98,29 +100,31 @@
       margin-bottom: 5px;
       font-weight: 500;
       font-size: 0.95rem;
+      color: #ccc;
     }
     .field input,
     .field select,
     .field textarea {
       width: 100%;
       padding: 10px;
-      border-radius: 5px;
-      border: none;
+      border-radius: 4px;
+      border: 1px solid #3a3a3a;
+      background-color: #2a2a2a;
       outline: none;
-      background: #2A2A2E;
-      color: #ffffff;
       font-size: 0.95rem;
-      transition: background 0.2s;
+      color: #cfcfcf;
+      transition: border-color 0.2s, background-color 0.2s;
     }
     .field input[type="color"] {
       height: 40px;
       cursor: pointer;
-      padding: 0;
+      border: none;
     }
-    .field input:hover,
-    .field select:hover,
-    .field textarea:hover {
-      background: #343438;
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: #4A88F6;
+      background-color: #333;
     }
 
     .buttons {
@@ -133,28 +137,34 @@
       cursor: pointer;
       background: #4A88F6;
       color: #fff;
-      padding: 12px 20px;
+      padding: 10px 18px;
       border: none;
-      border-radius: 5px;
+      border-radius: 4px;
       font-size: 0.95rem;
       transition: background 0.3s ease, transform 0.2s ease;
     }
     button:hover {
-      background: #3C74D4;
+      background: #3c74d4;
       transform: translateY(-1px);
+    }
+    button.removePageBtn {
+      background-color: #d9534f;
+    }
+    button.removePageBtn:hover {
+      background-color: #c9302c;
     }
 
     /* Page Editor UI */
     .pageItem {
-      background: #2A2A2E;
+      background: #2a2a2a;
+      border: 1px solid #3a3a3a;
       border-radius: 6px;
       padding: 15px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
       margin-bottom: 15px;
-      transition: background 0.3s;
+      transition: box-shadow 0.3s;
     }
     .pageItem:hover {
-      background: #343438;
+      box-shadow: 0 2px 6px rgba(255, 255, 255, 0.03);
     }
     .pageItem .pageHeader {
       display: flex;
@@ -167,45 +177,76 @@
       font-size: 1rem;
       margin: 0;
       flex: 1;
+      color: #fff;
     }
+
+    /* Section Container */
     .sectionContainer {
       margin-top: 15px;
     }
     .sectionItem {
-      background: #36363A;
-      padding: 10px;
-      border-radius: 5px;
+      background: #1f1f1f;
+      padding: 15px;
+      border-radius: 4px;
       margin-bottom: 10px;
+      position: relative;
+      border: 1px solid #333;
     }
     .sectionItem label {
       font-size: 0.85rem;
+      color: #ccc;
+    }
+
+    .reorder-btns {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .reorder-btns button {
+      background-color: #444;
+      color: #eee;
+      padding: 3px;
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+    }
+    .reorder-btns button:hover {
+      background-color: #555;
     }
 
     /* Preview & Generated Code */
     #previewFrame {
       width: 100%;
       height: 500px;
-      border: 1px solid #333333;
-      border-radius: 5px;
-      background: #ffffff;
+      border: 1px solid #3a3a3a;
+      border-radius: 4px;
+      background: #2a2a2a;
     }
     #generatedCode {
       margin-top: 20px;
-      background: #0E0E10;
-      color: #ffffff;
-      border: 1px solid #333333;
-      border-radius: 5px;
+      background: #1f1f1f;
+      border: 1px solid #3a3a3a;
+      border-radius: 4px;
       padding: 15px;
       width: 100%;
       height: 400px;
       font-family: 'Courier New', monospace;
       font-size: 0.9rem;
       resize: none;
+      color: #ccc;
     }
 
-    /* Simple nav + submenu style (improved) */
+    /* Submenu Style */
     nav {
-      background: #000;
+      background: #111;
       padding: 15px;
     }
     nav ul {
@@ -256,13 +297,18 @@
     }
     .imageResult {
       position: relative;
-      background: #2A2A2E;
+      background: #2a2a2a;
+      border: 1px solid #3a3a3a;
       padding: 10px;
       border-radius: 5px;
+      transition: box-shadow 0.3s;
+    }
+    .imageResult:hover {
+      box-shadow: 0 2px 6px rgba(255, 255, 255, 0.03);
     }
     .imageResult img {
       width: 100%;
-      border-radius: 5px;
+      border-radius: 3px;
     }
     .assign-btns {
       margin-top: 10px;
@@ -270,42 +316,57 @@
       flex-direction: column;
       gap: 8px;
     }
-    @media (max-width: 768px) {
+
+    /* Responsive Layout */
+    @media (max-width: 900px) {
+      .sidebar {
+        width: 180px;
+      }
       .tab-btn {
-        font-size: 0.85rem;
-        padding: 12px;
+        padding: 10px 15px;
       }
-      .pageItem {
-        padding: 12px;
+    }
+    @media (max-width: 600px) {
+      .sidebar {
+        position: fixed;
+        width: 60px;
+        z-index: 999;
       }
-      button {
-        font-size: 0.85rem;
-      }
-      nav ul {
-        flex-wrap: wrap;
-      }
-      .submenu {
-        position: static;
+      .sidebar h1 {
         display: none;
       }
-      .has-submenu:hover .submenu {
-        display: none; /* On small screens, hover can be confusing; you'd typically toggle via JS here */
+      .tab-btn {
+        font-size: 0;
+        text-align: center;
+        border-left: none;
+      }
+      .tab-btn::after {
+        content: attr(data-label);
+        font-size: 1rem;
+        color: #cfcfcf;
+      }
+      .main-content {
+        margin-left: 60px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="wrapper">
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
     <h1>Web Builder</h1>
     <div class="tab-nav">
-      <button class="tab-btn active" data-tab="basicTab">Basic Settings</button>
-      <button class="tab-btn" data-tab="pagesTab">Pages & Navigation</button>
-      <button class="tab-btn" data-tab="referenceTab">Reference Layout</button>
-      <button class="tab-btn" data-tab="imagesTab">Images & Media</button>
-      <button class="tab-btn" data-tab="previewTab">Preview</button>
-      <button class="tab-btn" data-tab="codeTab">Generated Code</button>
+      <button class="tab-btn active" data-tab="basicTab" data-label="Basic">Basic Settings</button>
+      <button class="tab-btn" data-tab="pagesTab" data-label="Pages">Pages & Navigation</button>
+      <button class="tab-btn" data-tab="referenceTab" data-label="Reference">Reference Layout</button>
+      <button class="tab-btn" data-tab="imagesTab" data-label="Images">Images & Media</button>
+      <button class="tab-btn" data-tab="previewTab" data-label="Preview">Preview</button>
+      <button class="tab-btn" data-tab="codeTab" data-label="Code">Generated Code</button>
     </div>
+  </div>
 
+  <!-- Main Content -->
+  <div class="main-content">
     <!-- BASIC SETTINGS TAB -->
     <div id="basicTab" class="tab-content active">
       <h2>Global Settings</h2>
@@ -350,7 +411,7 @@
     <!-- REFERENCE LAYOUT TAB -->
     <div id="referenceTab" class="tab-content">
       <h2>Reference Layout via Paste</h2>
-      <p>Copy HTML code from another site’s source and paste it here to extract headings/paragraphs as sections. Basic layout is named "ReferencedSiteLayout."</p>
+      <p>Copy HTML code from another site’s source and paste it here to extract headings/paragraphs as sections.</p>
       <div class="field">
         <label for="manualHtmlInput">Paste HTML Code Here:</label>
         <textarea id="manualHtmlInput" rows="10" placeholder="Copy &amp; paste HTML source from another site..."></textarea>
@@ -358,7 +419,7 @@
       <div class="buttons">
         <button id="importHtmlBtn">Import Layout from Pasted HTML</button>
       </div>
-      <p style="font-size:0.85rem; color:#bbb;">
+      <p style="font-size:0.85rem; color:#999;">
         This bypasses CORS since you, the user, provide the HTML manually.
       </p>
     </div>
@@ -374,7 +435,7 @@
       <div class="buttons">
         <button id="imageSearchBtn">Search Images</button>
       </div>
-      <p style="font-size:0.85rem; color:#bbb;">
+      <p style="font-size:0.85rem; color:#999;">
         Replace the placeholder fetch URL and API key in the code with your actual Pexels/Unsplash credentials.
       </p>
       <div id="imageResults" class="results-grid"></div>
@@ -470,7 +531,7 @@
       pageDiv.innerHTML = `
         <div class="pageHeader">
           <h3>${pageLevel} Editor (ID: ${pageId})</h3>
-          <button class="removePageBtn" style="background:#d9534f;">Remove</button>
+          <button class="removePageBtn">Remove</button>
         </div>
         <div class="field">
           <label>Page Title (used for navigation label):</label>
@@ -491,7 +552,7 @@
             <option value="ReferencedSiteLayout">ReferencedSiteLayout</option>
           </select>
         </div>
-        <h4 style="margin:10px 0;">Sections</h4>
+        <h4 style="margin:10px 0; color:#fff;">Sections</h4>
         <div class="sectionContainer"></div>
         <div class="buttons">
           <button class="addSectionBtn" style="background:#28A745;">Add Section</button>
@@ -563,7 +624,7 @@
     }
 
     // --------------------------
-    // SECTION EDITOR (With color/graphic background + text color)
+    // SECTION EDITOR (With color/graphic background + text color + reorder)
     // --------------------------
     function createSectionEditor(pageObj, containerEl, fetchedSectionData = null) {
       const sectionData = fetchedSectionData || {
@@ -585,6 +646,10 @@
       const secDiv = document.createElement('div');
       secDiv.classList.add('sectionItem');
       secDiv.innerHTML = `
+        <div class="reorder-btns">
+          <button class="moveUpBtn">&#9650;</button>
+          <button class="moveDownBtn">&#9660;</button>
+        </div>
         <label>Section Heading:</label>
         <input type="text" class="secHeading" placeholder="Enter heading" />
 
@@ -609,7 +674,7 @@
         <label>Image URL (Optional):</label>
         <input type="text" class="secImage" placeholder="Another optional image URL" />
 
-        <hr style="margin:10px 0; border:none; border-top:1px solid #555;" />
+        <hr style="margin:10px 0; border:none; border-top:1px solid #444;" />
 
         <label>Section Background Type:</label>
         <select class="bgTypeSelect">
@@ -653,6 +718,8 @@
       const secHeadingColor = secDiv.querySelector('.secHeadingColor');
       const secParagraphColor = secDiv.querySelector('.secParagraphColor');
       const removeSectionBtn = secDiv.querySelector('.removeSectionBtn');
+      const moveUpBtn = secDiv.querySelector('.moveUpBtn');
+      const moveDownBtn = secDiv.querySelector('.moveDownBtn');
 
       // Initialize values
       headingInput.value = sectionData.heading || "";
@@ -698,7 +765,6 @@
       secParagraphColor.addEventListener('input', (e) => {
         sectionData.paragraphColor = e.target.value;
       });
-
       headingInput.addEventListener('input', e => {
         sectionData.heading = e.target.value.trim();
       });
@@ -769,6 +835,22 @@
         }
         secDiv.remove();
       });
+
+      // Reorder button events
+      moveUpBtn.addEventListener('click', () => {
+        const idx = pageObj.sections.indexOf(sectionData);
+        if (idx > 0) {
+          [pageObj.sections[idx - 1], pageObj.sections[idx]] = [pageObj.sections[idx], pageObj.sections[idx - 1]];
+          containerEl.insertBefore(secDiv, containerEl.children[idx - 1]);
+        }
+      });
+      moveDownBtn.addEventListener('click', () => {
+        const idx = pageObj.sections.indexOf(sectionData);
+        if (idx < pageObj.sections.length - 1) {
+          [pageObj.sections[idx], pageObj.sections[idx + 1]] = [pageObj.sections[idx + 1], pageObj.sections[idx]];
+          containerEl.insertBefore(secDiv, containerEl.children[idx + 2]);
+        }
+      });
     }
 
     // --------------------------
@@ -784,11 +866,10 @@
         return;
       }
 
-      // Convert the pasted HTML string to a DOM
       const parser = new DOMParser();
       const doc = parser.parseFromString(htmlString, "text/html");
 
-      // A simple example: find <h2> and <p> tags
+      // Example: find <h2> and <p> tags
       const foundHeadings = doc.querySelectorAll('h2');
       const foundParagraphs = doc.querySelectorAll('p');
 
@@ -818,7 +899,6 @@
         alert("No <h2> tags found or no matching paragraphs. Try adjusting your HTML or parsing logic.");
       }
 
-      // Prompt user for Page ID
       const pageId = prompt("Enter the Page ID to insert these sections (e.g., 0, 1, etc.):");
       if (pageId === null) return; // user cancelled
 
@@ -828,7 +908,6 @@
         return;
       }
 
-      // Insert sections & rebuild UI
       const pageDiv = document.querySelector(`.pageItem[data-pageid="${targetPage.id}"]`);
       const sectionContainer = pageDiv?.querySelector('.sectionContainer');
 
@@ -839,7 +918,7 @@
         }
       });
 
-      // Additionally set the layout to ReferencedSiteLayout:
+      // Set layout to ReferencedSiteLayout:
       targetPage.layout = "ReferencedSiteLayout";
       const layoutSelect = pageDiv.querySelector('.pageLayoutSelect');
       if (layoutSelect) {
@@ -892,7 +971,7 @@
         const images = data.photos || [];
 
         if (!images.length) {
-          imageResults.innerHTML = "<p style='color:#ccc;'>No results found.</p>";
+          imageResults.innerHTML = "<p style='color:#bbb;'>No results found.</p>";
           return;
         }
 
@@ -1092,7 +1171,6 @@
         navHTML = buildNavHTML(pages, isPreviewNav);
       }
 
-      // Determine layout CSS (including "ReferencedSiteLayout" if used)
       let layoutCSS = "";
       if (pageObj.layout === "ReferencedSiteLayout") {
         layoutCSS = getReferencedLayoutCSS(pageObj);
@@ -1210,7 +1288,6 @@
         const paragraph = sec.paragraph || "Lorem ipsum dolor sit amet.";
         let iconHTML = "";
 
-        // Icons
         if (sec.iconLibrary === "fontAwesome" && sec.iconValue) {
           iconHTML = `<i class="${sec.iconValue}" style="margin-right:8px;"></i>`;
         } else if (sec.iconLibrary === "materialIcons" && sec.iconValue) {
@@ -1219,22 +1296,19 @@
           iconHTML = `<img src="${sec.iconValue}" alt="Icon" style="width:24px; height:auto; margin-right:8px; vertical-align:middle;" />`;
         }
 
-        // Optional images
-        let artHTML = sec.art 
+        let artHTML = sec.art
           ? `<img src="${sec.art}" alt="Art" style="max-width:100%; height:auto; margin:15px 0;" />`
           : "";
         let imageHTML = sec.image
           ? `<img src="${sec.image}" alt="Section" style="max-width:100%; height:auto; margin:15px 0;" />`
           : "";
 
-        // Background style
         let itemStyle = "";
         if (sec.bgType === "color") {
           itemStyle = `background:${sec.bgColor};`;
         } else if (sec.bgType === "graphic") {
           itemStyle = `background:url('${sec.bgImage}') center center / cover no-repeat;`;
         }
-        // If user set heading or paragraph colors:
         const headingStyle = sec.headingColor ? `style="color:${sec.headingColor}; margin-bottom:15px;"` : `style="margin-bottom:15px;"`;
         const paragraphStyle = sec.paragraphColor ? `style="color:${sec.paragraphColor}; margin-bottom:15px;"` : `style="margin-bottom:15px;"`;
 
@@ -1285,10 +1359,8 @@
     }
 
     function getReferencedLayoutCSS(pageObj) {
-      // Simple placeholder for "ReferencedSiteLayout" styling:
       const bg = pageObj.importedLayoutColors.background || "#ffffff";
       const txt = pageObj.importedLayoutColors.textColor || "#000000";
-
       return `
 .layout-container {
   display: block;
@@ -1491,7 +1563,6 @@
 }
         `;
       } else {
-        // Default or 'none'
         return `
 .layout-container {
   display: block;

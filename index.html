@@ -36,7 +36,7 @@
       border-bottom: 1px solid #2a2a2a;
       margin-bottom: 0;
       text-align: center;
-      color: #fff; /* Stand out in the sidebar */
+      color: #fff;
     }
 
     .tab-nav {
@@ -349,6 +349,23 @@
         margin-left: 60px;
       }
     }
+
+    /* Floating View Source Panel */
+    #viewSourcePanel {
+      position: fixed;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      padding: 10px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+      border-radius: 4px;
+      z-index: 2000;
+      display: none;
+      max-width: 300px;
+      max-height: 200px;
+      overflow: auto;
+      word-break: break-all;
+    }
   </style>
 </head>
 <body>
@@ -396,6 +413,27 @@
         <label for="includeNav">Include Navigation Bar:</label>
         <input type="checkbox" id="includeNav" />
       </div>
+      <!-- Additional Global Customization Options -->
+      <div class="field">
+        <label for="globalFontSize">Font Size (px):</label>
+        <input type="number" id="globalFontSize" value="16" min="10" max="72" />
+      </div>
+      <div class="field">
+        <label for="globalLineHeight">Line Height:</label>
+        <input type="number" step="0.1" id="globalLineHeight" value="1.6" min="1" max="3" />
+      </div>
+      <div class="field">
+        <label for="globalLinkColor">Link Color:</label>
+        <input type="color" id="globalLinkColor" value="#4A88F6" />
+      </div>
+      <div class="field">
+        <label for="globalBgImage">Background Image URL (Optional):</label>
+        <input type="text" id="globalBgImage" placeholder="https://example.com/bg.jpg" />
+      </div>
+      <div class="field">
+        <label for="globalCustomCSS">Custom CSS (Optional):</label>
+        <textarea id="globalCustomCSS" rows="4" placeholder="Additional custom CSS..."></textarea>
+      </div>
     </div>
 
     <!-- PAGES & NAVIGATION TAB -->
@@ -411,7 +449,7 @@
     <!-- REFERENCE LAYOUT TAB -->
     <div id="referenceTab" class="tab-content">
       <h2>Reference Layout via Paste</h2>
-      <p>Copy HTML code from another site’s source and paste it here to extract headings/paragraphs as sections.</p>
+      <p>Copy HTML code from another site’s source and paste it here to extract its parts.</p>
       <div class="field">
         <label for="manualHtmlInput">Paste HTML Code Here:</label>
         <textarea id="manualHtmlInput" rows="10" placeholder="Copy &amp; paste HTML source from another site..."></textarea>
@@ -446,7 +484,16 @@
       <h2>Live Preview (Home Page)</h2>
       <p>This preview shows only the first top-level page. Nav links are intercepted so you can click sub-pages too.</p>
       <button id="previewBtn" style="margin-bottom:20px;">Update Preview</button>
+      <!-- New Toggle Button for View Source Mode -->
+      <button id="toggleViewSourceBtn">Enable View Source</button>
       <iframe id="previewFrame"></iframe>
+      <!-- Floating Panel for displaying element source on hover -->
+      <div id="viewSourcePanel"></div>
+      <!-- Editable Panel for Selected Element HTML (appears below the preview) -->
+      <div id="editElementPanel" style="display: none; margin-top: 10px; background: #1f1f1f; padding: 10px; border: 1px solid #3a3a3a; border-radius: 4px;">
+        <textarea id="editElementTextarea" style="width:100%; height:150px; font-family:'Courier New', monospace; font-size:0.8rem;"></textarea>
+        <button id="updateElementBtn" style="margin-top: 5px;">Update Element</button>
+      </div>
     </div>
 
     <!-- GENERATED CODE TAB -->
@@ -457,9 +504,55 @@
         <button id="generateBtn">Generate Site Code</button>
         <button id="clearBtn" style="background:#d9534f;">Clear All</button>
       </div>
+      <!-- New fields for code search and replace -->
+      <div class="field">
+        <label for="codeSearchInput">Search Code:</label>
+        <input type="text" id="codeSearchInput" placeholder="Search for text in generated code..." />
+      </div>
+      <div class="field">
+        <label for="codeReplaceInput">Replace With:</label>
+        <input type="text" id="codeReplaceInput" placeholder="Replacement text" />
+      </div>
+      <div class="buttons">
+        <button id="replaceAllBtn">Replace All</button>
+        <button id="exportHTMLBtn">Export as HTML</button>
+      </div>
       <textarea id="generatedCode" readonly></textarea>
     </div>
   </div>
+
+  <!-- Modal styles (for import options) -->
+  <style>
+    .import-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .import-modal {
+      background: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      max-width: 400px;
+      width: 100%;
+      color: #000;
+    }
+    .import-modal h3 {
+      margin-bottom: 15px;
+    }
+    .import-modal div {
+      margin-bottom: 10px;
+    }
+    .import-modal button {
+      padding: 6px 12px;
+    }
+  </style>
 
   <script>
     // --------------------------
@@ -490,6 +583,11 @@
     const globalTextColor = document.getElementById('globalTextColor');
     const globalHeadingColor = document.getElementById('globalHeadingColor');
     const includeNav = document.getElementById('includeNav');
+    const globalFontSize = document.getElementById('globalFontSize');
+    const globalLineHeight = document.getElementById('globalLineHeight');
+    const globalLinkColor = document.getElementById('globalLinkColor');
+    const globalBgImage = document.getElementById('globalBgImage');
+    const globalCustomCSS = document.getElementById('globalCustomCSS');
 
     // --------------------------
     // PAGE & NAVIGATION
@@ -511,10 +609,7 @@
         layout: "single",
         sections: [],
         subPages: [],
-        importedLayoutColors: {
-          background: "",
-          textColor: "",
-        }
+        importedParts: null // For storing imported HTML parts if any
       };
 
       if (parentPage) {
@@ -624,7 +719,7 @@
     }
 
     // --------------------------
-    // SECTION EDITOR (With color/graphic background + text color + reorder)
+    // SECTION EDITOR (Enhanced Options with Refined Layout)
     // --------------------------
     function createSectionEditor(pageObj, containerEl, fetchedSectionData = null) {
       const sectionData = fetchedSectionData || {
@@ -638,7 +733,9 @@
         bgColor: "#ffffff",
         bgImage: "",
         headingColor: "",
-        paragraphColor: ""
+        paragraphColor: "",
+        breakCount: 0,
+        paragraphIndent: 0
       };
 
       pageObj.sections.push(sectionData);
@@ -650,39 +747,53 @@
           <button class="moveUpBtn">&#9650;</button>
           <button class="moveDownBtn">&#9660;</button>
         </div>
-        <label>Section Heading:</label>
-        <input type="text" class="secHeading" placeholder="Enter heading" />
-
-        <label>Section Paragraph:</label>
-        <textarea rows="2" class="secParagraph" placeholder="Enter paragraph"></textarea>
-
-        <label>Icon Library:</label>
-        <select class="iconLibrarySelect">
-          <option value="none">No Icon</option>
-          <option value="fontAwesome">Font Awesome</option>
-          <option value="materialIcons">Google Material Icons</option>
-          <option value="nounProject">Noun Project (URL)</option>
-        </select>
-
-        <div class="iconValueContainer" style="margin: 5px 0;">
-          <div class="iconValueFields"></div>
+        <div class="field">
+          <label>Section Heading (leave blank if desired):</label>
+          <input type="text" class="secHeading" placeholder="Enter heading (optional)" />
         </div>
-
-        <label>Royalty-Free Art/Image URL (Optional):</label>
-        <input type="text" class="secArt" placeholder="https://example.com/art.jpg" />
-
-        <label>Image URL (Optional):</label>
-        <input type="text" class="secImage" placeholder="Another optional image URL" />
-
+        <div class="field">
+          <label>Section Paragraph:</label>
+          <textarea rows="4" class="secParagraph" placeholder="Enter paragraph"></textarea>
+        </div>
+        <div class="field">
+          <label>Breaks after Heading (number of breaks):</label>
+          <input type="number" class="secBreakCount" value="0" min="0" />
+        </div>
+        <div class="field">
+          <label>Paragraph Indentation (px):</label>
+          <input type="number" class="secParagraphIndent" value="0" min="0" />
+        </div>
+        <div class="field">
+          <label>Icon Library:</label>
+          <select class="iconLibrarySelect">
+            <option value="none">No Icon</option>
+            <option value="fontAwesome">Font Awesome</option>
+            <option value="materialIcons">Google Material Icons</option>
+            <option value="nounProject">Noun Project (URL)</option>
+          </select>
+        </div>
+        <div class="field">
+          <div class="iconValueContainer" style="margin: 5px 0;">
+            <div class="iconValueFields"></div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Royalty-Free Art/Image URL (Optional):</label>
+          <input type="text" class="secArt" placeholder="https://example.com/art.jpg" />
+        </div>
+        <div class="field">
+          <label>Image URL (Optional):</label>
+          <input type="text" class="secImage" placeholder="Another optional image URL" />
+        </div>
         <hr style="margin:10px 0; border:none; border-top:1px solid #444;" />
-
-        <label>Section Background Type:</label>
-        <select class="bgTypeSelect">
-          <option value="none">No Override</option>
-          <option value="color">Color</option>
-          <option value="graphic">Graphic</option>
-        </select>
-
+        <div class="field">
+          <label>Section Background Type:</label>
+          <select class="bgTypeSelect">
+            <option value="none">No Override</option>
+            <option value="color">Color</option>
+            <option value="graphic">Graphic</option>
+          </select>
+        </div>
         <div class="field bgColorField" style="display:none;">
           <label>Section Background Color:</label>
           <input type="color" class="secBgColor" value="#ffffff" />
@@ -691,13 +802,14 @@
           <label>Section Background Image URL:</label>
           <input type="text" class="secBgImage" placeholder="https://example.com/background.jpg" />
         </div>
-
-        <label>Heading Text Color (optional):</label>
-        <input type="color" class="secHeadingColor" value="" />
-
-        <label>Paragraph Text Color (optional):</label>
-        <input type="color" class="secParagraphColor" value="" />
-
+        <div class="field">
+          <label>Heading Text Color (optional):</label>
+          <input type="color" class="secHeadingColor" value="" />
+        </div>
+        <div class="field">
+          <label>Paragraph Text Color (optional):</label>
+          <input type="color" class="secParagraphColor" value="" />
+        </div>
         <button class="removeSectionBtn" style="background:#d9534f; margin-top:8px;">Remove Section</button>
       `;
 
@@ -706,6 +818,8 @@
       // DOM References
       const headingInput = secDiv.querySelector('.secHeading');
       const paragraphInput = secDiv.querySelector('.secParagraph');
+      const breakCountInput = secDiv.querySelector('.secBreakCount');
+      const paragraphIndentInput = secDiv.querySelector('.secParagraphIndent');
       const iconLibrarySelect = secDiv.querySelector('.iconLibrarySelect');
       const iconValueContainer = secDiv.querySelector('.iconValueContainer .iconValueFields');
       const artInput = secDiv.querySelector('.secArt');
@@ -724,6 +838,8 @@
       // Initialize values
       headingInput.value = sectionData.heading || "";
       paragraphInput.value = sectionData.paragraph || "";
+      breakCountInput.value = sectionData.breakCount || 0;
+      paragraphIndentInput.value = sectionData.paragraphIndent || 0;
       iconLibrarySelect.value = sectionData.iconLibrary || "none";
       artInput.value = sectionData.art || "";
       imageInput.value = sectionData.image || "";
@@ -766,10 +882,16 @@
         sectionData.paragraphColor = e.target.value;
       });
       headingInput.addEventListener('input', e => {
-        sectionData.heading = e.target.value.trim();
+        sectionData.heading = e.target.value;
       });
       paragraphInput.addEventListener('input', e => {
-        sectionData.paragraph = e.target.value.trim();
+        sectionData.paragraph = e.target.value;
+      });
+      breakCountInput.addEventListener('input', e => {
+        sectionData.breakCount = parseInt(e.target.value, 10) || 0;
+      });
+      paragraphIndentInput.addEventListener('input', e => {
+        sectionData.paragraphIndent = parseInt(e.target.value, 10) || 0;
       });
       artInput.addEventListener('input', e => {
         sectionData.art = e.target.value.trim();
@@ -854,7 +976,7 @@
     }
 
     // --------------------------
-    // IMPORT LAYOUT BY PASTING HTML
+    // IMPORT LAYOUT BY PASTING HTML (with automatic separation)
     // --------------------------
     const importHtmlBtn = document.getElementById('importHtmlBtn');
     const manualHtmlInput = document.getElementById('manualHtmlInput');
@@ -865,68 +987,111 @@
         alert("Please paste some HTML code first.");
         return;
       }
+      // Separate the HTML into its parts
+      const parts = separateHTMLParts(htmlString);
+      // Show a modal to let the user select which parts to import
+      showImportOptions(parts, (selectedParts) => {
+        const pageId = prompt("Enter the Page ID to insert these imported parts (e.g., 0, 1, etc.):");
+        if (pageId === null) return; // user cancelled
+        const targetPage = findPageById(parseInt(pageId, 10), pages);
+        if (!targetPage) {
+          alert("Page not found.");
+          return;
+        }
+        targetPage.importedParts = selectedParts;
+        // Set layout to ReferencedSiteLayout:
+        targetPage.layout = "ReferencedSiteLayout";
+        const pageDiv = document.querySelector(`.pageItem[data-pageid="${targetPage.id}"]`);
+        const layoutSelect = pageDiv.querySelector('.pageLayoutSelect');
+        if (layoutSelect) {
+          layoutSelect.value = "ReferencedSiteLayout";
+        }
+        alert("Imported selected HTML parts into the page!");
+      });
+    });
 
+    // Function to separate pasted HTML into its parts (including scripts)
+    function separateHTMLParts(htmlString) {
       const parser = new DOMParser();
       const doc = parser.parseFromString(htmlString, "text/html");
-
-      // Example: find <h2> and <p> tags
-      const foundHeadings = doc.querySelectorAll('h2');
-      const foundParagraphs = doc.querySelectorAll('p');
-
-      const sections = [];
-      foundHeadings.forEach((h2El, index) => {
-        const headingText = h2El.textContent.trim();
-        const paragraphText = foundParagraphs[index]
-          ? foundParagraphs[index].textContent.trim()
-          : "";
-
-        sections.push({
-          heading: headingText,
-          paragraph: paragraphText,
-          iconLibrary: "none",
-          iconValue: "",
-          art: "",
-          image: "",
-          bgType: "none",
-          bgColor: "#ffffff",
-          bgImage: "",
-          headingColor: "",
-          paragraphColor: ""
-        });
+      let headContent = doc.head ? doc.head.innerHTML : "";
+      let bodyContent = doc.body ? doc.body.innerHTML : "";
+      let styleContent = "";
+      let scriptContent = "";
+      
+      const styleElements = doc.head ? doc.head.querySelectorAll("style") : [];
+      styleElements.forEach(styleEl => {
+        styleContent += styleEl.outerHTML;
+        headContent = headContent.replace(styleEl.outerHTML, "");
       });
-
-      if (!sections.length) {
-        alert("No <h2> tags found or no matching paragraphs. Try adjusting your HTML or parsing logic.");
-      }
-
-      const pageId = prompt("Enter the Page ID to insert these sections (e.g., 0, 1, etc.):");
-      if (pageId === null) return; // user cancelled
-
-      const targetPage = findPageById(parseInt(pageId, 10), pages);
-      if (!targetPage) {
-        alert("Page not found.");
-        return;
-      }
-
-      const pageDiv = document.querySelector(`.pageItem[data-pageid="${targetPage.id}"]`);
-      const sectionContainer = pageDiv?.querySelector('.sectionContainer');
-
-      sections.forEach(secObj => {
-        targetPage.sections.push(secObj);
-        if (sectionContainer) {
-          createSectionEditor(targetPage, sectionContainer, secObj);
+      
+      const scriptElements = doc.querySelectorAll("script");
+      scriptElements.forEach(scriptEl => {
+        scriptContent += scriptEl.outerHTML;
+        if (scriptEl.parentNode.tagName.toLowerCase() === "head") {
+          headContent = headContent.replace(scriptEl.outerHTML, "");
+        } else if (scriptEl.parentNode.tagName.toLowerCase() === "body") {
+          bodyContent = bodyContent.replace(scriptEl.outerHTML, "");
         }
       });
+      
+      return {
+        head: headContent.trim(),
+        style: styleContent.trim(),
+        body: bodyContent.trim(),
+        scripts: scriptContent.trim()
+      };
+    }
 
-      // Set layout to ReferencedSiteLayout:
-      targetPage.layout = "ReferencedSiteLayout";
-      const layoutSelect = pageDiv.querySelector('.pageLayoutSelect');
-      if (layoutSelect) {
-        layoutSelect.value = "ReferencedSiteLayout";
-      }
+    // Function to show a modal with checkboxes for selecting which parts to import
+    function showImportOptions(parts, callback) {
+      const overlay = document.createElement('div');
+      overlay.className = "import-overlay";
+      const modal = document.createElement('div');
+      modal.className = "import-modal";
+      modal.innerHTML = `
+        <h3>Select HTML Parts to Import</h3>
+        <div>
+          <input type="checkbox" id="importHead" checked> <label for="importHead">Head (meta, title, etc.)</label>
+        </div>
+        <div>
+          <input type="checkbox" id="importStyle" checked> <label for="importStyle">Style (CSS)</label>
+        </div>
+        <div>
+          <input type="checkbox" id="importBody" checked> <label for="importBody">Body (Content)</label>
+        </div>
+        <div>
+          <input type="checkbox" id="importScripts" checked> <label for="importScripts">Scripts (JS)</label>
+        </div>
+        <div style="margin-top: 15px; text-align: right;">
+          <button id="cancelImport">Cancel</button>
+          <button id="confirmImport" style="margin-left: 10px;">Confirm</button>
+        </div>
+      `;
+      overlay.appendChild(modal);
+      document.body.appendChild(overlay);
 
-      alert("Layout imported from pasted HTML!");
-    });
+      document.getElementById('cancelImport').addEventListener('click', () => {
+        document.body.removeChild(overlay);
+      });
+      document.getElementById('confirmImport').addEventListener('click', () => {
+        const selectedParts = {};
+        if (document.getElementById('importHead').checked) {
+          selectedParts.head = parts.head;
+        }
+        if (document.getElementById('importStyle').checked) {
+          selectedParts.style = parts.style;
+        }
+        if (document.getElementById('importBody').checked) {
+          selectedParts.body = parts.body;
+        }
+        if (document.getElementById('importScripts').checked) {
+          selectedParts.scripts = parts.scripts;
+        }
+        document.body.removeChild(overlay);
+        callback(selectedParts);
+      });
+    }
 
     function findPageById(id, pageArr) {
       for (let p of pageArr) {
@@ -956,7 +1121,7 @@
 
       try {
         // Replace with your real endpoint / valid API key
-        let response = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=12`, {
+        let response = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=77`, {
           headers: {
             Authorization: "2mxS3gi2IIXAmd4anXuVaaNs5k98X0F6KaTpszZYFCJstNfWXVH71gN1"
           }
@@ -1052,7 +1217,6 @@
         targetPage.sections[chosen.sectionIndex].image = imgUrl;
       }
 
-      // Update the UI fields if that section is visible
       const pageDiv = document.querySelector(`.pageItem[data-pageid="${targetPage.id}"]`);
       if (pageDiv) {
         const sectionContainer = pageDiv.querySelector('.sectionContainer');
@@ -1127,6 +1291,11 @@
       globalTextColor.value = "#000000";
       globalHeadingColor.value = "#000000";
       includeNav.checked = false;
+      globalFontSize.value = "16";
+      globalLineHeight.value = "1.6";
+      globalLinkColor.value = "#4A88F6";
+      globalBgImage.value = "";
+      globalCustomCSS.value = "";
       pageCount = 0;
       pages = [];
       pagesContainer.innerHTML = "";
@@ -1139,6 +1308,43 @@
       tabContents.forEach(tc => tc.classList.remove('active'));
       tabButtons[0].classList.add('active');
       tabContents[0].classList.add('active');
+    });
+
+    // --------------------------
+    // NEW: Code Search, Replace, and Export Functionality
+    // --------------------------
+    const codeSearchInput = document.getElementById('codeSearchInput');
+    const codeReplaceInput = document.getElementById('codeReplaceInput');
+    const replaceAllBtn = document.getElementById('replaceAllBtn');
+    const exportHTMLBtn = document.getElementById('exportHTMLBtn');
+
+    replaceAllBtn.addEventListener('click', function() {
+      const searchText = codeSearchInput.value;
+      const replaceText = codeReplaceInput.value;
+      if (!searchText) {
+        alert("Please enter text to search for.");
+        return;
+      }
+      const codeContent = generatedCode.value;
+      const updatedCode = codeContent.split(searchText).join(replaceText);
+      generatedCode.value = updatedCode;
+    });
+
+    exportHTMLBtn.addEventListener('click', function() {
+      const codeContent = generatedCode.value;
+      if (!codeContent) {
+        alert("There is no generated code to export.");
+        return;
+      }
+      const blob = new Blob([codeContent], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = "exported_site.html";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     });
 
     function flattenPages(pageArr) {
@@ -1162,38 +1368,73 @@
       return pages.includes(pageObj);
     }
 
+    // --------------------------
+    // BUILD PAGE HTML (including support for ReferencedSiteLayout with imported parts)
+    // --------------------------
     function buildPageHTML(pageObj, isPreviewNav) {
       const pageTitle = pageObj.title.trim() || "Untitled Page";
-      const sectionsHTML = buildSectionsHTML(pageObj.sections);
+      
+      // If using ReferencedSiteLayout and imported parts are present, use them.
+      if (pageObj.layout === "ReferencedSiteLayout" && pageObj.importedParts) {
+        return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>${pageTitle}</title>
+  ${ checkIconUse(pageObj, "fontAwesome") ? `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">` : "" }
+  ${ checkIconUse(pageObj, "materialIcons") ? `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />` : "" }
+  <style>
+    body {
+      background-color: ${globalBgColor.value};
+      ${globalBgImage.value ? `background-image: url('${globalBgImage.value}'); background-size: cover; background-repeat: no-repeat;` : ''}
+      color: ${globalTextColor.value};
+      font-family: ${fontFamily.value.trim() || "Arial, sans-serif"};
+      font-size: ${globalFontSize.value}px;
+      line-height: ${globalLineHeight.value};
+      margin: 0;
+      padding: 0;
+    }
+    a { color: ${globalLinkColor.value}; }
+    ${ pageObj.importedParts.style ? pageObj.importedParts.style : '' }
+  </style>
+  ${ pageObj.importedParts.head ? pageObj.importedParts.head : '' }
+</head>
+<body>
+  ${ includeNav.checked && isTopLevel(pageObj) ? buildNavHTML(pages, isPreviewNav) : '' }
+  ${ pageObj.importedParts.body ? pageObj.importedParts.body : '' }
+  ${ pageObj.importedParts.scripts ? pageObj.importedParts.scripts : '' }
+</body>
+</html>
+        `.trim();
+      }
 
+      // Otherwise, use the standard generation with sections.
+      const sectionsHTML = buildSectionsHTML(pageObj.sections);
       let navHTML = "";
       if (includeNav.checked && isTopLevel(pageObj)) {
         navHTML = buildNavHTML(pages, isPreviewNav);
       }
-
       let layoutCSS = "";
       if (pageObj.layout === "ReferencedSiteLayout") {
         layoutCSS = getReferencedLayoutCSS(pageObj);
       } else {
         layoutCSS = getLayoutCSS(pageObj.layout);
       }
-
       const usedFA = checkIconUse(pageObj, "fontAwesome");
       const usedMI = checkIconUse(pageObj, "materialIcons");
-
-      const faLink = usedFA
-        ? `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">\n`
-        : "";
-      const materialIconsLink = usedMI
-        ? `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />\n`
-        : "";
-
+      const faLink = usedFA ? `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">\n` : "";
+      const materialIconsLink = usedMI ? `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />\n` : "";
       const gBg = globalBgColor.value;
       const gTxt = globalTextColor.value;
       const gHead = globalHeadingColor.value;
       const gFont = fontFamily.value.trim() || "Arial, sans-serif";
+      const gFontSize = globalFontSize.value;
+      const gLineHeight = globalLineHeight.value;
+      const gLinkColor = globalLinkColor.value;
+      const gBgImage = globalBgImage.value.trim();
+      const customCSS = globalCustomCSS.value;
       const metaDesc = "Page: " + pageTitle;
-
       return `
 <!DOCTYPE html>
 <html lang="en">
@@ -1205,10 +1446,16 @@
   <style>
     body {
       background-color: ${gBg};
+      ${gBgImage ? `background-image: url('${gBgImage}'); background-size: cover; background-repeat: no-repeat;` : ''}
       color: ${gTxt};
       font-family: ${gFont};
+      font-size: ${gFontSize}px;
+      line-height: ${gLineHeight};
       margin: 0;
       padding: 0;
+    }
+    a {
+      color: ${gLinkColor};
     }
     .container {
       max-width: 1200px;
@@ -1221,7 +1468,6 @@
     }
     p {
       margin-bottom: 15px;
-      line-height: 1.6;
     }
     ${layoutCSS}
     nav {
@@ -1266,6 +1512,25 @@
       margin-left: 5px;
       font-size: 0.8em;
     }
+    .layout-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .layout-container .layout-item {
+      background-color: ${gBg};
+      color: ${gTxt};
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .layout-container .layout-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+    }
+    ${customCSS}
   </style>
 </head>
 <body>
@@ -1284,7 +1549,7 @@
     function buildSectionsHTML(sections) {
       let html = "";
       sections.forEach(sec => {
-        const heading = sec.heading || "Section Heading";
+        const heading = sec.heading || "";
         const paragraph = sec.paragraph || "Lorem ipsum dolor sit amet.";
         let iconHTML = "";
 
@@ -1303,18 +1568,28 @@
           ? `<img src="${sec.image}" alt="Section" style="max-width:100%; height:auto; margin:15px 0;" />`
           : "";
 
-        let itemStyle = "";
-        if (sec.bgType === "color") {
-          itemStyle = `background:${sec.bgColor};`;
-        } else if (sec.bgType === "graphic") {
-          itemStyle = `background:url('${sec.bgImage}') center center / cover no-repeat;`;
+        let headingHTML = "";
+        if (heading.trim() !== "") {
+          headingHTML = `<h2 style="${sec.headingColor ? `color:${sec.headingColor};` : ''} margin-bottom:15px;">${iconHTML}${heading}</h2>`;
+          if (sec.breakCount && sec.breakCount > 0) {
+            let breaksHTML = "";
+            for (let i = 0; i < sec.breakCount; i++){
+              breaksHTML += "<br>";
+            }
+            headingHTML += breaksHTML;
+          }
         }
-        const headingStyle = sec.headingColor ? `style="color:${sec.headingColor}; margin-bottom:15px;"` : `style="margin-bottom:15px;"`;
-        const paragraphStyle = sec.paragraphColor ? `style="color:${sec.paragraphColor}; margin-bottom:15px;"` : `style="margin-bottom:15px;"`;
+
+        let paragraphStyleContent = sec.paragraphColor ? `color:${sec.paragraphColor};` : "";
+        paragraphStyleContent += " margin-bottom:15px;";
+        if (sec.paragraphIndent && sec.paragraphIndent > 0) {
+          paragraphStyleContent += ` text-indent:${sec.paragraphIndent}px;`;
+        }
+        const paragraphStyle = `style="${paragraphStyleContent}"`;
 
         html += `
-          <div class="layout-item" style="${itemStyle} padding:20px; border-radius:5px; margin-bottom:20px;">
-            <h2 ${headingStyle}>${iconHTML}${heading}</h2>
+          <div class="layout-item" style="${sec.bgType === "color" ? `background:${sec.bgColor};` : sec.bgType === "graphic" ? `background:url('${sec.bgImage}') center center / cover no-repeat;` : ''}">
+            ${headingHTML}
             <p ${paragraphStyle}>${paragraph}</p>
             ${artHTML}
             ${imageHTML}
@@ -1359,8 +1634,8 @@
     }
 
     function getReferencedLayoutCSS(pageObj) {
-      const bg = pageObj.importedLayoutColors.background || "#ffffff";
-      const txt = pageObj.importedLayoutColors.textColor || "#000000";
+      const bg = "#ffffff";
+      const txt = "#000000";
       return `
 .layout-container {
   display: block;
@@ -1585,6 +1860,104 @@
       }
       return false;
     }
+
+    // --------------------------
+    // VIEW SOURCE FUNCTIONALITY
+    // --------------------------
+    let viewSourceEnabled = false;
+    const toggleViewSourceBtn = document.getElementById('toggleViewSourceBtn');
+    const viewSourcePanel = document.getElementById('viewSourcePanel');
+
+    toggleViewSourceBtn.addEventListener('click', function() {
+      viewSourceEnabled = !viewSourceEnabled;
+      this.textContent = viewSourceEnabled ? "Disable View Source" : "Enable View Source";
+      const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+      if (viewSourceEnabled) {
+        attachViewSourceListeners(iframeDoc);
+      } else {
+        detachViewSourceListeners(iframeDoc);
+        removeHighlight();
+        viewSourcePanel.style.display = "none";
+      }
+    });
+
+    function attachViewSourceListeners(doc) {
+      if (!doc) return;
+      doc.addEventListener('mouseover', handleElementMouseOver);
+      doc.addEventListener('mouseout', handleElementMouseOut);
+      doc.addEventListener('click', handleElementClick);
+    }
+
+    function detachViewSourceListeners(doc) {
+      if (!doc) return;
+      doc.removeEventListener('mouseover', handleElementMouseOver);
+      doc.removeEventListener('mouseout', handleElementMouseOut);
+      doc.removeEventListener('click', handleElementClick);
+    }
+
+    function handleElementMouseOver(e) {
+      e.stopPropagation();
+      const target = e.target;
+      target.style.outline = "2px solid red";
+      viewSourcePanel.textContent = target.outerHTML;
+      viewSourcePanel.style.top = (e.clientY + 10) + "px";
+      viewSourcePanel.style.left = (e.clientX + 10) + "px";
+      viewSourcePanel.style.display = "block";
+    }
+
+    function handleElementMouseOut(e) {
+      e.stopPropagation();
+      const target = e.target;
+      target.style.outline = "";
+      viewSourcePanel.style.display = "none";
+    }
+
+    // Modified: instead of a prompt, show an editable panel below the preview
+    function handleElementClick(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const target = e.target;
+      const elementHTML = target.outerHTML;
+      const editPanel = document.getElementById('editElementPanel');
+      const editTextarea = document.getElementById('editElementTextarea');
+      editTextarea.value = elementHTML;
+      // Select the entire text to simulate highlighting
+      editTextarea.select();
+      editPanel.style.display = 'block';
+      // Save the reference to the currently selected element for update
+      window.currentlySelectedElement = target;
+    }
+
+    function removeHighlight() {
+      const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+      if (iframeDoc) {
+        const highlighted = iframeDoc.querySelectorAll('*');
+        highlighted.forEach(elem => {
+          elem.style.outline = "";
+        });
+      }
+    }
+
+    // Reattach view source listeners when previewFrame reloads content.
+    previewFrame.addEventListener('load', function() {
+      if (viewSourceEnabled) {
+        const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+        attachViewSourceListeners(iframeDoc);
+      }
+    });
+
+    // Update the selected element with the edited HTML from the edit panel
+    document.getElementById('updateElementBtn').addEventListener('click', function() {
+      const newHTML = document.getElementById('editElementTextarea').value;
+      if (window.currentlySelectedElement) {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = newHTML;
+        const newElem = tempDiv.firstChild;
+        window.currentlySelectedElement.parentNode.replaceChild(newElem, window.currentlySelectedElement);
+        window.currentlySelectedElement = null;
+        document.getElementById('editElementPanel').style.display = 'none';
+      }
+    });
   </script>
 </body>
 </html>

@@ -163,6 +163,17 @@
       border-radius: 4px; z-index: 2000; display: none;
       max-width: 300px; max-height: 200px; overflow: auto; word-break: break-all;
     }
+    /* Modal Styles for Import Options */
+    .import-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 1000;
+    }
+    .import-modal {
+      background: #fff; padding: 20px; border-radius: 5px; max-width: 400px; width: 100%; color: #000;
+    }
+    .import-modal h3 { margin-bottom: 15px; }
+    .import-modal div { margin-bottom: 10px; }
+    .import-modal button { padding: 6px 12px; }
   </style>
 </head>
 <body>
@@ -174,8 +185,7 @@
       <button class="tab-btn" data-tab="pagesTab" data-label="Pages">Pages & Navigation</button>
       <button class="tab-btn" data-tab="referenceTab" data-label="Reference">Reference Layout</button>
       <button class="tab-btn" data-tab="imagesTab" data-label="Images">Images & Media</button>
-      <button class="tab-btn" data-tab="previewTab" data-label="Preview">Preview</button>
-      <button class="tab-btn" data-tab="codeTab" data-label="Code">Generated Code</button>
+      <button class="tab-btn" data-tab="previewCodeTab" data-label="Preview & Code">Preview & Code</button>
     </div>
   </div>
 
@@ -267,8 +277,9 @@
       <div id="imageResults" class="results-grid"></div>
     </div>
 
-    <!-- PREVIEW TAB -->
-    <div id="previewTab" class="tab-content">
+    <!-- PREVIEW & CODE TAB (Combined) -->
+    <div id="previewCodeTab" class="tab-content">
+      <!-- Preview Section -->
       <h2>Live Preview (Home Page)</h2>
       <p>This preview shows only the first top-level page. Nav links are intercepted so you can click sub-pages too.</p>
       <button id="previewBtn" style="margin-bottom:20px;">Update Preview</button>
@@ -281,10 +292,8 @@
         <button id="updateElementBtn" style="margin-top: 5px;">Update Element</button>
         <button id="pushUpdatesBtn" style="margin-top: 5px;">Push Updates</button>
       </div>
-    </div>
-
-    <!-- GENERATED CODE TAB -->
-    <div id="codeTab" class="tab-content">
+      <hr style="margin:20px 0;">
+      <!-- Generated Code Section -->
       <h2>Generated Code (All Pages)</h2>
       <p>Each top-level page has exactly one nav bar. Sub-pages appear in a dropdown. Copy each block to a separate .html file.</p>
       <div class="buttons">
@@ -365,7 +374,6 @@
       { name: "Dancing Script", category: "script" },
       { name: "Inconsolata", category: "monospace" }
     ];
-    // Global variable for selected font; default to Montserrat
     let selectedFont = "'Montserrat', sans-serif";
     const fontFamilySearchInput = document.getElementById('fontFamilySearch');
     const fontFamilyContainer = document.getElementById('fontFamilyContainer');
@@ -379,7 +387,6 @@
         fontDiv.style.fontFamily = f.name + ", sans-serif";
         fontDiv.style.padding = "5px";
         fontDiv.style.cursor = "pointer";
-        // Highlight if selected
         if (selectedFont.indexOf(f.name) !== -1) {
           fontDiv.style.backgroundColor = "#4A88F6";
           fontDiv.style.color = "#fff";
@@ -560,7 +567,6 @@
         <button class="removeSectionBtn" style="background:#d9534f; margin-top:8px;">Remove Section</button>
       `;
       containerEl.appendChild(secDiv);
-      // DOM References
       const headingInput = secDiv.querySelector('.secHeading');
       const paragraphInput = secDiv.querySelector('.secParagraph');
       const breakCountInput = secDiv.querySelector('.secBreakCount');
@@ -579,7 +585,6 @@
       const removeSectionBtn = secDiv.querySelector('.removeSectionBtn');
       const moveUpBtn = secDiv.querySelector('.moveUpBtn');
       const moveDownBtn = secDiv.querySelector('.moveDownBtn');
-      // Initialize Values
       headingInput.value = sectionData.heading;
       paragraphInput.value = sectionData.paragraph;
       breakCountInput.value = sectionData.breakCount;
@@ -810,11 +815,8 @@
     }
 
     // PREVIEW & CODE GENERATION
-    // Modified buildPageHTML now uses the global selectedFont variable
     function buildPageHTML(pageObj, isPreviewNav) {
-      // Use selectedFont (global) for the font-family
       const gFont = selectedFont || "Arial, sans-serif";
-      // Extract the font name from gFont for dynamic link insertion if needed
       const fontName = gFont.split(',')[0].replace(/['"]/g, '').trim();
       const googleFonts = {
         "Montserrat": "https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap",
@@ -1116,11 +1118,9 @@
     });
     function attachViewSourceListeners(doc) {
       if (!doc) return;
-      // Attach to body elements
       doc.addEventListener('mouseover', handleElementMouseOver);
       doc.addEventListener('mouseout', handleElementMouseOut);
       doc.addEventListener('click', handleElementClick);
-      // Additionally, attach to title element in head (if exists)
       if (doc.head) {
         const titleElem = doc.head.querySelector('title');
         if (titleElem) {
@@ -1172,24 +1172,20 @@
       const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
       if (iframeDoc) { iframeDoc.querySelectorAll('*').forEach(elem => { elem.style.outline = ""; }); }
     }
-    // Shared function to update element from view source and update data model
     function performUpdateElement() {
       const newHTML = document.getElementById('editElementTextarea').value;
       if (window.currentlySelectedElement) {
-        // If the selected element is a title, update the page title in the model.
         if (window.currentlySelectedElement.tagName.toLowerCase() === 'title') {
           const pageId = window.currentlySelectedElement.getAttribute('data-page-id');
           if (pageId !== null) {
             const targetPage = findPageById(parseInt(pageId, 10), pages);
             if (targetPage) {
-              // Extract the text between the <title> tags
               const tempDiv = document.createElement('div');
               tempDiv.innerHTML = newHTML;
               const newTitleElem = tempDiv.querySelector('title');
               if (newTitleElem) {
                 const newTitleText = newTitleElem.textContent;
                 targetPage.title = newTitleText;
-                // Update the page title input in the editor
                 const pageDiv = document.querySelector(`.pageItem[data-pageid="${pageId}"]`);
                 if (pageDiv) {
                   const titleInput = pageDiv.querySelector('.pageTitleInput');
@@ -1205,7 +1201,6 @@
             }
           }
         } else {
-          // Update section customHTML
           const pageId = window.currentlySelectedElement.getAttribute('data-page-id');
           const sectionIndex = window.currentlySelectedElement.getAttribute('data-section-index');
           if (pageId !== null && sectionIndex !== null) {
@@ -1232,18 +1227,24 @@
       }
       return false;
     }
-    // UPDATE ELEMENT BUTTON
+    // Modified Push Updates Event Listener:
+    // If the element update is successful, remove any red outline styles from the previewFrame,
+    // retrieve the updated HTML from the previewFrame, and push that to the generated code window.
+    document.getElementById('pushUpdatesBtn').addEventListener('click', function() {
+      if (performUpdateElement()) {
+        try {
+          // Remove any inline red outlines before retrieving the HTML
+          removeHighlight();
+          const updatedHTML = previewFrame.contentDocument.documentElement.outerHTML;
+          generatedCode.value = updatedHTML;
+        } catch (err) {
+          console.error("Error retrieving updated HTML from previewFrame:", err);
+        }
+      }
+    });
     document.getElementById('updateElementBtn').addEventListener('click', function() {
       performUpdateElement();
     });
-    // PUSH UPDATES BUTTON: push modifications to the generated code section
-    document.getElementById('pushUpdatesBtn').addEventListener('click', function() {
-      if (performUpdateElement()) {
-         // Regenerate the generated code so that any updates are immediately reflected
-         generateBtn.click();
-      }
-    });
-    // When the preview frame loads, attach view source listeners (including for title in head)
     const previewFrame = document.getElementById('previewFrame');
     previewFrame.addEventListener('load', function() {
       const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
@@ -1284,11 +1285,8 @@
         });
       }
       generatedCode.value = allCode.trim();
-      // Reset search index when code is regenerated
-      searchIndex = 0;
     });
     clearBtn.addEventListener('click', () => {
-      // Reset font selection to default
       selectedFont = "'Montserrat', sans-serif";
       fontFamilySearchInput.value = "";
       renderFontList();
@@ -1313,15 +1311,11 @@
       tabButtons[0].classList.add('active');
       tabContents[0].classList.add('active');
     });
-    // Code Search, Replace, and Export
     const codeSearchInput = document.getElementById('codeSearchInput');
     const codeReplaceInput = document.getElementById('codeReplaceInput');
     const replaceAllBtn = document.getElementById('replaceAllBtn');
     const exportHTMLBtn = document.getElementById('exportHTMLBtn');
-    
-    // Variables to manage search within generated code
     let searchIndex = 0;
-    
     document.getElementById('nextBtn').addEventListener('click', function() {
       const query = codeSearchInput.value;
       if (!query) {
@@ -1336,22 +1330,14 @@
       } else {
         generatedCode.focus();
         generatedCode.setSelectionRange(foundIndex, foundIndex + query.length);
-        
-        // Calculate the line height from the computed style of the textarea.
         const computedStyle = window.getComputedStyle(generatedCode);
         const lineHeight = parseFloat(computedStyle.lineHeight) || parseFloat(computedStyle.fontSize) * 1.2;
-        
-        // Count the number of newlines before the found index.
         const substring = generatedCode.value.substring(0, foundIndex);
         const lineNumber = substring.split("\n").length - 1;
-        
-        // Set scrollTop to position the matched line into view.
         generatedCode.scrollTop = lineNumber * lineHeight;
-        
         searchIndex = foundIndex + query.length;
       }
     });
-    
     document.getElementById('prevBtn').addEventListener('click', function() {
       const query = codeSearchInput.value;
       if (!query) {
@@ -1359,7 +1345,6 @@
         return;
       }
       const codeText = generatedCode.value;
-      // Search backwards from current selection start - 1
       const currentStart = generatedCode.selectionStart;
       const foundIndex = codeText.lastIndexOf(query, currentStart - 1);
       if (foundIndex === -1) {
@@ -1367,22 +1352,14 @@
       } else {
         generatedCode.focus();
         generatedCode.setSelectionRange(foundIndex, foundIndex + query.length);
-        
-        // Calculate the line height from the computed style of the textarea.
         const computedStyle = window.getComputedStyle(generatedCode);
         const lineHeight = parseFloat(computedStyle.lineHeight) || parseFloat(computedStyle.fontSize) * 1.2;
-        
-        // Count the number of newlines before the found index.
         const substring = generatedCode.value.substring(0, foundIndex);
         const lineNumber = substring.split("\n").length - 1;
-        
-        // Set scrollTop to position the matched line into view.
         generatedCode.scrollTop = lineNumber * lineHeight;
-        
         searchIndex = foundIndex;
       }
     });
-    
     replaceAllBtn.addEventListener('click', function() {
       const searchText = codeSearchInput.value;
       const replaceText = codeReplaceInput.value;

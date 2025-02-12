@@ -289,6 +289,7 @@
         <textarea id="editElementTextarea" style="width:100%; height:150px; font-family:'Courier New', monospace; font-size:0.8rem;"></textarea>
         <button id="updateElementBtn" style="margin-top: 5px;">Update Element</button>
         <button id="pushUpdatesBtn" style="margin-top: 5px;">Push Updates</button>
+        <button id="deleteElementBtn" style="margin-top: 5px; background: #e74c3c;">Delete Element</button>
       </div>
       <hr style="margin:20px 0;">
       <!-- Generated Code Section -->
@@ -1172,6 +1173,28 @@
     }
     function performUpdateElement() {
       const newHTML = document.getElementById('editElementTextarea').value;
+      // If newHTML is empty, delete the element (if it's not a title)
+      if (!newHTML.trim()) {
+        if (window.currentlySelectedElement) {
+          if (window.currentlySelectedElement.tagName.toLowerCase() === 'title') {
+            alert("Deleting the title element is not allowed.");
+            return false;
+          }
+          const pageId = window.currentlySelectedElement.getAttribute('data-page-id');
+          const sectionIndex = window.currentlySelectedElement.getAttribute('data-section-index');
+          if (pageId !== null && sectionIndex !== null) {
+            const targetPage = findPageById(parseInt(pageId, 10), pages);
+            if (targetPage) {
+              targetPage.sections.splice(parseInt(sectionIndex, 10), 1);
+            }
+          }
+          window.currentlySelectedElement.parentNode.removeChild(window.currentlySelectedElement);
+          window.currentlySelectedElement = null;
+          document.getElementById('editElementPanel').style.display = 'none';
+          return true;
+        }
+        return false;
+      }
       if (window.currentlySelectedElement) {
         if (window.currentlySelectedElement.tagName.toLowerCase() === 'title') {
           const pageId = window.currentlySelectedElement.getAttribute('data-page-id');
@@ -1242,6 +1265,32 @@
     });
     document.getElementById('updateElementBtn').addEventListener('click', function() {
       performUpdateElement();
+    });
+    // NEW DELETE ELEMENT BUTTON EVENT LISTENER
+    document.getElementById('deleteElementBtn').addEventListener('click', function() {
+      if (window.currentlySelectedElement) {
+        // Prevent deletion of critical elements like the title.
+        if (window.currentlySelectedElement.tagName.toLowerCase() === 'title') {
+          alert("Deleting the title element is not allowed.");
+          return;
+        }
+        // Check for data attributes to update the corresponding data model.
+        const pageId = window.currentlySelectedElement.getAttribute('data-page-id');
+        const sectionIndex = window.currentlySelectedElement.getAttribute('data-section-index');
+        if (pageId !== null && sectionIndex !== null) {
+          const targetPage = findPageById(parseInt(pageId, 10), pages);
+          if (targetPage) {
+            targetPage.sections.splice(parseInt(sectionIndex, 10), 1);
+          }
+        }
+        // Remove the selected element from the DOM.
+        window.currentlySelectedElement.parentNode.removeChild(window.currentlySelectedElement);
+        window.currentlySelectedElement = null;
+        document.getElementById('editElementPanel').style.display = 'none';
+        alert("Element deleted successfully.");
+      } else {
+        alert("No element selected.");
+      }
     });
     const previewFrame = document.getElementById('previewFrame');
     previewFrame.addEventListener('load', function() {

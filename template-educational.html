@@ -3,10 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Educational Website Template</title>
+  <title>Educational Website Template - Revamped Style</title>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
   <style>
-    /* Reset & Base Styles */
+    :root {
+      --primary-color: #007BFF;
+      --secondary-color: #0056b3;
+      --text-color: #333;
+      --background-color: #f8f9fa;
+      --header-bg: #ffffff;
+      --footer-bg: #343a40;
+      --footer-text: #ffffff;
+      --card-shadow: rgba(0, 0, 0, 0.1);
+      --card-shadow-hover: rgba(0, 0, 0, 0.15);
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -15,27 +26,34 @@
     body {
       font-family: 'Open Sans', sans-serif;
       line-height: 1.6;
-      color: #333;
-      background-color: #f4f4f4;
+      color: var(--text-color);
+      background: var(--background-color);
     }
     a {
       text-decoration: none;
       color: inherit;
     }
-    /* Header */
-    header {
-      background-color: #fff;
-      padding: 20px 0;
-      border-bottom: 1px solid #eaeaea;
-      position: fixed;
-      width: 100%;
-      top: 0;
-      z-index: 1000;
-    }
+
+    /* Container */
     .container {
       width: 90%;
       max-width: 1200px;
       margin: 0 auto;
+    }
+
+    /* Header and Navigation */
+    header {
+      background: var(--header-bg);
+      padding: 15px 0;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+    header.scrolled {
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
     nav {
       display: flex;
@@ -43,22 +61,36 @@
       justify-content: space-between;
     }
     .logo {
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       font-weight: 700;
-      color: #333;
+      color: var(--primary-color);
     }
     .nav-links {
       list-style: none;
       display: flex;
     }
     .nav-links li {
-      margin-left: 20px;
+      margin-left: 25px;
     }
     .nav-links a {
       font-weight: 600;
-      color: #333;
+      padding: 5px 0;
+      position: relative;
+      transition: color 0.3s ease;
     }
-    /* Mobile Navigation */
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      background: var(--primary-color);
+      left: 0;
+      bottom: -2px;
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover::after {
+      width: 100%;
+    }
     .menu-toggle {
       display: none;
       flex-direction: column;
@@ -67,134 +99,173 @@
     .menu-toggle span {
       height: 3px;
       width: 25px;
-      background: #333;
-      margin-bottom: 4px;
+      background: var(--primary-color);
+      margin-bottom: 5px;
       border-radius: 3px;
     }
+
     /* Hero Section */
     .hero {
-      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://source.unsplash.com/1600x900/?education') center/cover no-repeat;
-      height: 60vh;
+      background: linear-gradient(135deg, rgba(0,123,255,0.6), rgba(0,123,255,0.3)),
+                  url('https://source.unsplash.com/1600x900/?education,library') center/cover no-repeat;
+      height: 75vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
       text-align: center;
-      padding: 0 20px;
+      position: relative;
       margin-top: 80px;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.3);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      animation: fadeInUp 1s ease-out;
+      max-width: 800px;
+      padding: 20px;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     .hero h1 {
-      font-size: 3rem;
+      font-size: 3.8rem;
       margin-bottom: 20px;
+      color: #fff;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
     }
     .hero p {
-      font-size: 1.2rem;
-      max-width: 600px;
+      font-size: 1.3rem;
+      color: #f0f0f0;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
     }
-    /* Sections */
-    section {
-      padding: 60px 0;
-    }
+
+    /* Section Titles */
     .section-title {
       text-align: center;
-      margin-bottom: 40px;
-      font-size: 2rem;
+      margin-bottom: 50px;
+      font-size: 2.8rem;
       font-weight: 700;
-      color: #333;
+      color: var(--primary-color);
+      position: relative;
     }
-    /* Featured Courses */
+    .section-title::after {
+      content: "";
+      width: 100px;
+      height: 4px;
+      background: var(--primary-color);
+      display: block;
+      margin: 10px auto 0;
+      border-radius: 2px;
+    }
+
+    /* Courses Section */
     .courses {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 30px;
     }
     .course-card {
       background: #fff;
-      border-radius: 8px;
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease;
+      box-shadow: 0 4px 12px var(--card-shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .course-card:hover {
-      transform: translateY(-5px);
+      transform: translateY(-10px);
+      box-shadow: 0 6px 16px var(--card-shadow-hover);
     }
     .course-image {
       width: 100%;
-      height: 180px;
+      height: 220px;
       object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .course-card:hover .course-image {
+      transform: scale(1.05);
     }
     .course-content {
       padding: 20px;
     }
     .course-content h3 {
-      margin-bottom: 10px;
-      font-size: 1.4rem;
-      color: #333;
+      margin-bottom: 15px;
+      font-size: 1.8rem;
+      color: var(--text-color);
     }
     .course-content p {
-      font-size: 0.95rem;
-      color: #666;
-      margin-bottom: 15px;
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 20px;
+      line-height: 1.6;
     }
     .course-content .btn {
       display: inline-block;
-      background: #007BFF;
+      background: var(--primary-color);
       color: #fff;
-      padding: 10px 20px;
-      border-radius: 4px;
-      font-size: 0.9rem;
-      transition: background 0.3s ease;
+      padding: 10px 30px;
+      border-radius: 30px;
+      font-size: 1rem;
+      transition: background 0.3s ease, transform 0.3s ease;
     }
     .course-content .btn:hover {
-      background: #0056b3;
+      background: var(--secondary-color);
+      transform: scale(1.03);
     }
+
     /* About Section */
-    .about {
+    #about {
+      padding: 70px 0;
+      background: #fff;
+    }
+    #about .about-container {
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       gap: 40px;
+      flex-wrap: wrap;
     }
-    .about-image {
-      flex: 1;
-      min-width: 300px;
+    #about .about-image,
+    #about .about-text {
+      flex: 1 1 300px;
     }
-    .about-image img {
+    #about .about-image img {
       width: 100%;
-      border-radius: 8px;
+      border-radius: 12px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 12px var(--card-shadow);
     }
-    .about-text {
-      flex: 1;
-      min-width: 300px;
+    #about .about-image img:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 16px var(--card-shadow-hover);
     }
-    .about-text h2 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      color: #333;
-    }
-    .about-text p {
-      font-size: 1rem;
+    #about .about-text p {
+      font-size: 1.2rem;
       color: #555;
       line-height: 1.8;
     }
+
     /* Footer */
     footer {
-      background: #333;
-      color: #fff;
-      padding: 30px 0;
+      background: var(--footer-bg);
+      color: var(--footer-text);
+      padding: 40px 0;
       text-align: center;
     }
     footer p {
-      margin: 0;
-      font-size: 0.9rem;
+      font-size: 1rem;
     }
+
     /* Responsive Styles */
-    @media (max-width: 992px) {
-      .courses {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
     @media (max-width: 768px) {
       nav {
         flex-direction: column;
@@ -203,6 +274,7 @@
         flex-direction: column;
         width: 100%;
         display: none;
+        margin-top: 10px;
       }
       .nav-links li {
         margin: 10px 0;
@@ -210,25 +282,21 @@
       .menu-toggle {
         display: flex;
       }
-      .about {
-        flex-direction: column;
-      }
-    }
-    @media (max-width: 576px) {
       .hero h1 {
-        font-size: 2.5rem;
+        font-size: 2.8rem;
       }
       .hero p {
-        font-size: 1rem;
+        font-size: 1.1rem;
       }
-      .courses {
-        grid-template-columns: 1fr;
+      #about .about-container {
+        flex-direction: column;
+        text-align: center;
       }
     }
   </style>
 </head>
 <body>
-  <header>
+  <header id="header">
     <div class="container">
       <nav>
         <div class="logo">EduTemplate</div>
@@ -248,9 +316,9 @@
   </header>
 
   <section class="hero" id="hero">
-    <div class="container">
-      <h1>Welcome to EduTemplate</h1>
-      <p>Your gateway to quality online education. Explore our range of courses and learn at your own pace.</p>
+    <div class="container hero-content">
+      <h1>Empower Your Learning Journey</h1>
+      <p>Dive into a rich array of courses designed to spark creativity, critical thinking, and career growth.</p>
     </div>
   </section>
 
@@ -259,7 +327,7 @@
       <h2 class="section-title">Featured Courses</h2>
       <div class="courses">
         <div class="course-card">
-          <img class="course-image" src="https://source.unsplash.com/400x300/?coding" alt="Introduction to Programming">
+          <img class="course-image" src="https://source.unsplash.com/400x300/?coding,computer" alt="Introduction to Programming">
           <div class="course-content">
             <h3>Introduction to Programming</h3>
             <p>Learn the fundamentals of programming using modern languages and tools.</p>
@@ -267,7 +335,7 @@
           </div>
         </div>
         <div class="course-card">
-          <img class="course-image" src="https://source.unsplash.com/400x300/?design" alt="UI/UX Design Essentials">
+          <img class="course-image" src="https://source.unsplash.com/400x300/?design,uiux" alt="UI/UX Design Essentials">
           <div class="course-content">
             <h3>UI/UX Design Essentials</h3>
             <p>Master the principles of effective design and create engaging user experiences.</p>
@@ -275,7 +343,7 @@
           </div>
         </div>
         <div class="course-card">
-          <img class="course-image" src="https://source.unsplash.com/400x300/?marketing" alt="Digital Marketing 101">
+          <img class="course-image" src="https://source.unsplash.com/400x300/?marketing,digital" alt="Digital Marketing 101">
           <div class="course-content">
             <h3>Digital Marketing 101</h3>
             <p>Discover the strategies behind successful online marketing and brand growth.</p>
@@ -288,13 +356,13 @@
 
   <section id="about">
     <div class="container">
-      <div class="about">
+      <h2 class="section-title">About EduTemplate</h2>
+      <div class="about-container">
         <div class="about-image">
-          <img src="https://source.unsplash.com/600x400/?classroom" alt="About Us">
+          <img src="https://source.unsplash.com/600x400/?classroom,students" alt="About Us">
         </div>
         <div class="about-text">
-          <h2>About EduTemplate</h2>
-          <p>EduTemplate is designed to provide a modern, professional, and intuitive platform for online education. Our courses are curated by experts to ensure learners receive the most up-to-date and relevant knowledge.</p>
+          <p>EduTemplate is a cutting-edge online educational platform crafted to empower learners worldwide. We offer a diverse range of courses led by industry experts, ensuring an enriching and immersive learning experience. Our mission is to bridge the gap between knowledge and ambition, fueling your journey towards success.</p>
         </div>
       </div>
     </div>
@@ -309,9 +377,19 @@
   <script>
     const mobileMenu = document.getElementById('mobile-menu');
     const navLinks = document.getElementById('nav-links');
+    const header = document.getElementById('header');
 
     mobileMenu.addEventListener('click', () => {
       navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+    // Change header style on scroll
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
     });
   </script>
 </body>

@@ -885,12 +885,6 @@
         <button type="submit">Send Message</button>
       </form>
     </div>
-  </section>
-
-  <footer>
-    <div class="container">
-      <p>&copy; 2025 BusinessName. All rights reserved.</p>
-    </div>
   </footer>
                 `,
                 scripts: ``
@@ -2251,7 +2245,7 @@
     // FIX: Render template list on load
     renderTemplateList();
 
-    // --- New: Load remote templates from GitHub ---
+    // --- Load remote templates from GitHub and apply to preview ---
     fetch('https://api.github.com/repos/mpalmero197/webbuilder/contents/')
       .then(response => response.json())
       .then(data => {
@@ -2270,7 +2264,7 @@
           templateDiv.classList.add('templateItem');
           templateDiv.innerHTML = `<h3>${displayName}</h3>`;
 
-          // Optional: Create a button to apply or load the template
+          // Create a button to load the template into the preview
           const button = document.createElement('button');
           button.textContent = 'Apply Template';
           button.style.background = '#4A88F6';
@@ -2279,8 +2273,9 @@
             fetch(file.download_url)
               .then(resp => resp.text())
               .then(htmlContent => {
-                // Implement the logic to apply the template (e.g., parse and integrate the content)
-                alert('Template loaded: ' + displayName);
+                // Load the fetched HTML content into the preview frame
+                const previewFrame = document.getElementById('previewFrame');
+                previewFrame.srcdoc = htmlContent;
               })
               .catch(err => console.error('Error loading template:', err));
           });

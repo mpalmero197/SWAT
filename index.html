@@ -638,9 +638,14 @@
           selectEl.innerHTML = `
             <option value="">(Select an icon)</option>
             <option value="fa fa-user">User</option>
+            <option value="fa fa-home">Home</option>
             <option value="fa fa-star">Star</option>
             <option value="fa fa-heart">Heart</option>
             <option value="fa fa-check">Check</option>
+            <option value="fa fa-phone">Phone</option>
+            <option value="fa fa-wrench">Wrench</option>
+            <option value="fa fa-plane">Plane</option>
+            <option value="fa fa-list">List</option>
             <option value="fa fa-cog">Cog</option>
           `;
           selectEl.value = sectionData.iconValue;
@@ -1784,7 +1789,12 @@
             headingHTML = `<h2 style="${sec.headingColor ? `color:${sec.headingColor};` : ''} margin-bottom:15px;">${iconHTML}${heading}</h2>`;
             if (sec.breakCount && sec.breakCount > 0) {
               let breaksHTML = "";
-              for (let i = 0; i < sec.breakCount; i++) { breaksHTML += "<br>"; }
+              const lineHeight = parseFloat(globalLineHeight.value);
+              const fontSize = parseFloat(globalFontSize.value);
+              const breakHeight = fontSize * lineHeight;
+              for (let i = 0; i < sec.breakCount; i++) { 
+                  breaksHTML += `<div style="height: ${breakHeight}px;"></div>`; 
+              }
               headingHTML += breaksHTML;
             }
           }

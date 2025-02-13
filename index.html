@@ -638,14 +638,9 @@
           selectEl.innerHTML = `
             <option value="">(Select an icon)</option>
             <option value="fa fa-user">User</option>
-            <option value="fa fa-home">Home</option>
             <option value="fa fa-star">Star</option>
             <option value="fa fa-heart">Heart</option>
             <option value="fa fa-check">Check</option>
-            <option value="fa fa-phone">Phone</option>
-            <option value="fa fa-wrench">Wrench</option>
-            <option value="fa fa-plane">Plane</option>
-            <option value="fa fa-list">List</option>
             <option value="fa fa-cog">Cog</option>
           `;
           selectEl.value = sectionData.iconValue;
@@ -780,7 +775,7 @@
               importedParts: {
                 head: `
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Business Template - Michael's Webby Award Winning Design</title>
+  <title>Business Template</title>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">`,
                 style: `
     /* Reset and Base Styles */
@@ -924,7 +919,7 @@
           pages: [
             {
               id: 1002,
-              title: "Webby Award-Winning Blog",
+              title: "Blog",
               layout: "ReferencedSiteLayout",
               sections: [],
               importedParts: {
@@ -1102,7 +1097,7 @@
   </header>
   
   <section class="hero">
-    <h1>Welcome to Our Award-Winning Blog</h1>
+    <h1>Welcome to Our Blog</h1>
   </section>
   
   <main>
@@ -1146,7 +1141,7 @@
   
   <footer>
     <div class="container">
-      <p>&copy; 2025 Webby Award-Winning Blog. All rights reserved.</p>
+      <p>&copy; 2025 Blog. All rights reserved.</p>
     </div>
   </footer>
           `.trim(),
@@ -1188,8 +1183,8 @@
       },
       {
         id: "tpl3",
-        name: "Award-Winning Portfolio",
-        description: "A modern portfolio design with a striking hero section, about, projects and contact sections, inspired by Webby award-winning designs.",
+        name: "Portfolio Template",
+        description: "A modern portfolio design with a striking hero section, about, projects and contact sections.",
         data: {
           pages: [
             {
@@ -2255,6 +2250,45 @@
 
     // FIX: Render template list on load
     renderTemplateList();
+
+    // --- New: Load remote templates from GitHub ---
+    fetch('https://api.github.com/repos/mpalmero197/webbuilder/contents/')
+      .then(response => response.json())
+      .then(data => {
+        // Filter files that start with "template-" and ensure they are regular files
+        const templateFiles = data.filter(file => file.name.startsWith('template-') && file.type === 'file');
+        const templateListContainer = document.getElementById('templateListContainer');
+        templateListContainer.innerHTML = ""; // Clear existing items if necessary
+
+        templateFiles.forEach(file => {
+          // Remove "template-" and file extension, then format display name
+          let baseName = file.name.replace(/^template-/, '').replace(/\.[^/.]+$/, '');
+          let displayName = baseName.charAt(0).toUpperCase() + baseName.slice(1) + ' Template';
+
+          // Create container for the template item
+          const templateDiv = document.createElement('div');
+          templateDiv.classList.add('templateItem');
+          templateDiv.innerHTML = `<h3>${displayName}</h3>`;
+
+          // Optional: Create a button to apply or load the template
+          const button = document.createElement('button');
+          button.textContent = 'Apply Template';
+          button.style.background = '#4A88F6';
+          button.addEventListener('click', () => {
+            // Fetch the template file content from its download URL
+            fetch(file.download_url)
+              .then(resp => resp.text())
+              .then(htmlContent => {
+                // Implement the logic to apply the template (e.g., parse and integrate the content)
+                alert('Template loaded: ' + displayName);
+              })
+              .catch(err => console.error('Error loading template:', err));
+          });
+          templateDiv.appendChild(button);
+          templateListContainer.appendChild(templateDiv);
+        });
+      })
+      .catch(err => console.error('Error fetching repository contents:', err));
   </script>
 </body>
 </html>

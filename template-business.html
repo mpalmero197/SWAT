@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Template - Michael's Webby Award Winning Design</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+  <style>
+    /* Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Open Sans', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f4f4f4;
+    }
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+    }
+    /* Header Styles */
+    header {
+      background: #fff;
+      padding: 20px 0;
+      border-bottom: 1px solid #ddd;
+      position: relative;
+      z-index: 100;
+    }
+    header .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: #333;
+    }
+    nav {
+      float: right;
+    }
+    nav ul {
+      list-style: none;
+    }
+    nav ul li {
+      display: inline-block;
+      margin-left: 20px;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+    nav ul li a:hover {
+      color: #007BFF;
+    }
+    /* Hero Section */
+    .hero {
+      position: relative;
+      background: url('https://via.placeholder.com/1200x600') no-repeat center center/cover;
+      height: 600px;
+      display: flex;
+      align-items: center;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 0;
+    }
+    .hero .hero-content {
+      position: relative;
+      z-index: 1;
+      margin-left: 50px;
+      color: #fff;
+    }
+    .hero h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+    .hero .btn {
+      padding: 10px 30px;
+      background: #007BFF;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+    .hero .btn:hover {
+      background: #0056b3;
+    }
+    /* Section Styles */
+    section {
+      padding: 60px 0;
+    }
+    section h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 36px;
+      color: #333;
+    }
+    /* Services Section */
+    .services {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .services .service-item {
+      text-align: center;
+      padding: 20px;
+      background: #fff;
+      margin: 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      flex: 1;
+      min-width: 250px;
+    }
+    .services .service-item i {
+      font-size: 48px;
+      color: #007BFF;
+      margin-bottom: 20px;
+    }
+    /* About Section */
+    .about {
+      background: #fff;
+      padding: 40px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    /* Contact Section */
+    .contact form {
+      max-width: 600px;
+      margin: auto;
+    }
+    .contact form input,
+    .contact form textarea {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    .contact form button {
+      display: inline-block;
+      padding: 10px 30px;
+      background: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .contact form button:hover {
+      background: #0056b3;
+    }
+    /* Footer Styles */
+    footer {
+      background: #333;
+      color: #fff;
+      text-align: center;
+      padding: 20px 0;
+    }
+    /* Responsive Design */
+    @media(max-width: 768px) {
+      nav {
+        float: none;
+        text-align: center;
+        margin-top: 15px;
+      }
+      nav ul li {
+        display: block;
+        margin: 10px 0;
+      }
+      .hero {
+        height: 400px;
+      }
+      .hero h1 {
+        font-size: 32px;
+      }
+      .hero .hero-content {
+        margin: 0 auto;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <div class="logo">BusinessName</div>
+      <nav>
+        <ul>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div style="clear: both;"></div>
+    </div>
+  </header>
+
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <h1>Innovative Solutions for Your Business</h1>
+      <p>Transforming ideas into reality with cutting-edge technology and design.</p>
+      <a href="#contact" class="btn">Get Started</a>
+    </div>
+  </section>
+
+  <section class="services" id="services">
+    <div class="container">
+      <h2>Our Services</h2>
+      <div class="service-item">
+        <i class="icon">&#9733;</i>
+        <h3>Consulting</h3>
+        <p>Expert advice to boost your business growth.</p>
+      </div>
+      <div class="service-item">
+        <i class="icon">&#9881;</i>
+        <h3>Development</h3>
+        <p>Custom solutions built to meet your business needs.</p>
+      </div>
+      <div class="service-item">
+        <i class="icon">&#9998;</i>
+        <h3>Design</h3>
+        <p>Modern and sleek designs that captivate your audience.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="container">
+      <h2>About Us</h2>
+      <p>We are a team of dedicated professionals committed to delivering innovative and high-quality business solutions. Our mission is to empower businesses with the tools they need to succeed in the digital age.</p>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="container">
+      <h2>Contact Us</h2>
+      <form action="#" method="post">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 BusinessName. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

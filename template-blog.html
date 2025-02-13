@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Webby Award-Winning Blog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #333;
+      --secondary-color: #f4f4f4;
+      --accent-color: #ff6f61;
+      --text-color: #333;
+      --header-bg: rgba(51, 51, 51, 0.8);
+      --transition-speed: 0.3s;
+    }
+    /* Reset & Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--secondary-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+    a {
+      text-decoration: none;
+      color: var(--accent-color);
+      transition: color var(--transition-speed);
+    }
+    a:hover {
+      color: var(--primary-color);
+    }
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+    }
+    /* Sticky Header with Transition */
+    header {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      background: var(--header-bg);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+      transition: background var(--transition-speed);
+    }
+    header.scrolled {
+      background: var(--primary-color);
+    }
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      padding: 15px 0;
+    }
+    nav ul li {
+      margin: 0 20px;
+    }
+    nav ul li a {
+      font-weight: bold;
+      color: #fff;
+    }
+    /* Hero Section with Gradient Overlay */
+    .hero {
+      position: relative;
+      height: 500px;
+      background: url('https://source.unsplash.com/random/1600x900?blog') no-repeat center center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(0,0,0,0.5), rgba(0,0,0,0.2));
+    }
+    .hero h1 {
+      position: relative;
+      font-size: 48px;
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+      margin: 0 20px;
+    }
+    /* Main Content */
+    main {
+      padding: 60px 0;
+    }
+    .posts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    .post {
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    }
+    .post:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    .post img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
+    .post-content {
+      padding: 20px;
+    }
+    .post-content h2 {
+      margin-bottom: 15px;
+      font-size: 24px;
+      color: var(--primary-color);
+    }
+    .post-content p {
+      font-size: 16px;
+      margin-bottom: 20px;
+      color: var(--text-color);
+    }
+    .read-more {
+      display: inline-block;
+      padding: 10px 20px;
+      background: var(--primary-color);
+      color: #fff;
+      border-radius: 4px;
+      transition: background var(--transition-speed);
+    }
+    .read-more:hover {
+      background: var(--accent-color);
+    }
+    /* Footer */
+    footer {
+      background: var(--primary-color);
+      color: #fff;
+      text-align: center;
+      padding: 30px 0;
+      margin-top: 60px;
+    }
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 32px;
+      }
+      nav ul {
+        flex-direction: column;
+      }
+      nav ul li {
+        margin: 10px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header id="header">
+    <div class="container">
+      <nav>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  
+  <section class="hero">
+    <h1>Welcome to Our Award-Winning Blog</h1>
+  </section>
+  
+  <main>
+    <div class="container">
+      <div class="posts">
+        <article class="post">
+          <img src="https://source.unsplash.com/random/600x400?nature" alt="Exploring Nature">
+          <div class="post-content">
+            <h2>Exploring Nature</h2>
+            <p>A journey into the wilderness to explore the beauty of nature and understand its importance.</p>
+            <a href="#" class="read-more">Read More</a>
+          </div>
+        </article>
+        <article class="post">
+          <img src="https://source.unsplash.com/random/600x400?technology" alt="Future of Technology">
+          <div class="post-content">
+            <h2>The Future of Technology</h2>
+            <p>An insightful look at upcoming trends in technology and how they will shape our world.</p>
+            <a href="#" class="read-more">Read More</a>
+          </div>
+        </article>
+        <article class="post">
+          <img src="https://source.unsplash.com/random/600x400?travel" alt="Travel Diaries">
+          <div class="post-content">
+            <h2>Travel Diaries</h2>
+            <p>Documenting journeys to exotic locations and sharing experiences from around the globe.</p>
+            <a href="#" class="read-more">Read More</a>
+          </div>
+        </article>
+        <article class="post">
+          <img src="https://source.unsplash.com/random/600x400?food" alt="Culinary Adventures">
+          <div class="post-content">
+            <h2>Culinary Adventures</h2>
+            <p>Exploring diverse cuisines and culinary traditions that tantalize the taste buds.</p>
+            <a href="#" class="read-more">Read More</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </main>
+  
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Webby Award-Winning Blog. All rights reserved.</p>
+    </div>
+  </footer>
+  
+  <script>
+    // Sticky header background transition on scroll
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // JavaScript for basic interactivity on "Read More" buttons
+    document.querySelectorAll('.read-more').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        alert('This would navigate to the full article page.');
+      });
+    });
+  </script>
+</body>
+</html>

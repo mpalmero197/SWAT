@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Educational Website Template</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset & Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Open Sans', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f4f4f4;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    /* Header */
+    header {
+      background-color: #fff;
+      padding: 20px 0;
+      border-bottom: 1px solid #eaeaea;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #333;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+    }
+    .nav-links li {
+      margin-left: 20px;
+    }
+    .nav-links a {
+      font-weight: 600;
+      color: #333;
+    }
+    /* Mobile Navigation */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+    .menu-toggle span {
+      height: 3px;
+      width: 25px;
+      background: #333;
+      margin-bottom: 4px;
+      border-radius: 3px;
+    }
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://source.unsplash.com/1600x900/?education') center/cover no-repeat;
+      height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-align: center;
+      padding: 0 20px;
+      margin-top: 80px;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 600px;
+    }
+    /* Sections */
+    section {
+      padding: 60px 0;
+    }
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #333;
+    }
+    /* Featured Courses */
+    .courses {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+    .course-card {
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    .course-card:hover {
+      transform: translateY(-5px);
+    }
+    .course-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .course-content {
+      padding: 20px;
+    }
+    .course-content h3 {
+      margin-bottom: 10px;
+      font-size: 1.4rem;
+      color: #333;
+    }
+    .course-content p {
+      font-size: 0.95rem;
+      color: #666;
+      margin-bottom: 15px;
+    }
+    .course-content .btn {
+      display: inline-block;
+      background: #007BFF;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      transition: background 0.3s ease;
+    }
+    .course-content .btn:hover {
+      background: #0056b3;
+    }
+    /* About Section */
+    .about {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+    .about-image {
+      flex: 1;
+      min-width: 300px;
+    }
+    .about-image img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .about-text {
+      flex: 1;
+      min-width: 300px;
+    }
+    .about-text h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .about-text p {
+      font-size: 1rem;
+      color: #555;
+      line-height: 1.8;
+    }
+    /* Footer */
+    footer {
+      background: #333;
+      color: #fff;
+      padding: 30px 0;
+      text-align: center;
+    }
+    footer p {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+    /* Responsive Styles */
+    @media (max-width: 992px) {
+      .courses {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+      }
+      .nav-links {
+        flex-direction: column;
+        width: 100%;
+        display: none;
+      }
+      .nav-links li {
+        margin: 10px 0;
+      }
+      .menu-toggle {
+        display: flex;
+      }
+      .about {
+        flex-direction: column;
+      }
+    }
+    @media (max-width: 576px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      .hero p {
+        font-size: 1rem;
+      }
+      .courses {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">EduTemplate</div>
+        <div class="menu-toggle" id="mobile-menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#courses">Courses</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="hero">
+    <div class="container">
+      <h1>Welcome to EduTemplate</h1>
+      <p>Your gateway to quality online education. Explore our range of courses and learn at your own pace.</p>
+    </div>
+  </section>
+
+  <section id="courses">
+    <div class="container">
+      <h2 class="section-title">Featured Courses</h2>
+      <div class="courses">
+        <div class="course-card">
+          <img class="course-image" src="https://source.unsplash.com/400x300/?coding" alt="Introduction to Programming">
+          <div class="course-content">
+            <h3>Introduction to Programming</h3>
+            <p>Learn the fundamentals of programming using modern languages and tools.</p>
+            <a href="#" class="btn">Learn More</a>
+          </div>
+        </div>
+        <div class="course-card">
+          <img class="course-image" src="https://source.unsplash.com/400x300/?design" alt="UI/UX Design Essentials">
+          <div class="course-content">
+            <h3>UI/UX Design Essentials</h3>
+            <p>Master the principles of effective design and create engaging user experiences.</p>
+            <a href="#" class="btn">Learn More</a>
+          </div>
+        </div>
+        <div class="course-card">
+          <img class="course-image" src="https://source.unsplash.com/400x300/?marketing" alt="Digital Marketing 101">
+          <div class="course-content">
+            <h3>Digital Marketing 101</h3>
+            <p>Discover the strategies behind successful online marketing and brand growth.</p>
+            <a href="#" class="btn">Learn More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="container">
+      <div class="about">
+        <div class="about-image">
+          <img src="https://source.unsplash.com/600x400/?classroom" alt="About Us">
+        </div>
+        <div class="about-text">
+          <h2>About EduTemplate</h2>
+          <p>EduTemplate is designed to provide a modern, professional, and intuitive platform for online education. Our courses are curated by experts to ensure learners receive the most up-to-date and relevant knowledge.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="container">
+      <p>&copy; 2025 EduTemplate. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    const mobileMenu = document.getElementById('mobile-menu');
+    const navLinks = document.getElementById('nav-links');
+
+    mobileMenu.addEventListener('click', () => {
+      navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+    });
+  </script>
+</body>
+</html>

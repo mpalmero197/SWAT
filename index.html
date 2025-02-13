@@ -270,7 +270,7 @@
     <!-- TEMPLATES TAB -->
     <div id="templatesTab" class="tab-content">
       <h2>Template Library</h2>
-      <p>Select a pre-built template from GitHub to load into the builder. When applied, the template is loaded into the preview and a new page is created using its HTML.</p>
+      <p>Select a remote template from GitHub. When applied, the template’s HTML is used exactly as is.</p>
       <div id="templateListContainer"></div>
     </div>
 
@@ -454,6 +454,7 @@
             <option value="splitBanner">Split Banner</option>
             <option value="minimalist">Minimalist</option>
             <option value="ReferencedSiteLayout">ReferencedSiteLayout</option>
+            <option value="raw">Raw Template</option>
           </select>
         </div>
         <h4 style="margin:10px 0; color:#fff;">Sections</h4>
@@ -757,7 +758,11 @@
     }
 
     // PREVIEW & CODE GENERATION
+    // Modify buildPageHTML so that if the page uses a "raw" layout, it returns its rawHTML verbatim.
     function buildPageHTML(pageObj, isPreviewNav) {
+      if (pageObj.layout === "raw" && pageObj.rawHTML) {
+        return pageObj.rawHTML;
+      }
       const gFont = selectedFont || "Arial, sans-serif";
       const fontName = gFont.split(',')[0].replace(/['"]/g, '').trim();
       const googleFonts = {
@@ -782,7 +787,6 @@
       if (googleFonts[fontName]) {
           fontLink = `<link href="${googleFonts[fontName]}" rel="stylesheet">`;
       }
-
       const pageTitle = pageObj.title.trim() || "Untitled Page";
       if (pageObj.layout === "ReferencedSiteLayout" && pageObj.importedParts) {
         return `
@@ -1248,7 +1252,11 @@
       if (pages.length === 0) { previewFrame.srcdoc = "<p style='color:red;'>No pages found. Please add a page.</p>"; return; }
       siteMap = {};
       const flatList = flattenPages(pages);
-      flatList.forEach(pg => { const code = buildPageHTML(pg, true); const fname = pageFilename(pg); siteMap[fname] = code; });
+      flatList.forEach(pg => { 
+        const code = buildPageHTML(pg, true); 
+        const fname = pageFilename(pg); 
+        siteMap[fname] = code; 
+      });
       const homePage = pages[0];
       const homeFilename = pageFilename(homePage);
       previewFrame.srcdoc = siteMap[homeFilename];
@@ -1380,8 +1388,7 @@
     }
     function isTopLevel(pageObj) { return pages.includes(pageObj); }
 
-    // --- Fetch remote templates from GitHub and update the builder ---
-    // This block removes any hardcoded templates and uses only the remote ones.
+    // --- Fetch remote templates from GitHub (no hardcoded templates) ---
     fetch('https://api.github.com/repos/mpalmero197/webbuilder/contents/')
       .then(response => response.json())
       .then(data => {
@@ -1400,7 +1407,7 @@
           templateDiv.classList.add('templateItem');
           templateDiv.innerHTML = `<h3>${displayName}</h3>`;
 
-          // Create a button to load the template into the preview and update the builder
+          // Create a button to load the remote template
           const button = document.createElement('button');
           button.textContent = 'Apply Template';
           button.style.background = '#4A88F6';
@@ -1409,20 +1416,304 @@
             fetch(file.download_url)
               .then(resp => resp.text())
               .then(htmlContent => {
-                // Load the fetched HTML into the preview frame
+                // Set the preview to the fetched HTML
                 const previewFrame = document.getElementById('previewFrame');
                 previewFrame.srcdoc = htmlContent;
-                // Create a new page in the builder using the remote template
+                // Create a new page object with rawHTML and layout "raw" to preserve the original template layout
                 const newPage = {
                   id: pageCount++,
                   title: displayName,
-                  layout: "ReferencedSiteLayout",
-                  sections: [{
-                    customHTML: htmlContent
-                  }],
+                  layout: "raw",  // indicates that this page uses raw HTML
+                  rawHTML: htmlContent,
+                  sections: [],
                   subPages: []
                 };
-                // Replace current pages with the new template page (or you could choose to append)
+                // Replace current pages with this new page (or adjust as needed)
+                pages = [newPage];
+                pagesContainer.innerHTML = "";
+                createPageEditorFromData(newPage, null);
+                alert('Remote template loaded into the builder and preview.');
+              })
+              .catch(err => console.error('Error loading template:', err));
+          });
+          templateDiv.appendChild(button);
+          templateListContainer.appendChild(templateDiv);
+        });
+      })
+      .catch(err => console.error('Error fetching repository contents:', err));
+
+    // Modify createPageEditorFromData to display a raw page if layout is "raw"
+    function createPageEditorFromData(pageObj, parentPage) {
+      const pageDiv = document.createElement('div');
+      pageDiv.classList.add('pageItem');
+      pageDiv.setAttribute('data-pageid', pageObj.id);
+      const pageLevel = parentPage ? "Sub-page" : "Page";
+      // If the page uses raw layout, display a note that this is a raw template.
+      let titleText = pageObj.title;
+      if(pageObj.layout === "raw") {
+        titleText += " (Raw Template)";
+      }
+      pageDiv.innerHTML = `
+        <div class="pageHeader">
+          <h3>${pageLevel} Editor (ID: ${pageObj.id})</h3>
+          <button class="removePageBtn">Remove</button>
+        </div>
+        <div class="field">
+          <label>Page Title (used for navigation label):</label>
+          <input type="text" class="pageTitleInput" value="${titleText}" ${pageObj.layout === "raw" ? "readonly" : ""}/>
+        </div>
+        <div class="field">
+          <label>Layout Style:</label>
+          <select class="pageLayoutSelect" ${pageObj.layout === "raw" ? "disabled" : ""}>
+            <option value="single" ${pageObj.layout==="single"?"selected":""}>Single Column</option>
+            <option value="two" ${pageObj.layout==="two"?"selected":""}>Two Columns</option>
+            <option value="grid" ${pageObj.layout==="grid"?"selected":""}>Grid</option>
+            <option value="masonry" ${pageObj.layout==="masonry"?"selected":""}>Masonry</option>
+            <option value="cards" ${pageObj.layout==="cards"?"selected":""}>Cards</option>
+            <option value="three" ${pageObj.layout==="three"?"selected":""}>Three Columns</option>
+            <option value="heroGrid" ${pageObj.layout==="heroGrid"?"selected":""}>Hero + Grid</option>
+            <option value="splitBanner" ${pageObj.layout==="splitBanner"?"selected":""}>Split Banner</option>
+            <option value="minimalist" ${pageObj.layout==="minimalist"?"selected":""}>Minimalist</option>
+            <option value="ReferencedSiteLayout" ${pageObj.layout==="ReferencedSiteLayout"?"selected":""}>ReferencedSiteLayout</option>
+            <option value="raw" ${pageObj.layout==="raw"?"selected":""}>Raw Template</option>
+          </select>
+        </div>
+        <h4 style="margin:10px 0; color:#fff;">Sections</h4>
+        <div class="sectionContainer"></div>
+        <div class="buttons">
+          <button class="addSectionBtn" style="background:#28A745;" ${pageObj.layout==="raw" ? "disabled" : ""}>Add Section</button>
+          ${!parentPage ? `<button class="addSubPageBtn" style="background:#5bc0de;" ${pageObj.layout==="raw" ? "disabled" : ""}>Add Sub-Page</button>` : ''}
+        </div>
+      `;
+      if(parentPage){
+        const parentDiv = pagesContainer.querySelector(`.pageItem[data-pageid="${parentPage.id}"]`);
+        if (!parentDiv) { pagesContainer.appendChild(pageDiv); }
+        else { parentDiv.insertAdjacentElement('afterend', pageDiv); }
+      } else {
+        pagesContainer.appendChild(pageDiv);
+      }
+      pageDiv.querySelector('.removePageBtn').addEventListener('click', () => { removePage(pageObj, pageDiv); });
+      const titleInput = pageDiv.querySelector('.pageTitleInput');
+      if(pageObj.layout !== "raw") {
+        titleInput.addEventListener('input', (e) => { pageObj.title = e.target.value.trim(); });
+        pageObj.title = titleInput.value;
+      }
+      const layoutSelect = pageDiv.querySelector('.pageLayoutSelect');
+      if(pageObj.layout !== "raw") {
+        layoutSelect.addEventListener('change', (e) => { pageObj.layout = e.target.value; });
+        pageObj.layout = layoutSelect.value;
+      }
+      const sectionContainer = pageDiv.querySelector('.sectionContainer');
+      const addSectionBtn = pageDiv.querySelector('.addSectionBtn');
+      if(pageObj.layout !== "raw") {
+        addSectionBtn.addEventListener('click', () => { createSectionEditor(pageObj, sectionContainer); });
+      } else {
+        sectionContainer.innerHTML = `<p style="color:#ccc;">Raw template content cannot be edited here.</p>`;
+      }
+      if (!parentPage) {
+        const addSubPageBtn = pageDiv.querySelector('.addSubPageBtn');
+        if(addSubPageBtn && pageObj.layout !== "raw") { 
+          addSubPageBtn.addEventListener('click', () => { createPageEditor(pageObj); }); 
+        }
+      }
+    }
+
+    // PREVIEW & CODE GENERATION
+    // In buildPageHTML, if a page uses raw layout, output its rawHTML verbatim.
+    function buildPageHTML(pageObj, isPreviewNav) {
+      if (pageObj.layout === "raw" && pageObj.rawHTML) {
+        return pageObj.rawHTML;
+      }
+      const gFont = selectedFont || "Arial, sans-serif";
+      const fontName = gFont.split(',')[0].replace(/['"]/g, '').trim();
+      const googleFonts = {
+        "Montserrat": "https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap",
+        "Roboto": "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap",
+        "Open Sans": "https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap",
+        "Lato": "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",
+        "Oswald": "https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap",
+        "Raleway": "https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap",
+        "Merriweather": "https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap",
+        "Ubuntu": "https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap",
+        "PT Sans": "https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap",
+        "Source Sans Pro": "https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap",
+        "Poppins": "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap",
+        "Noto Sans": "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;700&display=swap",
+        "Noto Serif": "https://fonts.googleapis.com/css2?family=Noto+Serif:wght@300;400;600;700&display=swap",
+        "Roboto Condensed": "https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap",
+        "Dancing Script": "https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;700&display=swap",
+        "Inconsolata": "https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap"
+      };
+      let fontLink = "";
+      if (googleFonts[fontName]) {
+          fontLink = `<link href="${googleFonts[fontName]}" rel="stylesheet">`;
+      }
+      const pageTitle = pageObj.title.trim() || "Untitled Page";
+      if (pageObj.layout === "ReferencedSiteLayout" && pageObj.importedParts) {
+        return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>${pageTitle}</title>
+  ${ checkIconUse(pageObj, "fontAwesome") ? `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">` : "" }
+  ${ checkIconUse(pageObj, "materialIcons") ? `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />` : "" }
+  ${fontLink}
+  <style>
+    body {
+      background-color: ${globalBgColor.value};
+      ${globalBgImage.value ? `background-image: url('${globalBgImage.value}'); background-size: cover; background-repeat: no-repeat;` : ''}
+      color: ${globalTextColor.value};
+      font-family: ${gFont};
+      font-size: ${globalFontSize.value}px;
+      line-height: ${globalLineHeight.value};
+      margin: 0; padding: 0;
+    }
+    a { color: ${globalLinkColor.value}; }
+    ${ pageObj.importedParts.style || '' }
+  </style>
+  ${ pageObj.importedParts.head || '' }
+</head>
+<body>
+  ${ includeNav.checked && isTopLevel(pageObj) ? buildNavHTML(pages, isPreviewNav) : '' }
+  ${ pageObj.importedParts.body || '' }
+  ${ pageObj.importedParts.scripts || '' }
+</body>
+</html>`.trim();
+      }
+      const sectionsHTML = buildSectionsHTML(pageObj.sections, pageObj.id);
+      let navHTML = "";
+      if (includeNav.checked && isTopLevel(pageObj)) { navHTML = buildNavHTML(pages, isPreviewNav); }
+      let layoutCSS = (pageObj.layout === "ReferencedSiteLayout") ? getReferencedLayoutCSS(pageObj) : getLayoutCSS(pageObj.layout);
+      const usedFA = checkIconUse(pageObj, "fontAwesome");
+      const usedMI = checkIconUse(pageObj, "materialIcons");
+      const faLink = usedFA ? `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">\n` : "";
+      const materialIconsLink = usedMI ? `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />\n` : "";
+      const gBg = globalBgColor.value;
+      const gTxt = globalTextColor.value;
+      const gHead = globalHeadingColor.value;
+      const gFontSize = globalFontSize.value;
+      const gLineHeight = globalLineHeight.value;
+      const gLinkColor = globalLinkColor.value;
+      const gBgImage = globalBgImage.value.trim();
+      const customCSS = globalCustomCSS.value;
+      const metaDesc = "Page: " + pageTitle;
+      return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title data-page-id="${pageObj.id}">${pageTitle}</title>
+  <meta name="description" content="${metaDesc}">
+  ${faLink}${materialIconsLink}${fontLink}
+  <style>
+    body {
+      background-color: ${gBg};
+      ${gBgImage ? `background-image: url('${gBgImage}'); background-size: cover; background-repeat: no-repeat;` : ''}
+      color: ${gTxt};
+      font-family: ${gFont};
+      font-size: ${gFontSize}px;
+      line-height: ${gLineHeight};
+      margin: 0; padding: 0;
+    }
+    a { color: ${gLinkColor}; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+    h1, h2, h3 { color: ${gHead}; margin-bottom: 15px; }
+    p { margin-bottom: 15px; }
+    ${layoutCSS}
+    nav { background: ${gHead}; padding: 15px; }
+    nav ul {
+      list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; align-items: center; position: relative;
+    }
+    nav li { position: relative; }
+    nav a { color: ${gBg}; text-decoration: none; font-weight: bold; }
+    .submenu {
+      position: absolute; display: none; top: 50px; left: 0; flex-direction: column;
+      background-color: ${gHead}; padding: 10px; border-radius: 5px;
+    }
+    .submenu li { margin: 5px 0; }
+    .has-submenu:hover .submenu { display: flex; }
+    .has-submenu > a::after { content: " \\25BC"; margin-left: 5px; font-size: 0.8em; }
+    .layout-container {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 20px;
+    }
+    .layout-container .layout-item {
+      background-color: ${gBg}; color: ${gTxt}; padding: 20px; border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .layout-container .layout-item:hover {
+      transform: translateY(-3px); box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+    }
+    ${customCSS}
+  </style>
+</head>
+<body>
+  ${navHTML}
+  <div class="container">
+    <h1>${pageTitle}</h1>
+    <div class="layout-container">
+      ${sectionsHTML}
+    </div>
+  </div>
+</body>
+</html>`.trim();
+    }
+    function flattenPages(pageArr) {
+      let result = [];
+      for (let p of pageArr) {
+        result.push(p);
+        if (p.subPages && p.subPages.length > 0) { result = result.concat(flattenPages(p.subPages)); }
+      }
+      return result;
+    }
+    function pageFilename(pg) {
+      const t = pg.title.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/gi, '');
+      return t ? t + ".html" : "page-" + pg.id + ".html";
+    }
+    function isTopLevel(pageObj) { return pages.includes(pageObj); }
+
+    // --- Fetch remote templates from GitHub (only remote templates) ---
+    fetch('https://api.github.com/repos/mpalmero197/webbuilder/contents/')
+      .then(response => response.json())
+      .then(data => {
+        // Filter files that start with "template-" and are regular files
+        const templateFiles = data.filter(file => file.name.startsWith('template-') && file.type === 'file');
+        const templateListContainer = document.getElementById('templateListContainer');
+        templateListContainer.innerHTML = ""; // Clear any existing items
+
+        templateFiles.forEach(file => {
+          // Remove "template-" and file extension to create a display name
+          let baseName = file.name.replace(/^template-/, '').replace(/\.[^/.]+$/, '');
+          let displayName = baseName.charAt(0).toUpperCase() + baseName.slice(1) + ' Template';
+
+          // Create a container for the remote template item
+          const templateDiv = document.createElement('div');
+          templateDiv.classList.add('templateItem');
+          templateDiv.innerHTML = `<h3>${displayName}</h3>`;
+
+          // Create a button to apply the remote template
+          const button = document.createElement('button');
+          button.textContent = 'Apply Template';
+          button.style.background = '#4A88F6';
+          button.addEventListener('click', () => {
+            // Fetch the remote template's HTML from its download URL
+            fetch(file.download_url)
+              .then(resp => resp.text())
+              .then(htmlContent => {
+                // Load the fetched HTML into the preview frame
+                const previewFrame = document.getElementById('previewFrame');
+                previewFrame.srcdoc = htmlContent;
+                // Create a new page object that uses the remote template exactly as is.
+                // Use layout "raw" and store the HTML in rawHTML.
+                const newPage = {
+                  id: pageCount++,
+                  title: displayName,
+                  layout: "raw",
+                  rawHTML: htmlContent,
+                  sections: [],
+                  subPages: []
+                };
+                // Replace current pages with the new page.
                 pages = [newPage];
                 pagesContainer.innerHTML = "";
                 createPageEditorFromData(newPage, null);

@@ -14,8 +14,9 @@
       color: #cfcfcf;
       display: flex;
       min-height: 100vh;
+      position: relative;
     }
-    /* Sidebar */
+    /* Left Sidebar */
     .sidebar {
       width: 250px;
       background-color: #202020;
@@ -50,12 +51,67 @@
       font-weight: 600;
       color: #fff;
     }
+    /* Right Media Sidebar */
+    #mediaSidebar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 300px;
+      height: 100vh;
+      background: #222;
+      padding: 10px;
+      overflow-y: auto;
+      z-index: 1001;
+    }
+    #mediaSidebar h2 {
+      color: #fff;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+    #mediaSidebar .field label {
+      color: #ccc;
+      font-size: 0.9rem;
+    }
+    #mediaSidebar input[type="text"] {
+      width: 100%;
+      padding: 5px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      border: 1px solid #444;
+      background: #333;
+      color: #fff;
+    }
+    #mediaSidebar button {
+      background: #4A88F6;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      color: #fff;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+    /* Fallback Dropped Image Container */
+    .dropped-image-container {
+      position: absolute;
+      width: 400px;
+      height: 225px; /* 16:9 ratio */
+      border: 2px dashed #ccc;
+      background: #000;
+      overflow: hidden;
+    }
+    .dropped-image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
     /* Main Content */
     .main-content {
       flex: 1;
       padding: 30px;
       overflow-y: auto;
       background-color: #181818;
+      margin-right: 300px;
     }
     .main-content h2 { margin-bottom: 10px; font-weight: 600; font-size: 1.2rem; color: #fff; }
     .main-content p { color: #bbb; line-height: 1.5; margin-bottom: 15px; }
@@ -131,18 +187,6 @@
     .submenu li { margin: 5px 0; }
     .has-submenu:hover .submenu { display: flex; }
     .has-submenu > a::after { content: " \25BC"; margin-left: 5px; font-size: 0.8em; }
-    /* Image Results Grid */
-    .results-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px; margin-top: 20px;
-    }
-    .imageResult {
-      position: relative; background: #2a2a2a; border: 1px solid #3a3a3a;
-      padding: 10px; border-radius: 5px; transition: box-shadow 0.3s;
-    }
-    .imageResult:hover { box-shadow: 0 2px 6px rgba(255, 255, 255, 0.03); }
-    .imageResult img { width: 100%; border-radius: 3px; }
-    .assign-btns { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
     /* Template Cards Styles */
     #templateListContainer {
       display: grid;
@@ -174,13 +218,16 @@
     @media (max-width: 900px) {
       .sidebar { width: 180px; }
       .tab-btn { padding: 10px 15px; }
+      #mediaSidebar { width: 250px; }
+      .main-content { margin-right: 250px; }
     }
     @media (max-width: 600px) {
       .sidebar { position: fixed; width: 60px; z-index: 999; }
       .sidebar h1 { display: none; }
       .tab-btn { font-size: 0; text-align: center; border-left: none; }
       .tab-btn::after { content: attr(data-label); font-size: 1rem; color: #cfcfcf; }
-      .main-content { margin-left: 60px; }
+      .main-content { margin-left: 60px; margin-right: 250px; }
+      #mediaSidebar { width: 250px; }
     }
     /* Floating View Source Panel */
     #viewSourcePanel {
@@ -200,10 +247,26 @@
     .import-modal h3 { margin-bottom: 15px; }
     .import-modal div { margin-bottom: 10px; }
     .import-modal button { padding: 6px 12px; }
+    /* Revised Drop Zone Styling */
+    .image-dropzone {
+      position: relative;
+      width: 100%;
+      min-height: 300px;
+      border: 2px dashed red;
+      text-align: center;
+      margin-top: 10px;
+    }
+    .image-dropzone div {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   </style>
 </head>
 <body>
-  <!-- Sidebar Navigation -->
+  <!-- Left Sidebar Navigation -->
   <div class="sidebar">
     <h1>Web Builder</h1>
     <div class="tab-nav">
@@ -211,9 +274,21 @@
       <button class="tab-btn" data-tab="pagesTab" data-label="Pages">Pages & Navigation</button>
       <button class="tab-btn" data-tab="referenceTab" data-label="Reference">Reference Layout</button>
       <button class="tab-btn" data-tab="templatesTab" data-label="Templates">Templates</button>
-      <button class="tab-btn" data-tab="imagesTab" data-label="Images">Images & Media</button>
       <button class="tab-btn" data-tab="previewCodeTab" data-label="Preview & Code">Preview & Code</button>
     </div>
+  </div>
+
+  <!-- Right Media Sidebar -->
+  <div id="mediaSidebar">
+    <h2>Media Options</h2>
+    <div class="field">
+      <label for="mediaSearchInput">Search Query:</label>
+      <input type="text" id="mediaSearchInput" placeholder="e.g. 'nature', 'city'..." />
+    </div>
+    <div class="buttons">
+      <button id="mediaSearchBtn">Search Images</button>
+    </div>
+    <div id="mediaResults" class="results-grid"></div>
   </div>
 
   <!-- Main Content -->
@@ -295,20 +370,6 @@
       <div id="templateListContainer"></div>
     </div>
 
-    <!-- IMAGES & MEDIA TAB -->
-    <div id="imagesTab" class="tab-content">
-      <h2>Royalty-Free Images</h2>
-      <p>Search for royalty-free images (e.g., from Pexels) and assign them to your sections.</p>
-      <div class="field">
-        <label for="imageSearchInput">Search Query:</label>
-        <input type="text" id="imageSearchInput" placeholder="e.g. 'nature', 'city'..." />
-      </div>
-      <div class="buttons">
-        <button id="imageSearchBtn">Search Images</button>
-      </div>
-      <div id="imageResults" class="results-grid"></div>
-    </div>
-
     <!-- PREVIEW & CODE TAB (Combined) -->
     <div id="previewCodeTab" class="tab-content">
       <h2>Live Preview (Home Page)</h2>
@@ -360,6 +421,23 @@
     .import-modal h3 { margin-bottom: 15px; }
     .import-modal div { margin-bottom: 10px; }
     .import-modal button { padding: 6px 12px; }
+    /* Drop Zone Styling in Preview */
+    .droppable { position: relative; }
+    .image-dropzone {
+      position: relative;
+      width: 100%;
+      min-height: 300px;
+      border: 2px dashed red;
+      text-align: center;
+      margin-top: 10px;
+    }
+    .image-dropzone div {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   </style>
 
   <script>
@@ -687,6 +765,29 @@
       });
     }
 
+    // Dummy functions for icon use and layout CSS
+    function checkIconUse(pageObj, lib) { return false; }
+    function getReferencedLayoutCSS(pageObj) { return ""; }
+    function getLayoutCSS(layout) { return ""; }
+
+    // Build Sections HTML for Preview (each section gets an image drop zone)
+    function buildSectionsHTML(sections, pageId) {
+      return sections.map((section, index) => {
+        if(section.customHTML) return section.customHTML;
+        return `
+          <div class="layout-item droppable" data-page-id="${pageId}" data-section-index="${index}" style="position: relative;">
+            <h2>${section.heading || "Section " + index}</h2>
+            <p>${section.paragraph || ""}</p>
+            <div class="image-dropzone">
+              ${ section.image 
+                ? `<img src="${section.image}" alt="" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit: contain;">`
+                : `<div>Drop image here</div>` }
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
     // IMPORT LAYOUT FUNCTIONALITY
     const importHtmlBtn = document.getElementById('importHtmlBtn');
     const manualHtmlInput = document.getElementById('manualHtmlInput');
@@ -764,85 +865,51 @@
       return null;
     }
 
-    // IMAGE SEARCH & ASSIGNMENT (Using Pexels API)
-    const imageSearchInput = document.getElementById('imageSearchInput');
-    const imageSearchBtn = document.getElementById('imageSearchBtn');
-    const imageResults = document.getElementById('imageResults');
-    imageSearchBtn.addEventListener('click', async () => {
-      const query = imageSearchInput.value.trim();
+    // MEDIA SIDEBAR SEARCH & DRAG/DROP (Using Pexels API)
+    const mediaSearchInput = document.getElementById('mediaSearchInput');
+    const mediaSearchBtn = document.getElementById('mediaSearchBtn');
+    const mediaResults = document.getElementById('mediaResults');
+    mediaSearchBtn.addEventListener('click', async () => {
+      const query = mediaSearchInput.value.trim();
       if (!query) {
-        imageResults.innerHTML = "<p style='color:red;'>Please enter a search term.</p>";
+        mediaResults.innerHTML = "<p style='color:red;'>Please enter a search term.</p>";
         return;
       }
-      imageResults.innerHTML = "Searching...";
+      mediaResults.innerHTML = "Searching...";
       try {
         const response = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=77`, {
           headers: { Authorization: "2mxS3gi2IIXAmd4anXuVaaNs5k98X0F6KaTpszZYFCJstNfWXVH71gN1" }
         });
         if (!response.ok) {
-          imageResults.innerHTML = "<p style='color:red;'>Error fetching images.</p>";
+          mediaResults.innerHTML = "<p style='color:red;'>Error fetching images.</p>";
           return;
         }
         const data = await response.json();
         const images = data.photos || [];
         if (!images.length) {
-          imageResults.innerHTML = "<p style='color:#bbb;'>No results found.</p>";
+          mediaResults.innerHTML = "<p style='color:#bbb;'>No results found.</p>";
           return;
         }
-        imageResults.innerHTML = "";
+        mediaResults.innerHTML = "";
         images.forEach(imgObj => {
-          const imgUrl = imgObj.src.small;
+          // Use small for thumbnail and large for preview drop
+          const thumbUrl = imgObj.src.small;
+          const largeUrl = imgObj.src.large;
           const altText = imgObj.alt || "No description";
           const wrapper = document.createElement('div');
           wrapper.classList.add('imageResult');
-          wrapper.innerHTML = `
-            <img src="${imgUrl}" alt="${altText}" />
-            <div class="assign-btns">
-              <button class="assignArtBtn">Assign as Art</button>
-              <button class="assignImageBtn">Assign as Image</button>
-            </div>
-          `;
-          imageResults.appendChild(wrapper);
-          const assignArtBtn = wrapper.querySelector('.assignArtBtn');
-          const assignImageBtn = wrapper.querySelector('.assignImageBtn');
-          assignArtBtn.addEventListener('click', () => openAssignModal(imgUrl, "art"));
-          assignImageBtn.addEventListener('click', () => openAssignModal(imgUrl, "image"));
+          wrapper.innerHTML = `<img src="${thumbUrl}" alt="${altText}" style="max-width:100%;">`;
+          wrapper.setAttribute('draggable', 'true');
+          wrapper.addEventListener('dragstart', function(e) {
+            e.dataTransfer.setData("text/plain", largeUrl);
+          });
+          mediaResults.appendChild(wrapper);
         });
       } catch (err) {
         console.error(err);
-        imageResults.innerHTML = "<p style='color:red;'>Failed to retrieve images.</p>";
+        mediaResults.innerHTML = "<p style='color:red;'>Failed to retrieve images.</p>";
       }
     });
-    function openAssignModal(imgUrl, targetField) {
-      const allPages = flattenPages(pages);
-      if (!allPages.length) { alert("No pages/sections available. Please add some pages first."); return; }
-      const sectionSelectData = [];
-      allPages.forEach(pg => {
-        pg.sections.forEach((sec, idx) => { sectionSelectData.push({ pageId: pg.id, pageTitle: pg.title, sectionIndex: idx }); });
-      });
-      if (!sectionSelectData.length) { alert("No sections available. Please add a section first."); return; }
-      let msg = "Select a section to assign the image:\n";
-      sectionSelectData.forEach((sd, i) => { msg += `${i}) Page "${sd.pageTitle}" - Section ${sd.sectionIndex}\n`; });
-      const choice = prompt(msg + "\nEnter the index number:", "0");
-      const idx = parseInt(choice, 10);
-      if (isNaN(idx) || idx < 0 || idx >= sectionSelectData.length) { alert("Invalid selection."); return; }
-      const chosen = sectionSelectData[idx];
-      const targetPage = findPageById(chosen.pageId, pages);
-      if (!targetPage || !targetPage.sections[chosen.sectionIndex]) { alert("Could not find chosen section."); return; }
-      if (targetField === "art") { targetPage.sections[chosen.sectionIndex].art = imgUrl; }
-      else { targetPage.sections[chosen.sectionIndex].image = imgUrl; }
-      const pageDiv = document.querySelector(`.pageItem[data-pageid="${targetPage.id}"]`);
-      if (pageDiv) {
-        const sectionContainer = pageDiv.querySelector('.sectionContainer');
-        const allSectionItems = sectionContainer.querySelectorAll('.sectionItem');
-        const secItem = allSectionItems[chosen.sectionIndex];
-        if (secItem) {
-          if (targetField === "art") { secItem.querySelector('.secArt').value = imgUrl; }
-          else { secItem.querySelector('.secImage').value = imgUrl; }
-        }
-      }
-      alert(`Assigned image to Page "${targetPage.title}", Section ${chosen.sectionIndex}, Field: ${targetField}.`);
-    }
 
     // PREVIEW & CODE GENERATION
     function buildPageHTML(pageObj, isPreviewNav) {
@@ -854,7 +921,7 @@
       const googleFonts = {
         "Montserrat": "https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap",
         "Roboto": "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap",
-        "Open Sans": "https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap",
+        "Open Sans": "https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600,700&display=swap",
         "Lato": "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",
         "Oswald": "https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap",
         "Raleway": "https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap",
@@ -1089,9 +1156,15 @@
       viewSourcePanel.style.display = "none";
     }
     function handleElementClick(e) {
+      const target = e.target;
+      if (target.tagName.toLowerCase() === 'a') {
+        const href = target.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          return;
+        }
+      }
       e.preventDefault();
       e.stopPropagation();
-      const target = e.target;
       const elementHTML = target.outerHTML;
       const editPanel = document.getElementById('editElementPanel');
       const editTextarea = document.getElementById('editElementTextarea');
@@ -1213,18 +1286,46 @@
       }
     });
     const previewFrame = document.getElementById('previewFrame');
-    // Modified previewFrame load event with link interception
+    // --- New Function: Make All Elements in Preview Drop Zones ---
+    function makeAllElementsDropZones() {
+      const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+      // Traverse all elements in the preview's body
+      const allElements = iframeDoc.body.querySelectorAll("*");
+      allElements.forEach(el => {
+        el.addEventListener("dragover", function(e) {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = "copy";
+        });
+        el.addEventListener("drop", function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          const imgUrl = e.dataTransfer.getData("text/plain");
+          if (imgUrl) {
+            // Replace this element's content with the dropped image
+            el.innerHTML = "";
+            const img = iframeDoc.createElement("img");
+            img.src = imgUrl;
+            img.draggable = false;
+            img.style.width = "100%";
+            img.style.height = "100%";
+            img.style.objectFit = "contain";
+            el.appendChild(img);
+          }
+        });
+      });
+    }
+    // Attach dragover and drop events to the iframe body and enable global drop zones
     previewFrame.addEventListener('load', function() {
       const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
       
-      // Intercept all link clicks within the iframe to prevent duplicate code loading
-      iframeDoc.addEventListener('click', function(e) {
-        const target = e.target;
-        if (target.tagName.toLowerCase() === 'a') {
-          e.preventDefault();
-          // Optional: Handle custom navigation logic here if needed.
-        }
+      // Attach dragover for iframe body
+      iframeDoc.body.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "copy";
       });
+      
+      // Enable global drop zone mode: every element becomes a drop zone.
+      makeAllElementsDropZones();
       
       if (viewSourceEnabled) { attachViewSourceListeners(iframeDoc); }
     });
@@ -1282,7 +1383,6 @@
       pageCount = 0; pages = [];
       pagesContainer.innerHTML = "";
       manualHtmlInput.value = "";
-      imageResults.innerHTML = "";
       previewFrame.srcdoc = "";
       generatedCode.value = "";
       siteMap = {};

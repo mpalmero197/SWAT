@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreativePulse Agency - New Layout</title>
+  <!-- Google Fonts for typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset & Base Styles */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Montserrat', sans-serif; }
+    
+    /* Fixed Sidebar Navigation */
+    aside {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 250px;
+      background: #222;
+      color: #fff;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    aside h1 {
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+    }
+    aside nav ul { list-style: none; }
+    aside nav ul li { margin-bottom: 1rem; }
+    aside nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: color 0.3s ease;
+    }
+    aside nav ul li a:hover { color: #ff6600; }
+    
+    /* Main Content Area */
+    main {
+      margin-left: 250px;
+    }
+    section { padding: 60px 40px; }
+    
+    /* Hero Section - Split Screen */
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      height: 100vh;
+      background: #f4f4f4;
+    }
+    .hero-text, .hero-image {
+      flex: 1;
+      min-width: 300px;
+    }
+    .hero-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px;
+    }
+    .hero-text h2 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      color: #222;
+    }
+    .hero-text p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      color: #555;
+    }
+    .hero-text .btn {
+      padding: 10px 20px;
+      background: #ff6600;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .hero-text .btn:hover { background: #e05500; }
+    .hero-image {
+      background: url('https://via.placeholder.com/800x600') no-repeat center center/cover;
+    }
+    
+    /* About Section */
+    .about { background: #fff; }
+    .about h2 { text-align: center; margin-bottom: 20px; color: #222; }
+    .about p {
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #555;
+      text-align: center;
+    }
+    
+    /* Portfolio Section */
+    .portfolio { background: #f9f9f9; }
+    .portfolio h2 { text-align: center; margin-bottom: 20px; color: #222; }
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .portfolio-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      background: #ddd;
+    }
+    .portfolio-item img {
+      width: 100%;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+    .portfolio-item:hover img { transform: scale(1.1); }
+    .portfolio-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      opacity: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s ease;
+      font-size: 1.5rem;
+    }
+    .portfolio-item:hover .portfolio-overlay { opacity: 1; }
+    
+    /* Services Section */
+    .services { background: #fff; }
+    .services h2 { text-align: center; margin-bottom: 20px; color: #222; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .service-card {
+      background: #f4f4f4;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .service-card:hover { transform: translateY(-5px); }
+    .service-card h3 { margin-bottom: 10px; color: #ff6600; }
+    .service-card p { font-size: 1rem; color: #555; }
+    
+    /* Team Section */
+    .team { background: #f9f9f9; }
+    .team h2 { text-align: center; margin-bottom: 20px; color: #222; }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .team-member {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    .team-member:hover { transform: translateY(-5px); }
+    .team-member img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+    }
+    .team-member h3 { margin-bottom: 5px; color: #222; }
+    .team-member p { font-size: 0.9rem; color: #555; }
+    
+    /* Contact Section */
+    .contact { background: #fff; }
+    .contact h2 { text-align: center; margin-bottom: 20px; color: #222; }
+    .contact-form {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding: 20px;
+    }
+    .contact-form input, .contact-form textarea {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    .contact-form button {
+      padding: 10px;
+      border: none;
+      background: #ff6600;
+      color: #fff;
+      font-size: 1.1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .contact-form button:hover { background: #e05500; }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      aside { position: relative; width: 100%; }
+      main { margin-left: 0; }
+      .hero { flex-direction: column; height: auto; }
+      .hero-image { height: 300px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <aside>
+    <h1>CreativePulse</h1>
+    <nav>
+      <ul>
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#team">Team</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </aside>
+  
+  <!-- Main Content -->
+  <main>
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+      <div class="hero-text">
+        <h2>Innovate. Create. Inspire.</h2>
+        <p>At CreativePulse, we push the boundaries of design and innovation.</p>
+        <button class="btn" onclick="scrollToSection('portfolio')">View Portfolio</button>
+      </div>
+      <div class="hero-image"></div>
+    </section>
+    
+    <!-- About Section -->
+    <section class="about" id="about">
+      <h2>About Us</h2>
+      <p>We are a forward-thinking creative agency dedicated to crafting visually compelling and strategically sound designs. Our team collaborates to transform ideas into engaging experiences.</p>
+    </section>
+    
+    <!-- Portfolio Section -->
+    <section class="portfolio" id="portfolio">
+      <h2>Our Projects</h2>
+      <div class="portfolio-grid">
+        <div class="portfolio-item">
+          <img src="https://via.placeholder.com/400x300" alt="Project A">
+          <div class="portfolio-overlay">Project A</div>
+        </div>
+        <div class="portfolio-item">
+          <img src="https://via.placeholder.com/400x300" alt="Project B">
+          <div class="portfolio-overlay">Project B</div>
+        </div>
+        <div class="portfolio-item">
+          <img src="https://via.placeholder.com/400x300" alt="Project C">
+          <div class="portfolio-overlay">Project C</div>
+        </div>
+        <div class="portfolio-item">
+          <img src="https://via.placeholder.com/400x300" alt="Project D">
+          <div class="portfolio-overlay">Project D</div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Services Section -->
+    <section class="services" id="services">
+      <h2>Our Services</h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <h3>Branding</h3>
+          <p>Crafting unique brand identities that stand out.</p>
+        </div>
+        <div class="service-card">
+          <h3>Web Design</h3>
+          <p>Designing responsive, user-friendly websites.</p>
+        </div>
+        <div class="service-card">
+          <h3>Digital Marketing</h3>
+          <p>Innovative strategies to boost your online presence.</p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Team Section -->
+    <section class="team" id="team">
+      <h2>Meet the Team</h2>
+      <div class="team-grid">
+        <div class="team-member">
+          <img src="https://via.placeholder.com/150" alt="Team Member 1">
+          <h3>Alice Johnson</h3>
+          <p>Creative Director</p>
+        </div>
+        <div class="team-member">
+          <img src="https://via.placeholder.com/150" alt="Team Member 2">
+          <h3>Bob Smith</h3>
+          <p>Lead Designer</p>
+        </div>
+        <div class="team-member">
+          <img src="https://via.placeholder.com/150" alt="Team Member 3">
+          <h3>Carol Williams</h3>
+          <p>Marketing Strategist</p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+      <h2>Contact Us</h2>
+      <form class="contact-form">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </section>
+  </main>
+  
+  <script>
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

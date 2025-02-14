@@ -83,7 +83,7 @@
       color: #fff;
     }
     /* Custom styling for file input button */
-    #localImageInput {
+    #localImageInput, #folderInput {
       opacity: 0;
       position: absolute;
       z-index: -1;
@@ -208,11 +208,11 @@
     .has-submenu:hover .submenu { display: flex; }
     .has-submenu > a::after { content: " \25BC"; margin-left: 5px; font-size: 0.8em; }
     /* Template Cards Styles */
-    #templateListContainer {
+    #remoteTemplateListContainer, #localTemplateListContainer {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
-      margin-top: 20px;
+      margin-top: 10px;
     }
     .templateItem {
       background: #2a2a2a;
@@ -233,6 +233,7 @@
     .templateItem button {
       padding: 8px 16px;
       font-size: 0.9rem;
+      margin: 2px;
     }
     /* Responsive Layout */
     @media (max-width: 900px) {
@@ -267,7 +268,8 @@
     .import-modal h3 { margin-bottom: 15px; }
     .import-modal div { margin-bottom: 10px; }
     .import-modal button { padding: 6px 12px; }
-    /* Revised Drop Zone Styling */
+    /* Drop Zone Styling in Preview */
+    .droppable { position: relative; }
     .image-dropzone {
       position: relative;
       width: 100%;
@@ -283,20 +285,12 @@
       align-items: center;
       justify-content: center;
     }
-    /* Additional Styles for Media Results */
-    .results-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-      gap: 10px;
-    }
-    .imageResult img {
-      width: 100%;
-      border-radius: 4px;
-      cursor: grab;
-    }
   </style>
 </head>
 <body>
+  <!-- Hidden folder input for choosing a local template folder -->
+  <input type="file" id="folderInput" webkitdirectory>
+
   <!-- Left Sidebar Navigation -->
   <div class="sidebar">
     <h1>SWAT Experimental</h1>
@@ -406,8 +400,21 @@
     <!-- TEMPLATES TAB -->
     <div id="templatesTab" class="tab-content">
       <h2>Template Library</h2>
-      <p>Select a remote template from GitHub. When applied, the template’s HTML is used exactly as is.</p>
-      <div id="templateListContainer"></div>
+      <p>Select a template from one of the following sources. Remote templates are fetched from GitHub, while local templates are saved on your drive or referenced from a folder on your device.</p>
+      <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+        <button id="saveTemplateBtn" style="background:#4A88F6;">Save Current Template</button>
+        <button id="chooseFolderBtn" style="background:#4A88F6;">Choose Local Template Folder</button>
+      </div>
+      <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+        <div style="flex: 1;">
+          <h3>Remote Templates</h3>
+          <div id="remoteTemplateListContainer"></div>
+        </div>
+        <div style="flex: 1;">
+          <h3>Local Templates</h3>
+          <div id="localTemplateListContainer"></div>
+        </div>
+      </div>
     </div>
 
     <!-- PREVIEW & CODE TAB (Combined) -->
@@ -481,6 +488,32 @@
   </style>
 
   <script>
+    // Global variable to hold the default folder from the folder chooser.
+    let defaultLocalTemplateFolder = localStorage.getItem("defaultLocalTemplateFolder") || "DefaultFolder";
+
+    // "Choose Local Template Folder" button triggers the hidden folder input.
+    document.getElementById("chooseFolderBtn").addEventListener("click", function() {
+      document.getElementById("folderInput").click();
+    });
+
+    // Process the selected folder from the file input.
+    document.getElementById("folderInput").addEventListener("change", function(e) {
+      const files = e.target.files;
+      // For each file in the selected folder...
+      Array.from(files).forEach(file => {
+        if(file.name.toLowerCase().endsWith(".html")) {
+          let reader = new FileReader();
+          reader.onload = function(ev) {
+            // Extract folder name from the file's relative path.
+            let relativePath = file.webkitRelativePath;
+            let folder = relativePath.split("/")[0] || "Unknown";
+            addLocalTemplateToList(file.name, ev.target.result, folder);
+          }
+          reader.readAsText(file);
+        }
+      });
+    });
+
     // Global Undo/Redo Stacks
     let undoStack = [];
     let redoStack = [];
@@ -936,7 +969,6 @@
         }
         mediaResults.innerHTML = "";
         images.forEach(imgObj => {
-          // Use small for thumbnail and large for preview drop
           const thumbUrl = imgObj.src.small;
           const largeUrl = imgObj.src.large;
           const altText = imgObj.alt || "No description";
@@ -1135,8 +1167,7 @@
       .then(response => response.json())
       .then(data => {
         const templateFiles = data.filter(file => file.name.startsWith('template-') && file.type === 'file');
-        const templateListContainer = document.getElementById('templateListContainer');
-        templateListContainer.innerHTML = "";
+        const remoteTemplateListContainer = document.getElementById('remoteTemplateListContainer');
         templateFiles.forEach(file => {
           let baseName = file.name.replace(/^template-/, '').replace(/\.[^/.]+$/, '');
           let displayName = baseName.charAt(0).toUpperCase() + baseName.slice(1) + ' Template';
@@ -1168,10 +1199,96 @@
               .catch(err => console.error('Error loading template:', err));
           });
           templateDiv.appendChild(button);
-          templateListContainer.appendChild(templateDiv);
+          remoteTemplateListContainer.appendChild(templateDiv);
         });
       })
       .catch(err => console.error('Error fetching repository contents:', err));
+
+    // LOCAL TEMPLATE FUNCTIONS
+    function addLocalTemplateToList(filename, content, folder) {
+      const localTemplateListContainer = document.getElementById('localTemplateListContainer');
+      const templateDiv = document.createElement('div');
+      templateDiv.classList.add('templateItem');
+      const displayName = filename.replace(/^template-/, '').replace(/\.html$/i, '');
+      templateDiv.innerHTML = `<h3>${displayName} (Local, Folder: ${folder || "None"})</h3>`;
+      
+      const applyButton = document.createElement('button');
+      applyButton.textContent = 'Apply Template';
+      applyButton.style.background = '#4A88F6';
+      applyButton.addEventListener('click', () => {
+         const previewFrame = document.getElementById('previewFrame');
+         previewFrame.srcdoc = content;
+         const newPage = {
+            id: pageCount++,
+            title: displayName,
+            layout: "raw",
+            rawHTML: content,
+            sections: [],
+            subPages: []
+         };
+         pages = [newPage];
+         pagesContainer.innerHTML = "";
+         createPageEditor(newPage, null);
+         alert('Local template loaded into the builder and preview.');
+      });
+      templateDiv.appendChild(applyButton);
+      
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Delete Template';
+      deleteButton.style.background = '#d9534f';
+      deleteButton.addEventListener('click', () => {
+        if (confirm("Are you sure you want to delete this template?")) {
+          let localTemplates = JSON.parse(localStorage.getItem("localTemplates") || "[]");
+          localTemplates = localTemplates.filter(t => t.filename !== filename);
+          localStorage.setItem("localTemplates", JSON.stringify(localTemplates));
+          templateDiv.remove();
+          alert("Template deleted.");
+        }
+      });
+      templateDiv.appendChild(deleteButton);
+      
+      localTemplateListContainer.appendChild(templateDiv);
+    }
+    function loadLocalTemplates() {
+      const localTemplates = JSON.parse(localStorage.getItem("localTemplates") || "[]");
+      localTemplates.forEach(template => {
+           addLocalTemplateToList(template.filename, template.content, template.folder);
+      });
+    }
+    window.addEventListener("load", loadLocalTemplates);
+
+    // SAVE CURRENT TEMPLATE BUTTON FUNCTIONALITY
+    document.getElementById("saveTemplateBtn").addEventListener("click", function() {
+      const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+      if (!iframeDoc) {
+        alert("Preview is not loaded yet.");
+        return;
+      }
+      const templateHTML = iframeDoc.documentElement.outerHTML;
+      let fileName = prompt("Enter a filename for your template (without extension, e.g., template-myLayout):", "template-");
+      if (fileName) {
+        fileName = fileName.trim();
+        if (!fileName.toUpperCase().endsWith(".HTML")) {
+          fileName += ".HTML";
+        }
+        // Use the defaultLocalTemplateFolder set from folder chooser or localStorage.
+        let folderName = defaultLocalTemplateFolder;
+        let localTemplates = JSON.parse(localStorage.getItem("localTemplates") || "[]");
+        localTemplates.push({ filename: fileName, content: templateHTML, folder: folderName });
+        localStorage.setItem("localTemplates", JSON.stringify(localTemplates));
+        addLocalTemplateToList(fileName, templateHTML, folderName);
+        const blob = new Blob([templateHTML], { type: "text/html" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        alert("Template saved as " + fileName + "\nFolder: " + folderName);
+      }
+    });
 
     // VIEW SOURCE & UPDATE ELEMENT FUNCTIONS
     let viewSourceEnabled = false;
@@ -1355,7 +1472,6 @@
     // --- New Function: Make All Elements in Preview Drop Zones with Undo/Redo ---
     function makeAllElementsDropZones() {
       const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
-      // Traverse all elements in the preview's body
       const allElements = iframeDoc.body.querySelectorAll("*");
       allElements.forEach(el => {
         el.addEventListener("dragover", function(e) {
@@ -1367,12 +1483,9 @@
           e.stopPropagation();
           const imgUrl = e.dataTransfer.getData("text/plain");
           if (imgUrl) {
-            // Save current state before applying new background for undo functionality
             const prevBackground = el.style.backgroundImage;
             undoStack.push({ element: el, background: prevBackground });
-            // Clear redoStack as a new action is performed
             redoStack = [];
-            // Set new background image
             el.style.backgroundImage = `url('${imgUrl}')`;
             el.style.backgroundSize = "cover";
             el.style.backgroundPosition = "center";
@@ -1382,19 +1495,13 @@
         });
       });
     }
-    // Attach dragover and drop events to the iframe body and enable global drop zones
     previewFrame.addEventListener('load', function() {
       const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
-      
-      // Attach dragover for iframe body
       iframeDoc.body.addEventListener('dragover', function(e) {
         e.preventDefault();
         e.dataTransfer.dropEffect = "copy";
       });
-      
-      // Enable global drop zone mode: every element becomes a drop zone.
       makeAllElementsDropZones();
-      
       if (viewSourceEnabled) { attachViewSourceListeners(iframeDoc); }
     });
 
@@ -1403,10 +1510,8 @@
       if (undoStack.length > 0) {
         const lastAction = undoStack.pop();
         const element = lastAction.element;
-        // Save current state into redo stack
         const currentBackground = element.style.backgroundImage;
         redoStack.push({ element: element, background: currentBackground });
-        // Revert to previous background
         element.style.backgroundImage = lastAction.background;
       } else {
         alert("Nothing to undo.");
@@ -1416,10 +1521,8 @@
       if (redoStack.length > 0) {
         const lastAction = redoStack.pop();
         const element = lastAction.element;
-        // Save current state into undo stack
         const currentBackground = element.style.backgroundImage;
         undoStack.push({ element: element, background: currentBackground });
-        // Apply redo background
         element.style.backgroundImage = lastAction.background;
       } else {
         alert("Nothing to redo.");

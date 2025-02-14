@@ -4,8 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Small Business Premium Template</title>
+  <meta name="description" content="Delivering exceptional service and quality solutions for your success.">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary-color: #007BFF;
+      --secondary-color: #0056b3;
+      --text-color: #333;
+      --bg-color: #fff;
+      --dark-bg: #333;
+      --font-family: 'Montserrat', sans-serif;
+      --transition-duration: 0.3s;
+    }
+
     /* CSS Reset */
     * {
       margin: 0;
@@ -13,12 +24,13 @@
       box-sizing: border-box;
     }
     body {
-      font-family: 'Montserrat', sans-serif;
+      font-family: var(--font-family);
       line-height: 1.6;
-      color: #333;
+      color: var(--text-color);
     }
+
     header {
-      background: #fff;
+      background: var(--bg-color);
       padding: 20px 40px;
       display: flex;
       justify-content: space-between;
@@ -30,9 +42,14 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
     header .logo {
-      font-size: 1.5em;
+      font-size: 1.8em;
       font-weight: 600;
-      color: #333;
+      color: var(--text-color);
+    }
+
+    /* Navigation Styles */
+    nav {
+      position: relative;
     }
     nav ul {
       list-style: none;
@@ -43,14 +60,53 @@
     }
     nav ul li a {
       text-decoration: none;
-      color: #333;
-      transition: color 0.3s ease;
+      color: var(--text-color);
+      transition: color var(--transition-duration) ease;
     }
     nav ul li a:hover {
-      color: #007BFF;
+      color: var(--primary-color);
     }
+
+    /* Hamburger Menu for Mobile */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+    .menu-toggle span {
+      width: 25px;
+      height: 3px;
+      background: var(--text-color);
+      margin: 4px 0;
+      transition: background var(--transition-duration) ease;
+    }
+    @media (max-width: 768px) {
+      nav ul {
+        flex-direction: column;
+        background: var(--bg-color);
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 200px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        display: none;
+      }
+      nav ul.show {
+        display: flex;
+      }
+      nav ul li {
+        margin: 15px 0;
+        text-align: right;
+        margin-right: 20px;
+      }
+      .menu-toggle {
+        display: flex;
+      }
+    }
+
     .hero {
-      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://via.placeholder.com/1500x800') center/cover no-repeat;
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://via.placeholder.com/1500x800') center/cover no-repeat;
       height: 100vh;
       display: flex;
       flex-direction: column;
@@ -71,21 +127,25 @@
       text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     }
     .hero .btn {
-      background: #007BFF;
+      background: var(--primary-color);
       color: #fff;
       padding: 15px 30px;
       text-decoration: none;
       font-size: 1em;
       border-radius: 5px;
-      transition: background 0.3s ease;
+      transition: background var(--transition-duration) ease;
     }
     .hero .btn:hover {
-      background: #0056b3;
+      background: var(--secondary-color);
+    }
+
+    main {
+      margin-top: 80px;
     }
     section {
       padding: 80px 40px;
     }
-    .about, .services, .contact {
+    .container {
       max-width: 1200px;
       margin: 0 auto;
     }
@@ -98,7 +158,9 @@
       font-size: 1.1em;
       line-height: 1.8;
       margin-bottom: 20px;
+      text-align: center;
     }
+
     .services .cards {
       display: flex;
       flex-wrap: wrap;
@@ -106,15 +168,44 @@
       justify-content: center;
     }
     .services .card {
-      background: #fff;
+      background: var(--bg-color);
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       flex: 1 1 300px;
       text-align: center;
+      transition: transform var(--transition-duration) ease;
     }
+    .services .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .contact form {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .contact input, .contact textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .contact button {
+      background: var(--primary-color);
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background var(--transition-duration) ease;
+    }
+    .contact button:hover {
+      background: var(--secondary-color);
+    }
+
     footer {
-      background: #333;
+      background: var(--dark-bg);
       color: #fff;
       padding: 40px 20px;
       text-align: center;
@@ -130,11 +221,12 @@
       margin: 0 10px;
       font-size: 1.2em;
       text-decoration: none;
-      transition: color 0.3s ease;
+      transition: color var(--transition-duration) ease;
     }
     footer .socials a:hover {
-      color: #007BFF;
+      color: var(--primary-color);
     }
+
     @media(max-width: 768px) {
       header {
         padding: 10px 20px;
@@ -158,7 +250,12 @@
   <header>
     <div class="logo">YourBrand</div>
     <nav>
-      <ul>
+      <div class="menu-toggle" id="mobile-menu" aria-label="Toggle Navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <ul id="nav-list">
         <li><a href="#hero">Home</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#services">Services</a></li>
@@ -167,54 +264,72 @@
     </nav>
   </header>
 
-  <section class="hero" id="hero">
-    <h1>Welcome to Your Premium Business</h1>
-    <p>Delivering exceptional service and quality solutions for your success.</p>
-    <a href="#contact" class="btn">Get in Touch</a>
-  </section>
+  <main>
+    <section class="hero" id="hero">
+      <h1>Welcome to Your Premium Business</h1>
+      <p>Delivering exceptional service and quality solutions for your success.</p>
+      <a href="#contact" class="btn">Get in Touch</a>
+    </section>
 
-  <section class="about" id="about">
-    <h2>About Us</h2>
-    <p>Our business is committed to delivering high-quality services and innovative solutions to help your business thrive in today's competitive market.</p>
-  </section>
+    <section class="about" id="about">
+      <div class="container">
+        <h2>About Us</h2>
+        <p>Our business is committed to delivering high-quality services and innovative solutions to help your business thrive in today's competitive market.</p>
+      </div>
+    </section>
 
-  <section class="services" id="services">
-    <h2>Our Services</h2>
-    <p>We offer a range of services tailored to your business needs:</p>
-    <div class="cards">
-      <div class="card">
-        <h3>Consulting</h3>
-        <p>Expert advice and strategies to enhance your business growth.</p>
+    <section class="services" id="services">
+      <div class="container">
+        <h2>Our Services</h2>
+        <p>We offer a range of services tailored to your business needs:</p>
+        <div class="cards">
+          <div class="card">
+            <h3>Consulting</h3>
+            <p>Expert advice and strategies to enhance your business growth.</p>
+          </div>
+          <div class="card">
+            <h3>Design</h3>
+            <p>Modern and intuitive designs to boost your brand presence.</p>
+          </div>
+          <div class="card">
+            <h3>Development</h3>
+            <p>Cutting-edge technology solutions to streamline your operations.</p>
+          </div>
+        </div>
       </div>
-      <div class="card">
-        <h3>Design</h3>
-        <p>Modern and intuitive designs to boost your brand presence.</p>
-      </div>
-      <div class="card">
-        <h3>Development</h3>
-        <p>Cutting-edge technology solutions to streamline your operations.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="contact" id="contact">
-    <h2>Contact Us</h2>
-    <p>Ready to take your business to the next level? Reach out to us today!</p>
-    <form action="#" method="post" style="max-width:600px; margin: 0 auto;">
-      <input type="text" name="name" placeholder="Your Name" required style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:4px;">
-      <input type="email" name="email" placeholder="Your Email" required style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:4px;">
-      <textarea name="message" placeholder="Your Message" rows="5" required style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:4px;"></textarea>
-      <button type="submit" style="background:#007BFF; color:#fff; padding:10px 20px; border:none; border-radius:4px; cursor:pointer;">Send Message</button>
-    </form>
-  </section>
+    <section class="contact" id="contact">
+      <div class="container">
+        <h2>Contact Us</h2>
+        <p>Ready to take your business to the next level? Reach out to us today!</p>
+        <form action="#" method="post">
+          <input type="text" name="name" placeholder="Your Name" required>
+          <input type="email" name="email" placeholder="Your Email" required>
+          <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+          <button type="submit">Send Message</button>
+        </form>
+      </div>
+    </section>
+  </main>
 
   <footer>
     <p>&copy; 2025 YourBrand. All Rights Reserved.</p>
     <div class="socials">
-      <a href="#" target="_blank">Facebook</a>
-      <a href="#" target="_blank">Twitter</a>
-      <a href="#" target="_blank">LinkedIn</a>
+      <a href="#" target="_blank" aria-label="Facebook">Facebook</a>
+      <a href="#" target="_blank" aria-label="Twitter">Twitter</a>
+      <a href="#" target="_blank" aria-label="LinkedIn">LinkedIn</a>
     </div>
   </footer>
+
+  <script>
+    // Mobile menu toggle script
+    const menuToggle = document.getElementById('mobile-menu');
+    const navList = document.getElementById('nav-list');
+
+    menuToggle.addEventListener('click', () => {
+      navList.classList.toggle('show');
+    });
+  </script>
 </body>
 </html>

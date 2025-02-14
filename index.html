@@ -5,7 +5,6 @@
   <title>Web Builder - Dark Mode</title>
   <!-- Combined Google Fonts API Call -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Roboto:wght@400;500;700&family=Open+Sans:wght@300;400;600,700&family=Lato:wght@300;400;700&family=Oswald:wght@300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&family=Ubuntu:wght@300;400;500;700&family=PT+Sans:wght@400;700&family=Source+Sans+Pro:wght@300;400;600;700&family=Poppins:wght@300;400;500;600;700&family=Noto+Sans:wght@300;400;500;700&family=Noto+Serif:wght@300;400;600;700&family=Roboto+Condensed:wght@300;400;700&family=Dancing+Script:wght@400;500;700&family=Inconsolata:wght@400;700&display=swap" rel="stylesheet">
-  
   <style>
     /* Basic Reset */
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -144,6 +143,33 @@
     .imageResult:hover { box-shadow: 0 2px 6px rgba(255, 255, 255, 0.03); }
     .imageResult img { width: 100%; border-radius: 3px; }
     .assign-btns { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
+    /* Template Cards Styles */
+    #templateListContainer {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .templateItem {
+      background: #2a2a2a;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .templateItem:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .templateItem h3 {
+      margin-bottom: 15px;
+      color: #fff;
+    }
+    .templateItem button {
+      padding: 8px 16px;
+      font-size: 0.9rem;
+    }
     /* Responsive Layout */
     @media (max-width: 900px) {
       .sidebar { width: 180px; }
@@ -174,33 +200,6 @@
     .import-modal h3 { margin-bottom: 15px; }
     .import-modal div { margin-bottom: 10px; }
     .import-modal button { padding: 6px 12px; }
-    /* Template Cards Styles */
-    #templateListContainer {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
-    }
-    .templateItem {
-      background: #2a2a2a;
-      border: 1px solid #3a3a3a;
-      border-radius: 8px;
-      padding: 20px;
-      text-align: center;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .templateItem:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-    .templateItem h3 {
-      margin-bottom: 15px;
-      color: #fff;
-    }
-    .templateItem button {
-      padding: 8px 16px;
-      font-size: 0.9rem;
-    }
   </style>
 </head>
 <body>
@@ -213,7 +212,7 @@
       <button class="tab-btn" data-tab="referenceTab" data-label="Reference">Reference Layout</button>
       <button class="tab-btn" data-tab="templatesTab" data-label="Templates">Templates</button>
       <button class="tab-btn" data-tab="imagesTab" data-label="Images">Images & Media</button>
-      <button class="tab-btn" data-tab="previewCodeTab" data-label="Preview & Code">Preview</button>
+      <button class="tab-btn" data-tab="previewCodeTab" data-label="Preview & Code">Preview & Code</button>
     </div>
   </div>
 
@@ -292,14 +291,14 @@
     <!-- TEMPLATES TAB -->
     <div id="templatesTab" class="tab-content">
       <h2>Template Library</h2>
-      <p>Select a template. When applied, the template will show in the Preview Section.</p>
+      <p>Select a remote template from GitHub. When applied, the template’s HTML is used exactly as is.</p>
       <div id="templateListContainer"></div>
     </div>
 
     <!-- IMAGES & MEDIA TAB -->
     <div id="imagesTab" class="tab-content">
       <h2>Royalty-Free Images</h2>
-      <p>Search for royalty-free images (e.g., from Pexels or Unsplash) and assign them to your sections.</p>
+      <p>Search for royalty-free images (e.g., from Pexels) and assign them to your sections.</p>
       <div class="field">
         <label for="imageSearchInput">Search Query:</label>
         <input type="text" id="imageSearchInput" placeholder="e.g. 'nature', 'city'..." />
@@ -310,16 +309,14 @@
       <div id="imageResults" class="results-grid"></div>
     </div>
 
-    <!-- PREVIEW TAB (Combined) -->
+    <!-- PREVIEW & CODE TAB (Combined) -->
     <div id="previewCodeTab" class="tab-content">
-      <!-- Preview Section -->
       <h2>Live Preview (Home Page)</h2>
       <p>This preview shows only the first top-level page. Nav links are intercepted so you can click sub-pages too.</p>
       <button id="previewBtn" style="margin-bottom:20px;">Update Preview</button>
       <button id="toggleViewSourceBtn">Enable View Source</button>
       <iframe id="previewFrame"></iframe>
       <div id="viewSourcePanel"></div>
-      <!-- Editable Panel for Selected Element HTML -->
       <div id="editElementPanel" style="display: none; margin-top: 10px; background: #1f1f1f; padding: 10px; border: 1px solid #3a3a3a; border-radius: 4px;">
         <textarea id="editElementTextarea" style="width:100%; height:150px; font-family:'Courier New', monospace; font-size:0.8rem;"></textarea>
         <button id="updateElementBtn" style="margin-top: 5px;">Update Element</button>
@@ -327,14 +324,12 @@
         <button id="deleteElementBtn" style="margin-top: 5px; background: #e74c3c;">Delete Element</button>
       </div>
       <hr style="margin:20px 0;">
-      <!-- Generated Code Section -->
       <h2>Generated Code (All Pages)</h2>
       <p>Each top-level page has exactly one nav bar. Sub-pages appear in a dropdown. Copy each block to a separate .html file.</p>
       <div class="buttons">
         <button id="generateBtn">Generate Site Code</button>
         <button id="clearBtn" style="background:#d9534f;">Clear All</button>
       </div>
-      <!-- Search/Replace and Navigation Buttons -->
       <div class="field">
         <label for="codeSearchInput">Search Code:</label>
         <input type="text" id="codeSearchInput" placeholder="Enter search term..." />
@@ -383,7 +378,7 @@
     document.getElementById('basicTab').classList.add('active');
     tabButtons[0].classList.add('active');
 
-    // GLOBAL / BASIC SETTINGS - FONT SELECTION
+    // FONT SELECTION FUNCTIONALITY
     const fontsList = [
       { name: "Arial", category: "sans-serif" },
       { name: "Helvetica Neue", category: "sans-serif" },
@@ -409,7 +404,6 @@
     let selectedFont = "'Montserrat', sans-serif";
     const fontFamilySearchInput = document.getElementById('fontFamilySearch');
     const fontFamilyContainer = document.getElementById('fontFamilyContainer');
-    
     function renderFontList(filter = "") {
       fontFamilyContainer.innerHTML = "";
       const filtered = fontsList.filter(f => f.name.toLowerCase().includes(filter.toLowerCase()));
@@ -430,10 +424,7 @@
         fontFamilyContainer.appendChild(fontDiv);
       });
     }
-    
-    fontFamilySearchInput.addEventListener('input', function() {
-      renderFontList(this.value);
-    });
+    fontFamilySearchInput.addEventListener('input', function() { renderFontList(this.value); });
     renderFontList();
 
     // PAGE & NAVIGATION
@@ -442,7 +433,6 @@
     let pageCount = 0;
     let pages = [];
     addPageBtn.addEventListener('click', () => { createPageEditor(null); });
-
     function createPageEditor(parentPage) {
       const pageId = pageCount++;
       const pageObj = { id: pageId, title: "Untitled Page", layout: "single", sections: [], subPages: [], importedParts: null };
@@ -503,12 +493,10 @@
         if(addSubPageBtn) { addSubPageBtn.addEventListener('click', () => { createPageEditor(pageObj); }); }
       }
     }
-
     function removePage(pageObj, pageDiv) {
       if (pageObj) { pageObjSubSearch(pageObj.id, pages); }
       pageDiv.remove();
     }
-
     function pageObjSubSearch(id, pageArr) {
       for (let i = 0; i < pageArr.length; i++) {
         if (pageArr[i].id === id) { pageArr.splice(i, 1); return true; }
@@ -519,7 +507,6 @@
       }
       return false;
     }
-
     // SECTION EDITOR
     function createSectionEditor(pageObj, containerEl, fetchedSectionData = null) {
       const sectionData = fetchedSectionData || {
@@ -777,287 +764,84 @@
       return null;
     }
 
-    // PREVIEW & CODE GENERATION
-    // If the page uses a "raw" layout, output its rawHTML verbatim.
-    function buildPageHTML(pageObj, isPreviewNav) {
-      if (pageObj.layout === "raw" && pageObj.rawHTML) {
-        return pageObj.rawHTML;
+    // IMAGE SEARCH & ASSIGNMENT (Using Pexels API)
+    const imageSearchInput = document.getElementById('imageSearchInput');
+    const imageSearchBtn = document.getElementById('imageSearchBtn');
+    const imageResults = document.getElementById('imageResults');
+    imageSearchBtn.addEventListener('click', async () => {
+      const query = imageSearchInput.value.trim();
+      if (!query) {
+        imageResults.innerHTML = "<p style='color:red;'>Please enter a search term.</p>";
+        return;
       }
-      const gFont = selectedFont || "Arial, sans-serif";
-      const fontName = gFont.split(',')[0].replace(/['"]/g, '').trim();
-      const googleFonts = {
-        "Montserrat": "https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap",
-        "Roboto": "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap",
-        "Open Sans": "https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap",
-        "Lato": "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",
-        "Oswald": "https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap",
-        "Raleway": "https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap",
-        "Merriweather": "https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap",
-        "Ubuntu": "https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap",
-        "PT Sans": "https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap",
-        "Source Sans Pro": "https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap",
-        "Poppins": "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap",
-        "Noto Sans": "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;700&display=swap",
-        "Noto Serif": "https://fonts.googleapis.com/css2?family=Noto+Serif:wght@300;400;600;700&display=swap",
-        "Roboto Condensed": "https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap",
-        "Dancing Script": "https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;700&display=swap",
-        "Inconsolata": "https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap"
-      };
-      let fontLink = "";
-      if (googleFonts[fontName]) {
-          fontLink = `<link href="${googleFonts[fontName]}" rel="stylesheet">`;
-      }
-      const pageTitle = pageObj.title.trim() || "Untitled Page";
-      if (pageObj.layout === "ReferencedSiteLayout" && pageObj.importedParts) {
-        return `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>${pageTitle}</title>
-  ${ checkIconUse(pageObj, "fontAwesome") ? `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">` : "" }
-  ${ checkIconUse(pageObj, "materialIcons") ? `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />` : "" }
-  ${fontLink}
-  <style>
-    body {
-      background-color: ${globalBgColor.value};
-      ${globalBgImage.value ? `background-image: url('${globalBgImage.value}'); background-size: cover; background-repeat: no-repeat;` : ''}
-      color: ${globalTextColor.value};
-      font-family: ${gFont};
-      font-size: ${globalFontSize.value}px;
-      line-height: ${globalLineHeight.value};
-      margin: 0; padding: 0;
-    }
-    a { color: ${globalLinkColor.value}; }
-    ${ pageObj.importedParts.style || '' }
-  </style>
-  ${ pageObj.importedParts.head || '' }
-</head>
-<body>
-  ${ includeNav.checked && isTopLevel(pageObj) ? buildNavHTML(pages, isPreviewNav) : '' }
-  ${ pageObj.importedParts.body || '' }
-  ${ pageObj.importedParts.scripts || '' }
-</body>
-</html>`.trim();
-      }
-      const sectionsHTML = buildSectionsHTML(pageObj.sections, pageObj.id);
-      let navHTML = "";
-      if (includeNav.checked && isTopLevel(pageObj)) { navHTML = buildNavHTML(pages, isPreviewNav); }
-      let layoutCSS = (pageObj.layout === "ReferencedSiteLayout") ? getReferencedLayoutCSS(pageObj) : getLayoutCSS(pageObj.layout);
-      const usedFA = checkIconUse(pageObj, "fontAwesome");
-      const usedMI = checkIconUse(pageObj, "materialIcons");
-      const faLink = usedFA ? `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">\n` : "";
-      const materialIconsLink = usedMI ? `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />\n` : "";
-      const gBg = globalBgColor.value;
-      const gTxt = globalTextColor.value;
-      const gHead = globalHeadingColor.value;
-      const gFontSize = globalFontSize.value;
-      const gLineHeight = globalLineHeight.value;
-      const gLinkColor = globalLinkColor.value;
-      const gBgImage = globalBgImage.value.trim();
-      const customCSS = globalCustomCSS.value;
-      const metaDesc = "Page: " + pageTitle;
-      return `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title data-page-id="${pageObj.id}">${pageTitle}</title>
-  <meta name="description" content="${metaDesc}">
-  ${faLink}${materialIconsLink}${fontLink}
-  <style>
-    body {
-      background-color: ${gBg};
-      ${gBgImage ? `background-image: url('${gBgImage}'); background-size: cover; background-repeat: no-repeat;` : ''}
-      color: ${gTxt};
-      font-family: ${gFont};
-      font-size: ${gFontSize}px;
-      line-height: ${gLineHeight};
-      margin: 0; padding: 0;
-    }
-    a { color: ${gLinkColor}; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
-    h1, h2, h3 { color: ${gHead}; margin-bottom: 15px; }
-    p { margin-bottom: 15px; }
-    ${layoutCSS}
-    nav { background: ${gHead}; padding: 15px; }
-    nav ul {
-      list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; align-items: center; position: relative;
-    }
-    nav li { position: relative; }
-    nav a { color: ${gBg}; text-decoration: none; font-weight: bold; }
-    .submenu {
-      position: absolute; display: none; top: 50px; left: 0; flex-direction: column;
-      background-color: ${gHead}; padding: 10px; border-radius: 5px;
-    }
-    .submenu li { margin: 5px 0; }
-    .has-submenu:hover .submenu { display: flex; }
-    .has-submenu > a::after { content: " \\25BC"; margin-left: 5px; font-size: 0.8em; }
-    .layout-container {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 20px;
-    }
-    .layout-container .layout-item {
-      background-color: ${gBg}; color: ${gTxt}; padding: 20px; border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .layout-container .layout-item:hover {
-      transform: translateY(-3px); box-shadow: 0 8px 12px rgba(0,0,0,0.15);
-    }
-    ${customCSS}
-  </style>
-</head>
-<body>
-  ${navHTML}
-  <div class="container">
-    <h1>${pageTitle}</h1>
-    <div class="layout-container">
-      ${sectionsHTML}
-    </div>
-  </div>
-</body>
-</html>`.trim();
-    }
-    function flattenPages(pageArr) {
-      let result = [];
-      for (let p of pageArr) {
-        result.push(p);
-        if (p.subPages && p.subPages.length > 0) { result = result.concat(flattenPages(p.subPages)); }
-      }
-      return result;
-    }
-    function pageFilename(pg) {
-      const t = pg.title.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/gi, '');
-      return t ? t + ".html" : "page-" + pg.id + ".html";
-    }
-    function isTopLevel(pageObj) { return pages.includes(pageObj); }
-
-    // --- Fetch remote templates from GitHub (remote templates only) ---
-    fetch('https://api.github.com/repos/mpalmero197/webbuilder/contents/')
-      .then(response => response.json())
-      .then(data => {
-        // Filter for files starting with "template-" that are regular files
-        const templateFiles = data.filter(file => file.name.startsWith('template-') && file.type === 'file');
-        const templateListContainer = document.getElementById('templateListContainer');
-        templateListContainer.innerHTML = ""; // Clear existing items
-
-        templateFiles.forEach(file => {
-          // Create display name by removing "template-" prefix and file extension
-          let baseName = file.name.replace(/^template-/, '').replace(/\.[^/.]+$/, '');
-          let displayName = baseName.charAt(0).toUpperCase() + baseName.slice(1) + ' Template';
-
-          // Create a card for the template
-          const templateDiv = document.createElement('div');
-          templateDiv.classList.add('templateItem');
-          templateDiv.innerHTML = `<h3>${displayName}</h3>`;
-
-          // Create button to apply the remote template
-          const button = document.createElement('button');
-          button.textContent = 'Apply Template';
-          button.style.background = '#4A88F6';
-          button.addEventListener('click', () => {
-            // Fetch the template content from GitHub
-            fetch(file.download_url)
-              .then(resp => resp.text())
-              .then(htmlContent => {
-                // Set preview frame to the fetched HTML
-                const previewFrame = document.getElementById('previewFrame');
-                previewFrame.srcdoc = htmlContent;
-                // Create a new page object with raw layout (to preserve the original HTML)
-                const newPage = {
-                  id: pageCount++,
-                  title: displayName,
-                  layout: "raw",
-                  rawHTML: htmlContent,
-                  sections: [],
-                  subPages: []
-                };
-                // Replace current pages with this new page
-                pages = [newPage];
-                pagesContainer.innerHTML = "";
-                createPageEditorFromData(newPage, null);
-                alert('Remote template loaded into the builder and preview.');
-              })
-              .catch(err => console.error('Error loading template:', err));
-          });
-          templateDiv.appendChild(button);
-          templateListContainer.appendChild(templateDiv);
+      imageResults.innerHTML = "Searching...";
+      try {
+        const response = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=77`, {
+          headers: { Authorization: "2mxS3gi2IIXAmd4anXuVaaNs5k98X0F6KaTpszZYFCJstNfWXVH71gN1" }
         });
-      })
-      .catch(err => console.error('Error fetching repository contents:', err));
-
-    // Modify createPageEditorFromData to handle raw pages
-    function createPageEditorFromData(pageObj, parentPage) {
-      const pageDiv = document.createElement('div');
-      pageDiv.classList.add('pageItem');
-      pageDiv.setAttribute('data-pageid', pageObj.id);
-      const pageLevel = parentPage ? "Sub-page" : "Page";
-      let titleText = pageObj.title;
-      if(pageObj.layout === "raw") {
-        titleText += " (Raw Template)";
+        if (!response.ok) {
+          imageResults.innerHTML = "<p style='color:red;'>Error fetching images.</p>";
+          return;
+        }
+        const data = await response.json();
+        const images = data.photos || [];
+        if (!images.length) {
+          imageResults.innerHTML = "<p style='color:#bbb;'>No results found.</p>";
+          return;
+        }
+        imageResults.innerHTML = "";
+        images.forEach(imgObj => {
+          const imgUrl = imgObj.src.small;
+          const altText = imgObj.alt || "No description";
+          const wrapper = document.createElement('div');
+          wrapper.classList.add('imageResult');
+          wrapper.innerHTML = `
+            <img src="${imgUrl}" alt="${altText}" />
+            <div class="assign-btns">
+              <button class="assignArtBtn">Assign as Art</button>
+              <button class="assignImageBtn">Assign as Image</button>
+            </div>
+          `;
+          imageResults.appendChild(wrapper);
+          const assignArtBtn = wrapper.querySelector('.assignArtBtn');
+          const assignImageBtn = wrapper.querySelector('.assignImageBtn');
+          assignArtBtn.addEventListener('click', () => openAssignModal(imgUrl, "art"));
+          assignImageBtn.addEventListener('click', () => openAssignModal(imgUrl, "image"));
+        });
+      } catch (err) {
+        console.error(err);
+        imageResults.innerHTML = "<p style='color:red;'>Failed to retrieve images.</p>";
       }
-      pageDiv.innerHTML = `
-        <div class="pageHeader">
-          <h3>${pageLevel} Editor (ID: ${pageObj.id})</h3>
-          <button class="removePageBtn">Remove</button>
-        </div>
-        <div class="field">
-          <label>Page Title (used for navigation label):</label>
-          <input type="text" class="pageTitleInput" value="${titleText}" ${pageObj.layout === "raw" ? "readonly" : ""}/>
-        </div>
-        <div class="field">
-          <label>Layout Style:</label>
-          <select class="pageLayoutSelect" ${pageObj.layout === "raw" ? "disabled" : ""}>
-            <option value="single" ${pageObj.layout==="single"?"selected":""}>Single Column</option>
-            <option value="two" ${pageObj.layout==="two"?"selected":""}>Two Columns</option>
-            <option value="grid" ${pageObj.layout==="grid"?"selected":""}>Grid</option>
-            <option value="masonry" ${pageObj.layout==="masonry"?"selected":""}>Masonry</option>
-            <option value="cards" ${pageObj.layout==="cards"?"selected":""}>Cards</option>
-            <option value="three" ${pageObj.layout==="three"?"selected":""}>Three Columns</option>
-            <option value="heroGrid" ${pageObj.layout==="heroGrid"?"selected":""}>Hero + Grid</option>
-            <option value="splitBanner" ${pageObj.layout==="splitBanner"?"selected":""}>Split Banner</option>
-            <option value="minimalist" ${pageObj.layout==="minimalist"?"selected":""}>Minimalist</option>
-            <option value="ReferencedSiteLayout" ${pageObj.layout==="ReferencedSiteLayout"?"selected":""}>ReferencedSiteLayout</option>
-            <option value="raw" ${pageObj.layout==="raw"?"selected":""}>Raw Template</option>
-          </select>
-        </div>
-        <h4 style="margin:10px 0; color:#fff;">Sections</h4>
-        <div class="sectionContainer"></div>
-        <div class="buttons">
-          <button class="addSectionBtn" style="background:#28A745;" ${pageObj.layout==="raw" ? "disabled" : ""}>Add Section</button>
-          ${!parentPage ? `<button class="addSubPageBtn" style="background:#5bc0de;" ${pageObj.layout==="raw" ? "disabled" : ""}>Add Sub-Page</button>` : ''}
-        </div>
-      `;
-      if(parentPage){
-        const parentDiv = pagesContainer.querySelector(`.pageItem[data-pageid="${parentPage.id}"]`);
-        if (!parentDiv) { pagesContainer.appendChild(pageDiv); }
-        else { parentDiv.insertAdjacentElement('afterend', pageDiv); }
-      } else {
-        pagesContainer.appendChild(pageDiv);
-      }
-      pageDiv.querySelector('.removePageBtn').addEventListener('click', () => { removePage(pageObj, pageDiv); });
-      const titleInput = pageDiv.querySelector('.pageTitleInput');
-      if(pageObj.layout !== "raw") {
-        titleInput.addEventListener('input', (e) => { pageObj.title = e.target.value.trim(); });
-        pageObj.title = titleInput.value;
-      }
-      const layoutSelect = pageDiv.querySelector('.pageLayoutSelect');
-      if(pageObj.layout !== "raw") {
-        layoutSelect.addEventListener('change', (e) => { pageObj.layout = e.target.value; });
-        pageObj.layout = layoutSelect.value;
-      }
-      const sectionContainer = pageDiv.querySelector('.sectionContainer');
-      const addSectionBtn = pageDiv.querySelector('.addSectionBtn');
-      if(pageObj.layout !== "raw") {
-        addSectionBtn.addEventListener('click', () => { createSectionEditor(pageObj, sectionContainer); });
-      } else {
-        sectionContainer.innerHTML = `<p style="color:#ccc;">Raw template content cannot be edited here.</p>`;
-      }
-      if (!parentPage) {
-        const addSubPageBtn = pageDiv.querySelector('.addSubPageBtn');
-        if(addSubPageBtn && pageObj.layout !== "raw") { 
-          addSubPageBtn.addEventListener('click', () => { createPageEditor(pageObj); }); 
+    });
+    function openAssignModal(imgUrl, targetField) {
+      const allPages = flattenPages(pages);
+      if (!allPages.length) { alert("No pages/sections available. Please add some pages first."); return; }
+      const sectionSelectData = [];
+      allPages.forEach(pg => {
+        pg.sections.forEach((sec, idx) => { sectionSelectData.push({ pageId: pg.id, pageTitle: pg.title, sectionIndex: idx }); });
+      });
+      if (!sectionSelectData.length) { alert("No sections available. Please add a section first."); return; }
+      let msg = "Select a section to assign the image:\n";
+      sectionSelectData.forEach((sd, i) => { msg += `${i}) Page "${sd.pageTitle}" - Section ${sd.sectionIndex}\n`; });
+      const choice = prompt(msg + "\nEnter the index number:", "0");
+      const idx = parseInt(choice, 10);
+      if (isNaN(idx) || idx < 0 || idx >= sectionSelectData.length) { alert("Invalid selection."); return; }
+      const chosen = sectionSelectData[idx];
+      const targetPage = findPageById(chosen.pageId, pages);
+      if (!targetPage || !targetPage.sections[chosen.sectionIndex]) { alert("Could not find chosen section."); return; }
+      if (targetField === "art") { targetPage.sections[chosen.sectionIndex].art = imgUrl; }
+      else { targetPage.sections[chosen.sectionIndex].image = imgUrl; }
+      const pageDiv = document.querySelector(`.pageItem[data-pageid="${targetPage.id}"]`);
+      if (pageDiv) {
+        const sectionContainer = pageDiv.querySelector('.sectionContainer');
+        const allSectionItems = sectionContainer.querySelectorAll('.sectionItem');
+        const secItem = allSectionItems[chosen.sectionIndex];
+        if (secItem) {
+          if (targetField === "art") { secItem.querySelector('.secArt').value = imgUrl; }
+          else { secItem.querySelector('.secImage').value = imgUrl; }
         }
       }
+      alert(`Assigned image to Page "${targetPage.title}", Section ${chosen.sectionIndex}, Field: ${targetField}.`);
     }
 
     // PREVIEW & CODE GENERATION
@@ -1087,7 +871,7 @@
       };
       let fontLink = "";
       if (googleFonts[fontName]) {
-          fontLink = `<link href="${googleFonts[fontName]}" rel="stylesheet">`;
+        fontLink = `<link href="${googleFonts[fontName]}" rel="stylesheet">`;
       }
       const pageTitle = pageObj.title.trim() || "Untitled Page";
       if (pageObj.layout === "ReferencedSiteLayout" && pageObj.importedParts) {
@@ -1219,16 +1003,13 @@
       .then(data => {
         const templateFiles = data.filter(file => file.name.startsWith('template-') && file.type === 'file');
         const templateListContainer = document.getElementById('templateListContainer');
-        templateListContainer.innerHTML = ""; // Clear any existing items
-
+        templateListContainer.innerHTML = "";
         templateFiles.forEach(file => {
           let baseName = file.name.replace(/^template-/, '').replace(/\.[^/.]+$/, '');
           let displayName = baseName.charAt(0).toUpperCase() + baseName.slice(1) + ' Template';
-
           const templateDiv = document.createElement('div');
           templateDiv.classList.add('templateItem');
           templateDiv.innerHTML = `<h3>${displayName}</h3>`;
-
           const button = document.createElement('button');
           button.textContent = 'Apply Template';
           button.style.background = '#4A88F6';
@@ -1248,7 +1029,7 @@
                 };
                 pages = [newPage];
                 pagesContainer.innerHTML = "";
-                createPageEditorFromData(newPage, null);
+                createPageEditor(newPage, null);
                 alert('Remote template loaded into the builder and preview.');
               })
               .catch(err => console.error('Error loading template:', err));
@@ -1432,8 +1213,19 @@
       }
     });
     const previewFrame = document.getElementById('previewFrame');
+    // Modified previewFrame load event with link interception
     previewFrame.addEventListener('load', function() {
       const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+      
+      // Intercept all link clicks within the iframe to prevent duplicate code loading
+      iframeDoc.addEventListener('click', function(e) {
+        const target = e.target;
+        if (target.tagName.toLowerCase() === 'a') {
+          e.preventDefault();
+          // Optional: Handle custom navigation logic here if needed.
+        }
+      });
+      
       if (viewSourceEnabled) { attachViewSourceListeners(iframeDoc); }
     });
 

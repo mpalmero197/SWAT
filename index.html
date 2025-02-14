@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Web Builder - Dark Mode</title>
+  <title>SWAT Experimental - Simple Website Administration Tool</title>
   <!-- Combined Google Fonts API Call -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Roboto:wght@400;500;700&family=Open+Sans:wght@300;400;600,700&family=Lato:wght@300;400;700&family=Oswald:wght@300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&family=Ubuntu:wght@300;400;500;700&family=PT+Sans:wght@400;700&family=Source+Sans+Pro:wght@300;400;600;700&family=Poppins:wght@300;400;500;600;700&family=Noto+Sans:wght@300;400;500;700&family=Noto+Serif:wght@300;400;600;700&family=Roboto+Condensed:wght@300;400;700&family=Dancing+Script:wght@400;500;700&family=Inconsolata:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -72,7 +72,8 @@
       color: #ccc;
       font-size: 0.9rem;
     }
-    #mediaSidebar input[type="text"] {
+    #mediaSidebar input[type="text"],
+    #mediaSidebar input[type="file"] {
       width: 100%;
       padding: 5px;
       margin-bottom: 10px;
@@ -81,7 +82,23 @@
       background: #333;
       color: #fff;
     }
-    #mediaSidebar button {
+    /* Custom styling for file input button */
+    #localImageInput {
+      opacity: 0;
+      position: absolute;
+      z-index: -1;
+    }
+    .custom-file-label {
+      display: inline-block;
+      padding: 8px 12px;
+      background-color: #4A88F6;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+    /* Buttons styling */
+    #mediaSidebar .buttons button {
       background: #4A88F6;
       border: none;
       padding: 5px 10px;
@@ -91,6 +108,9 @@
       font-size: 0.9rem;
       margin-bottom: 10px;
     }
+    /* Specific Undo/Redo button colors */
+    #undoBtn { background: #f0ad4e; }
+    #redoBtn { background: #5bc0de; }
     /* Fallback Dropped Image Container */
     .dropped-image-container {
       position: absolute;
@@ -119,7 +139,7 @@
     .tab-content { display: none; }
     .tab-content.active { display: block; }
     /* Fields & Buttons */
-    .field { margin-bottom: 15px; }
+    .field { margin-bottom: 15px; position: relative; }
     .field label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 0.95rem; color: #ccc; }
     .field input, .field select, .field textarea {
       width: 100%; padding: 10px; border-radius: 4px;
@@ -263,12 +283,23 @@
       align-items: center;
       justify-content: center;
     }
+    /* Additional Styles for Media Results */
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      gap: 10px;
+    }
+    .imageResult img {
+      width: 100%;
+      border-radius: 4px;
+      cursor: grab;
+    }
   </style>
 </head>
 <body>
   <!-- Left Sidebar Navigation -->
   <div class="sidebar">
-    <h1>Web Builder</h1>
+    <h1>SWAT Experimental</h1>
     <div class="tab-nav">
       <button class="tab-btn active" data-tab="basicTab" data-label="Basic">Basic Settings</button>
       <button class="tab-btn" data-tab="pagesTab" data-label="Pages">Pages & Navigation</button>
@@ -287,6 +318,15 @@
     </div>
     <div class="buttons">
       <button id="mediaSearchBtn">Search Images</button>
+    </div>
+    <div class="field">
+      <label for="localImageInput">Or Choose Image from Device:</label>
+      <label for="localImageInput" class="custom-file-label">Browse...</label>
+      <input type="file" id="localImageInput" accept="image/*" />
+    </div>
+    <div class="buttons">
+      <button id="undoBtn">Undo</button>
+      <button id="redoBtn">Redo</button>
     </div>
     <div id="mediaResults" class="results-grid"></div>
   </div>
@@ -441,6 +481,10 @@
   </style>
 
   <script>
+    // Global Undo/Redo Stacks
+    let undoStack = [];
+    let redoStack = [];
+
     // TAB FUNCTIONALITY
     const tabButtons = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
@@ -911,6 +955,28 @@
       }
     });
 
+    // LOCAL IMAGE HANDLER
+    const localImageInput = document.getElementById('localImageInput');
+    localImageInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file && file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const wrapper = document.createElement('div');
+          wrapper.classList.add('imageResult');
+          wrapper.innerHTML = `<img src="${event.target.result}" alt="Local Image" style="max-width:100%;">`;
+          wrapper.setAttribute('draggable', 'true');
+          wrapper.addEventListener('dragstart', function(e) {
+            e.dataTransfer.setData("text/plain", event.target.result);
+          });
+          mediaResults.appendChild(wrapper);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        alert("Please select a valid image file.");
+      }
+    });
+
     // PREVIEW & CODE GENERATION
     function buildPageHTML(pageObj, isPreviewNav) {
       if (pageObj.layout === "raw" && pageObj.rawHTML) {
@@ -1286,7 +1352,7 @@
       }
     });
     const previewFrame = document.getElementById('previewFrame');
-    // --- New Function: Make All Elements in Preview Drop Zones ---
+    // --- New Function: Make All Elements in Preview Drop Zones with Undo/Redo ---
     function makeAllElementsDropZones() {
       const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
       // Traverse all elements in the preview's body
@@ -1301,12 +1367,16 @@
           e.stopPropagation();
           const imgUrl = e.dataTransfer.getData("text/plain");
           if (imgUrl) {
-            // Instead of replacing the content, set the background image.
+            // Save current state before applying new background for undo functionality
+            const prevBackground = el.style.backgroundImage;
+            undoStack.push({ element: el, background: prevBackground });
+            // Clear redoStack as a new action is performed
+            redoStack = [];
+            // Set new background image
             el.style.backgroundImage = `url('${imgUrl}')`;
             el.style.backgroundSize = "cover";
             el.style.backgroundPosition = "center";
             el.style.backgroundRepeat = "no-repeat";
-            // Ensure any existing filters are removed.
             el.style.filter = "none";
           }
         });
@@ -1326,6 +1396,34 @@
       makeAllElementsDropZones();
       
       if (viewSourceEnabled) { attachViewSourceListeners(iframeDoc); }
+    });
+
+    // UNDO and REDO BUTTONS
+    document.getElementById("undoBtn").addEventListener("click", function() {
+      if (undoStack.length > 0) {
+        const lastAction = undoStack.pop();
+        const element = lastAction.element;
+        // Save current state into redo stack
+        const currentBackground = element.style.backgroundImage;
+        redoStack.push({ element: element, background: currentBackground });
+        // Revert to previous background
+        element.style.backgroundImage = lastAction.background;
+      } else {
+        alert("Nothing to undo.");
+      }
+    });
+    document.getElementById("redoBtn").addEventListener("click", function() {
+      if (redoStack.length > 0) {
+        const lastAction = redoStack.pop();
+        const element = lastAction.element;
+        // Save current state into undo stack
+        const currentBackground = element.style.backgroundImage;
+        undoStack.push({ element: element, background: currentBackground });
+        // Apply redo background
+        element.style.backgroundImage = lastAction.background;
+      } else {
+        alert("Nothing to redo.");
+      }
     });
 
     const previewBtn = document.getElementById('previewBtn');

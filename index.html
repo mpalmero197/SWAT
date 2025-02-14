@@ -95,7 +95,7 @@
     .dropped-image-container {
       position: absolute;
       width: 400px;
-      height: 225px; /* 16:9 ratio */
+      height: 225px;
       border: 2px dashed #ccc;
       background: #000;
       overflow: hidden;
@@ -1301,15 +1301,13 @@
           e.stopPropagation();
           const imgUrl = e.dataTransfer.getData("text/plain");
           if (imgUrl) {
-            // Replace this element's content with the dropped image
-            el.innerHTML = "";
-            const img = iframeDoc.createElement("img");
-            img.src = imgUrl;
-            img.draggable = false;
-            img.style.width = "100%";
-            img.style.height = "100%";
-            img.style.objectFit = "contain";
-            el.appendChild(img);
+            // Instead of replacing the content, set the background image.
+            el.style.backgroundImage = `url('${imgUrl}')`;
+            el.style.backgroundSize = "cover";
+            el.style.backgroundPosition = "center";
+            el.style.backgroundRepeat = "no-repeat";
+            // Ensure any existing filters are removed.
+            el.style.filter = "none";
           }
         });
       });

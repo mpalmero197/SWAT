@@ -6,7 +6,19 @@
   <title>Michael's Resume</title>
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700|Open+Sans:300,400" rel="stylesheet">
   <style>
-    /* Reset & Base */
+    /* CSS Variables for consistency */
+    :root {
+      --primary: #5563DE;
+      --secondary: #74ABE2;
+      --accent: #f1f1f1;
+      --dark: #2e3d49;
+      --light-bg: #f8f9fa;
+      --white: #ffffff;
+      --border: #eaeaea;
+      --transition: 0.3s;
+    }
+    
+    /* Global Reset */
     * {
       margin: 0;
       padding: 0;
@@ -15,38 +27,43 @@
     html, body {
       height: 100%;
       font-family: 'Open Sans', sans-serif;
+      color: var(--dark);
     }
     body {
-      background: #f2f2f2;
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
+      overflow: hidden;
     }
     
-    /* Container: Split-Screen Layout */
+    /* Full-Screen Container */
     .container {
       display: flex;
       height: 100vh;
-      max-height: 100vh;
-      width: 100%;
+      width: 100vw;
+      background: var(--white);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
       overflow: hidden;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      animation: fadeIn 0.8s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     
     /* Sidebar */
     .sidebar {
-      background: #2e3d49;
-      color: #fff;
-      width: 300px;
+      background: linear-gradient(135deg, var(--dark), #394d5b);
+      color: var(--white);
+      width: 320px;
       padding: 40px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
     .headshot {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
+      width: 160px;
+      height: 160px;
       overflow: hidden;
-      border: 4px solid #fff;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
     .headshot img {
       width: 100%;
@@ -60,6 +77,7 @@
     .profile h1 {
       font-size: 28px;
       margin-bottom: 10px;
+      font-family: 'Roboto', sans-serif;
     }
     .profile p {
       font-size: 16px;
@@ -81,6 +99,10 @@
     .skills li {
       margin-bottom: 10px;
       font-size: 16px;
+      transition: color var(--transition);
+    }
+    .skills li:hover {
+      color: var(--secondary);
     }
     .contact {
       text-align: center;
@@ -88,18 +110,19 @@
       margin-top: auto;
     }
     .contact a {
-      color: #74ABE2;
+      color: var(--secondary);
       text-decoration: none;
+      transition: color var(--transition);
     }
     .contact a:hover {
       text-decoration: underline;
+      color: var(--accent);
     }
     
     /* Main Content */
     .main-content {
-      background: #fff;
       flex: 1;
-      padding: 40px;
+      padding: 40px 60px;
       overflow-y: auto;
     }
     .section {
@@ -109,27 +132,32 @@
       font-family: 'Roboto', sans-serif;
       font-size: 32px;
       margin-bottom: 20px;
-      color: #2e3d49;
-      border-bottom: 2px solid #eaeaea;
+      color: var(--primary);
+      border-bottom: 2px solid var(--border);
       padding-bottom: 10px;
     }
     .section p {
       font-size: 16px;
-      margin-bottom: 15px;
       line-height: 1.6;
+      margin-bottom: 15px;
       color: #555;
     }
     .entry {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
+      transition: transform var(--transition);
+    }
+    .entry:hover {
+      transform: translateX(8px);
     }
     .entry h3 {
       font-size: 22px;
       margin-bottom: 5px;
-      color: #2e3d49;
+      color: var(--dark);
+      font-family: 'Roboto', sans-serif;
     }
     .entry .date {
       font-size: 14px;
-      color: #999;
+      color: var(--primary);
       margin-bottom: 10px;
     }
     
@@ -137,6 +165,7 @@
     @media (max-width: 768px) {
       .container {
         flex-direction: column;
+        height: auto;
       }
       .sidebar {
         width: 100%;
@@ -153,7 +182,7 @@
     <!-- Sidebar Section -->
     <aside class="sidebar">
       <div class="headshot">
-        <img src="https://via.placeholder.com/150" alt="Professional Headshot">
+        <img src="https://via.placeholder.com/160" alt="Professional Headshot">
       </div>
       <div class="profile">
         <h1>Michael Doe</h1>
@@ -181,7 +210,7 @@
     <div class="main-content">
       <section class="section" id="profile">
         <h2>Profile</h2>
-        <p>A results-driven professional with a strong background in software development and digital design. Adept at creating innovative, user-centric solutions and leading teams to achieve excellence.</p>
+        <p>A results-driven professional with extensive experience in software development and digital design. Adept at creating innovative, user-centric solutions and leading teams to excellence.</p>
       </section>
       
       <section class="section" id="experience">
@@ -189,17 +218,17 @@
         <div class="entry">
           <h3>Senior Developer at TechCorp</h3>
           <div class="date">2018 - Present</div>
-          <p>Led a dynamic team in creating cutting-edge web solutions, integrating modern technologies to drive business success and innovation.</p>
+          <p>Directed a dynamic team in developing advanced web solutions while integrating modern technologies to drive business success.</p>
         </div>
         <div class="entry">
           <h3>UI/UX Designer at Creative Solutions</h3>
           <div class="date">2015 - 2018</div>
-          <p>Developed engaging and user-friendly interfaces, significantly enhancing digital experiences across multiple platforms.</p>
+          <p>Crafted engaging and intuitive interfaces that significantly improved digital user experiences across platforms.</p>
         </div>
         <div class="entry">
           <h3>Junior Developer at WebWorks</h3>
           <div class="date">2013 - 2015</div>
-          <p>Contributed to responsive web application development, honing skills in modern programming frameworks and agile methodologies.</p>
+          <p>Collaborated in building responsive web applications, sharpening skills in modern frameworks and agile methodologies.</p>
         </div>
       </section>
       

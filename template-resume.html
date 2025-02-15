@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Michael's Professional Resume/CV</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700|Open+Sans:300,400" rel="stylesheet">
+  <style>
+    /* CSS Variables for consistency */
+    :root {
+      --primary-color: #5563DE;
+      --secondary-color: #74ABE2;
+      --light-bg: #f8f9fa;
+      --white: #ffffff;
+      --dark-text: #333333;
+      --accent-text: #495057;
+      --border-color: #eaeaea;
+      --transition-speed: 0.3s;
+    }
+
+    /* Reset & Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+      font-family: 'Open Sans', sans-serif;
+      line-height: 1.6;
+      color: var(--dark-text);
+    }
+    body {
+      background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: color var(--transition-speed);
+    }
+    a:hover {
+      color: var(--secondary-color);
+    }
+    
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      background: var(--white);
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 90vh;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    /* Fade-in animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: var(--white);
+      padding: 50px 20px;
+      text-align: center;
+      position: relative;
+    }
+    header::after {
+      content: "";
+      position: absolute;
+      bottom: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      height: 50px;
+      background: var(--white);
+      border-radius: 50%;
+      z-index: 1;
+    }
+    header h1 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 48px;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 2;
+    }
+    header p {
+      font-size: 20px;
+      font-weight: 300;
+      position: relative;
+      z-index: 2;
+    }
+    
+    /* Content Layout */
+    .content {
+      flex: 1;
+      padding: 60px 50px 50px;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      grid-gap: 40px;
+    }
+    .main {
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+    }
+    .section {
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--border-color);
+    }
+    .section:last-child {
+      border-bottom: none;
+    }
+    .section h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 32px;
+      margin-bottom: 15px;
+      color: var(--dark-text);
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+    .section p, .section li {
+      font-size: 16px;
+      color: var(--accent-text);
+      margin-bottom: 10px;
+    }
+    .section ul {
+      list-style: none;
+    }
+    .job, .edu {
+      margin-bottom: 20px;
+      transition: transform var(--transition-speed);
+    }
+    .job:hover, .edu:hover {
+      transform: translateX(5px);
+    }
+    .job-details, .edu-details {
+      margin-bottom: 8px;
+    }
+    .job-title, .edu-title {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--dark-text);
+    }
+    .job-date, .edu-date {
+      font-size: 14px;
+      color: var(--accent-text);
+    }
+    
+    /* Sidebar */
+    .sidebar {
+      background: var(--light-bg);
+      padding: 40px 30px;
+      border-radius: 8px;
+      height: fit-content;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform var(--transition-speed);
+    }
+    .sidebar:hover {
+      transform: translateY(-5px);
+    }
+    /* Headshot Section */
+    .headshot {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      border: 5px solid var(--white);
+    }
+    .headshot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .skill {
+      background-color: var(--border-color);
+      border-radius: 20px;
+      padding: 8px 15px;
+      font-size: 14px;
+      color: var(--accent-text);
+      transition: background-color var(--transition-speed);
+    }
+    .skill:hover {
+      background-color: var(--secondary-color);
+      color: var(--white);
+    }
+    .contact {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 16px;
+      color: var(--accent-text);
+      line-height: 1.8;
+    }
+    
+    /* Responsive */
+    @media (max-width: 992px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        margin-top: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Michael Doe</h1>
+      <p>Full Stack Developer | UI/UX Designer | Technology Enthusiast</p>
+    </header>
+    <div class="content">
+      <div class="main">
+        <section class="section" id="profile">
+          <h2>Profile</h2>
+          <p>A results-driven professional with a strong background in software development and design. Adept at creating innovative solutions, leading teams, and delivering user-friendly experiences with precision and creativity.</p>
+        </section>
+        <section class="section" id="experience">
+          <h2>Experience</h2>
+          <ul>
+            <li class="job">
+              <div class="job-details">
+                <div class="job-title">Senior Developer at TechCorp</div>
+                <p>Led a team in developing cutting-edge web solutions, implementing modern technologies, and ensuring high-quality project delivery.</p>
+              </div>
+              <div class="job-date">
+                <span>2018 - Present</span>
+              </div>
+            </li>
+            <li class="job">
+              <div class="job-details">
+                <div class="job-title">UI/UX Designer at Creative Solutions</div>
+                <p>Crafted user-centric interfaces that enhanced digital engagement and streamlined the user experience across multiple platforms.</p>
+              </div>
+              <div class="job-date">
+                <span>2015 - 2018</span>
+              </div>
+            </li>
+            <li class="job">
+              <div class="job-details">
+                <div class="job-title">Junior Developer at WebWorks</div>
+                <p>Collaborated in developing responsive web applications, mastering modern web technologies and agile methodologies.</p>
+              </div>
+              <div class="job-date">
+                <span>2013 - 2015</span>
+              </div>
+            </li>
+          </ul>
+        </section>
+        <section class="section" id="education">
+          <h2>Education</h2>
+          <ul>
+            <li class="edu">
+              <div class="edu-details">
+                <div class="edu-title">Bachelor of Science in Computer Science</div>
+                <p>University of Technology – Specialized in software development, digital design, and innovative programming paradigms.</p>
+              </div>
+              <div class="edu-date">
+                <span>2009 - 2013</span>
+              </div>
+            </li>
+          </ul>
+        </section>
+      </div>
+      <aside class="sidebar">
+        <!-- Professional Headshot Area -->
+        <div class="headshot">
+          <img src="https://via.placeholder.com/150" alt="Professional Headshot">
+        </div>
+        <section class="section" id="skills">
+          <h2>Skills</h2>
+          <div class="skills">
+            <div class="skill">HTML5</div>
+            <div class="skill">CSS3</div>
+            <div class="skill">JavaScript</div>
+            <div class="skill">React</div>
+            <div class="skill">UI/UX Design</div>
+            <div class="skill">Node.js</div>
+            <div class="skill">Responsive Design</div>
+            <div class="skill">Adobe XD</div>
+          </div>
+        </section>
+        <section class="section" id="contact">
+          <h2>Contact</h2>
+          <div class="contact">
+            <p>Email: <a href="mailto:michael.doe@example.com">michael.doe@example.com</a></p>
+            <p>Phone: (123) 456-7890</p>
+            <p>LinkedIn: <a href="https://linkedin.com/in/michaeldoe" target="_blank">linkedin.com/in/michaeldoe</a></p>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

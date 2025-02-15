@@ -1295,8 +1295,7 @@
       }
     });
     
-    // NEW: Change Text Color functionality in Preview Pane with a Color Picker
-    let savedRange; // To store the current selection range
+    // NEW: Change Text Color functionality in Preview Pane using execCommand
     document.getElementById("changeTextColorBtn").addEventListener("click", function() {
       const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
       const selection = iframeDoc.getSelection();
@@ -1304,8 +1303,6 @@
         alert("Please select some text in the preview pane first.");
         return;
       }
-      // Save the current range before the focus changes
-      savedRange = selection.getRangeAt(0).cloneRange();
       // Trigger the hidden color picker
       document.getElementById("textColorPicker").click();
     });
@@ -1313,21 +1310,11 @@
     document.getElementById("textColorPicker").addEventListener("input", function() {
       const color = this.value;
       const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
-      const selection = iframeDoc.getSelection();
-      // If no current selection, restore our saved range
-      if (selection.rangeCount === 0 && savedRange) {
-        selection.addRange(savedRange);
-      }
-      try {
-        const range = selection.getRangeAt(0);
-        const span = iframeDoc.createElement("span");
-        span.style.color = color;
-        range.surroundContents(span);
-        selection.removeAllRanges();
-      } catch (e) {
-        alert("Error: Unable to change the text color. Try selecting a smaller portion of text.");
-        console.error(e);
-      }
+      // Ensure the iframe is focused so the selection is active
+      iframeDoc.body.focus();
+      // Enable CSS styling with execCommand and apply the chosen color
+      iframeDoc.execCommand("styleWithCSS", false, true);
+      iframeDoc.execCommand("foreColor", false, color);
     });
     
     // VIEW SOURCE & UPDATE ELEMENT FUNCTIONS

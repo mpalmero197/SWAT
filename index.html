@@ -82,7 +82,7 @@
       background: #333;
       color: #fff;
     }
-    /* Custom styling for file input button */
+    /* Custom styling for file input buttons */
     #localImageInput, #folderInput {
       opacity: 0;
       position: absolute;
@@ -207,12 +207,17 @@
     .submenu li { margin: 5px 0; }
     .has-submenu:hover .submenu { display: flex; }
     .has-submenu > a::after { content: " \25BC"; margin-left: 5px; font-size: 0.8em; }
-    /* Template Cards Styles */
+    /* Template Cards Styles (vertical arrangement with grid cards) */
     #remoteTemplateListContainer, #localTemplateListContainer {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 20px;
-      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+    /* Vertical separation between remote and local templates */
+    #templatesTab h3 {
+      margin-bottom: 10px;
+      color: #fff;
     }
     .templateItem {
       background: #2a2a2a;
@@ -288,9 +293,10 @@
   </style>
 </head>
 <body>
-  <!-- Hidden folder input for choosing a local template folder -->
+  <!-- Hidden inputs for folder and image selection, plus hidden text color picker -->
   <input type="file" id="folderInput" webkitdirectory>
-
+  <input type="color" id="textColorPicker" style="display:none;">
+  
   <!-- Left Sidebar Navigation -->
   <div class="sidebar">
     <h1>SWAT Experimental</h1>
@@ -405,15 +411,14 @@
         <button id="saveTemplateBtn" style="background:#4A88F6;">Save Current Template</button>
         <button id="chooseFolderBtn" style="background:#4A88F6;">Choose Local Template Folder</button>
       </div>
-      <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-        <div style="flex: 1;">
-          <h3>Remote Templates</h3>
-          <div id="remoteTemplateListContainer"></div>
-        </div>
-        <div style="flex: 1;">
-          <h3>Local Templates</h3>
-          <div id="localTemplateListContainer"></div>
-        </div>
+      <!-- Vertical arrangement with grid cards -->
+      <div style="margin-bottom: 20px;">
+        <h3>Remote Templates</h3>
+        <div id="remoteTemplateListContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;"></div>
+      </div>
+      <div>
+        <h3>Local Templates</h3>
+        <div id="localTemplateListContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;"></div>
       </div>
     </div>
 
@@ -423,6 +428,8 @@
       <p>This preview shows only the first top-level page. Nav links are intercepted so you can click sub-pages too.</p>
       <button id="previewBtn" style="margin-bottom:20px;">Update Preview</button>
       <button id="toggleViewSourceBtn">Enable View Source</button>
+      <!-- Change Text Color Button -->
+      <button id="changeTextColorBtn">Change Text Color</button>
       <iframe id="previewFrame"></iframe>
       <div id="viewSourcePanel"></div>
       <div id="editElementPanel" style="display: none; margin-top: 10px; background: #1f1f1f; padding: 10px; border: 1px solid #3a3a3a; border-radius: 4px;">
@@ -490,21 +497,19 @@
   <script>
     // Global variable to hold the default folder from the folder chooser.
     let defaultLocalTemplateFolder = localStorage.getItem("defaultLocalTemplateFolder") || "DefaultFolder";
-
+    
     // "Choose Local Template Folder" button triggers the hidden folder input.
     document.getElementById("chooseFolderBtn").addEventListener("click", function() {
       document.getElementById("folderInput").click();
     });
-
+    
     // Process the selected folder from the file input.
     document.getElementById("folderInput").addEventListener("change", function(e) {
       const files = e.target.files;
-      // For each file in the selected folder...
       Array.from(files).forEach(file => {
         if(file.name.toLowerCase().endsWith(".html")) {
           let reader = new FileReader();
           reader.onload = function(ev) {
-            // Extract folder name from the file's relative path.
             let relativePath = file.webkitRelativePath;
             let folder = relativePath.split("/")[0] || "Unknown";
             addLocalTemplateToList(file.name, ev.target.result, folder);
@@ -513,11 +518,11 @@
         }
       });
     });
-
+    
     // Global Undo/Redo Stacks
     let undoStack = [];
     let redoStack = [];
-
+    
     // TAB FUNCTIONALITY
     const tabButtons = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
@@ -532,7 +537,7 @@
     });
     document.getElementById('basicTab').classList.add('active');
     tabButtons[0].classList.add('active');
-
+    
     // FONT SELECTION FUNCTIONALITY
     const fontsList = [
       { name: "Arial", category: "sans-serif" },
@@ -581,7 +586,7 @@
     }
     fontFamilySearchInput.addEventListener('input', function() { renderFontList(this.value); });
     renderFontList();
-
+    
     // PAGE & NAVIGATION
     const pagesContainer = document.getElementById('pagesContainer');
     const addPageBtn = document.getElementById('addPageBtn');
@@ -841,12 +846,12 @@
         }
       });
     }
-
+    
     // Dummy functions for icon use and layout CSS
     function checkIconUse(pageObj, lib) { return false; }
     function getReferencedLayoutCSS(pageObj) { return ""; }
     function getLayoutCSS(layout) { return ""; }
-
+    
     // Build Sections HTML for Preview (each section gets an image drop zone)
     function buildSectionsHTML(sections, pageId) {
       return sections.map((section, index) => {
@@ -864,7 +869,7 @@
         `;
       }).join("");
     }
-
+    
     // IMPORT LAYOUT FUNCTIONALITY
     const importHtmlBtn = document.getElementById('importHtmlBtn');
     const manualHtmlInput = document.getElementById('manualHtmlInput');
@@ -941,7 +946,7 @@
       }
       return null;
     }
-
+    
     // MEDIA SIDEBAR SEARCH & DRAG/DROP (Using Pexels API)
     const mediaSearchInput = document.getElementById('mediaSearchInput');
     const mediaSearchBtn = document.getElementById('mediaSearchBtn');
@@ -986,7 +991,7 @@
         mediaResults.innerHTML = "<p style='color:red;'>Failed to retrieve images.</p>";
       }
     });
-
+    
     // LOCAL IMAGE HANDLER
     const localImageInput = document.getElementById('localImageInput');
     localImageInput.addEventListener('change', function(e) {
@@ -1008,7 +1013,7 @@
         alert("Please select a valid image file.");
       }
     });
-
+    
     // PREVIEW & CODE GENERATION
     function buildPageHTML(pageObj, isPreviewNav) {
       if (pageObj.layout === "raw" && pageObj.rawHTML) {
@@ -1125,7 +1130,7 @@
     .has-submenu:hover .submenu { display: flex; }
     .has-submenu > a::after { content: " \\25BC"; margin-left: 5px; font-size: 0.8em; }
     .layout-container {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 20px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 20px;
     }
     .layout-container .layout-item {
       background-color: ${gBg}; color: ${gTxt}; padding: 20px; border-radius: 8px;
@@ -1161,7 +1166,7 @@
       return t ? t + ".html" : "page-" + pg.id + ".html";
     }
     function isTopLevel(pageObj) { return pages.includes(pageObj); }
-
+    
     // --- Fetch remote templates from GitHub (remote templates only) ---
     fetch('https://api.github.com/repos/mpalmero197/webbuilder/contents/')
       .then(response => response.json())
@@ -1203,7 +1208,7 @@
         });
       })
       .catch(err => console.error('Error fetching repository contents:', err));
-
+    
     // LOCAL TEMPLATE FUNCTIONS
     function addLocalTemplateToList(filename, content, folder) {
       const localTemplateListContainer = document.getElementById('localTemplateListContainer');
@@ -1256,7 +1261,7 @@
       });
     }
     window.addEventListener("load", loadLocalTemplates);
-
+    
     // SAVE CURRENT TEMPLATE BUTTON FUNCTIONALITY
     document.getElementById("saveTemplateBtn").addEventListener("click", function() {
       const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
@@ -1271,7 +1276,7 @@
         if (!fileName.toUpperCase().endsWith(".HTML")) {
           fileName += ".HTML";
         }
-        // Use the defaultLocalTemplateFolder set from folder chooser or localStorage.
+        // Use the defaultLocalTemplateFolder set from the folder chooser.
         let folderName = defaultLocalTemplateFolder;
         let localTemplates = JSON.parse(localStorage.getItem("localTemplates") || "[]");
         localTemplates.push({ filename: fileName, content: templateHTML, folder: folderName });
@@ -1289,7 +1294,42 @@
         alert("Template saved as " + fileName + "\nFolder: " + folderName);
       }
     });
-
+    
+    // NEW: Change Text Color functionality in Preview Pane with a Color Picker
+    let savedRange; // To store the current selection range
+    document.getElementById("changeTextColorBtn").addEventListener("click", function() {
+      const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+      const selection = iframeDoc.getSelection();
+      if (selection.isCollapsed) {
+        alert("Please select some text in the preview pane first.");
+        return;
+      }
+      // Save the current range before the focus changes
+      savedRange = selection.getRangeAt(0).cloneRange();
+      // Trigger the hidden color picker
+      document.getElementById("textColorPicker").click();
+    });
+    
+    document.getElementById("textColorPicker").addEventListener("input", function() {
+      const color = this.value;
+      const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+      const selection = iframeDoc.getSelection();
+      // If no current selection, restore our saved range
+      if (selection.rangeCount === 0 && savedRange) {
+        selection.addRange(savedRange);
+      }
+      try {
+        const range = selection.getRangeAt(0);
+        const span = iframeDoc.createElement("span");
+        span.style.color = color;
+        range.surroundContents(span);
+        selection.removeAllRanges();
+      } catch (e) {
+        alert("Error: Unable to change the text color. Try selecting a smaller portion of text.");
+        console.error(e);
+      }
+    });
+    
     // VIEW SOURCE & UPDATE ELEMENT FUNCTIONS
     let viewSourceEnabled = false;
     const toggleViewSourceBtn = document.getElementById('toggleViewSourceBtn');
@@ -1497,6 +1537,9 @@
     }
     previewFrame.addEventListener('load', function() {
       const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+      // Enable editing in the preview pane so text can be selected.
+      iframeDoc.body.contentEditable = "true";
+      iframeDoc.body.spellcheck = false;
       iframeDoc.body.addEventListener('dragover', function(e) {
         e.preventDefault();
         e.dataTransfer.dropEffect = "copy";
@@ -1504,7 +1547,7 @@
       makeAllElementsDropZones();
       if (viewSourceEnabled) { attachViewSourceListeners(iframeDoc); }
     });
-
+    
     // UNDO and REDO BUTTONS
     document.getElementById("undoBtn").addEventListener("click", function() {
       if (undoStack.length > 0) {
@@ -1528,7 +1571,7 @@
         alert("Nothing to redo.");
       }
     });
-
+    
     const previewBtn = document.getElementById('previewBtn');
     const generateBtn = document.getElementById('generateBtn');
     const clearBtn = document.getElementById('clearBtn');

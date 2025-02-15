@@ -3,88 +3,96 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Michael's Resume</title>
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700|Open+Sans:300,400" rel="stylesheet">
+  <title>Michael's Award-Winning Resume</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700|Open+Sans:300,400&display=swap" rel="stylesheet">
   <style>
-    /* CSS Variables for consistency */
+    /* CSS Variables for a cohesive color scheme */
     :root {
       --primary: #5563DE;
       --secondary: #74ABE2;
-      --accent: #f1f1f1;
       --dark: #2e3d49;
-      --light-bg: #f8f9fa;
+      --light: #f8f9fa;
+      --accent: #f1f1f1;
       --white: #ffffff;
-      --border: #eaeaea;
       --transition: 0.3s;
     }
-    
+
     /* Global Reset */
-    * {
+    *, *::before, *::after {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
+
     html, body {
       height: 100%;
       font-family: 'Open Sans', sans-serif;
       color: var(--dark);
-    }
-    body {
       background: linear-gradient(135deg, var(--secondary), var(--primary));
       overflow: hidden;
     }
-    
-    /* Full-Screen Container */
+
+    /* Container: Full-Screen Split Layout */
     .container {
       display: flex;
       height: 100vh;
       width: 100vw;
       background: var(--white);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      overflow: hidden;
-      animation: fadeIn 0.8s ease-out;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      animation: fadeIn 1s ease-out;
     }
+
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-    
-    /* Sidebar */
+
+    /* Sidebar Styles */
     .sidebar {
       background: linear-gradient(135deg, var(--dark), #394d5b);
-      color: var(--white);
       width: 320px;
       padding: 40px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      color: var(--white);
     }
+
     .headshot {
       width: 160px;
       height: 160px;
-      overflow: hidden;
-      margin-bottom: 30px;
-      /* Optional: add a background color or placeholder style */
       background-color: #ccc;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 14px;
-      color: var(--dark);
+      margin-bottom: 30px;
+      transition: background var(--transition);
     }
+    .headshot:hover {
+      background: #bbb;
+    }
+
     .profile {
       text-align: center;
       margin-bottom: 30px;
     }
     .profile h1 {
+      font-family: 'Roboto', sans-serif;
       font-size: 28px;
       margin-bottom: 10px;
-      font-family: 'Roboto', sans-serif;
     }
     .profile p {
       font-size: 16px;
       line-height: 1.4;
     }
+
     .skills {
       width: 100%;
       margin-bottom: 30px;
@@ -92,7 +100,7 @@
     .skills h2 {
       font-size: 20px;
       margin-bottom: 15px;
-      border-bottom: 1px solid rgba(255,255,255,0.3);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
       padding-bottom: 5px;
     }
     .skills ul {
@@ -102,10 +110,12 @@
       margin-bottom: 10px;
       font-size: 16px;
       transition: color var(--transition);
+      cursor: default;
     }
     .skills li:hover {
       color: var(--secondary);
     }
+
     .contact {
       text-align: center;
       font-size: 16px;
@@ -120,8 +130,8 @@
       text-decoration: underline;
       color: var(--accent);
     }
-    
-    /* Main Content */
+
+    /* Main Content Styles */
     .main-content {
       flex: 1;
       padding: 40px 60px;
@@ -135,7 +145,7 @@
       font-size: 32px;
       margin-bottom: 20px;
       color: var(--primary);
-      border-bottom: 2px solid var(--border);
+      border-bottom: 2px solid var(--accent);
       padding-bottom: 10px;
     }
     .section p {
@@ -152,17 +162,17 @@
       transform: translateX(8px);
     }
     .entry h3 {
+      font-family: 'Roboto', sans-serif;
       font-size: 22px;
       margin-bottom: 5px;
       color: var(--dark);
-      font-family: 'Roboto', sans-serif;
     }
     .entry .date {
       font-size: 14px;
       color: var(--primary);
       margin-bottom: 10px;
     }
-    
+
     /* Responsive Design */
     @media (max-width: 768px) {
       .container {
@@ -184,7 +194,7 @@
     <!-- Sidebar Section -->
     <aside class="sidebar">
       <div class="headshot">
-        <!-- Insert your headshot image here later -->
+        <!-- Empty square div for headshot insertion -->
         Headshot
       </div>
       <div class="profile">

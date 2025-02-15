@@ -3,22 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Michael's Professional Resume/CV</title>
+  <title>Michael's Resume</title>
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700|Open+Sans:300,400" rel="stylesheet">
   <style>
-    /* CSS Variables for consistency */
-    :root {
-      --primary-color: #5563DE;
-      --secondary-color: #74ABE2;
-      --light-bg: #f8f9fa;
-      --white: #ffffff;
-      --dark-text: #333333;
-      --accent-text: #495057;
-      --border-color: #eaeaea;
-      --transition-speed: 0.3s;
-    }
-
-    /* Reset & Base Styles */
+    /* Reset & Base */
     * {
       margin: 0;
       padding: 0;
@@ -27,286 +15,202 @@
     html, body {
       height: 100%;
       font-family: 'Open Sans', sans-serif;
-      line-height: 1.6;
-      color: var(--dark-text);
     }
     body {
-      background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow-y: auto;
-      padding: 20px;
-    }
-    a {
-      color: var(--primary-color);
-      text-decoration: none;
-      transition: color var(--transition-speed);
-    }
-    a:hover {
-      color: var(--secondary-color);
+      background: #f2f2f2;
     }
     
-    /* Container */
+    /* Container: Split-Screen Layout */
     .container {
+      display: flex;
+      height: 100vh;
+      max-height: 100vh;
       width: 100%;
-      max-width: 1200px;
-      background: var(--white);
-      border-radius: 10px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      min-height: 90vh;
-      animation: fadeIn 1s ease-in-out;
-    }
-
-    /* Fade-in animation */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Header */
-    header {
-      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-      color: var(--white);
-      padding: 50px 20px;
-      text-align: center;
-      position: relative;
-    }
-    header::after {
-      content: "";
-      position: absolute;
-      bottom: -25px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      height: 50px;
-      background: var(--white);
-      border-radius: 50%;
-      z-index: 1;
-    }
-    header h1 {
-      font-family: 'Roboto', sans-serif;
-      font-size: 48px;
-      margin-bottom: 10px;
-      position: relative;
-      z-index: 2;
-    }
-    header p {
-      font-size: 20px;
-      font-weight: 300;
-      position: relative;
-      z-index: 2;
-    }
-    
-    /* Content Layout */
-    .content {
-      flex: 1;
-      padding: 60px 50px 50px;
-      display: grid;
-      grid-template-columns: 1fr 300px;
-      grid-gap: 40px;
-    }
-    .main {
-      display: flex;
-      flex-direction: column;
-      gap: 50px;
-    }
-    .section {
-      padding-bottom: 20px;
-      border-bottom: 2px solid var(--border-color);
-    }
-    .section:last-child {
-      border-bottom: none;
-    }
-    .section h2 {
-      font-family: 'Roboto', sans-serif;
-      font-size: 32px;
-      margin-bottom: 15px;
-      color: var(--dark-text);
-      border-bottom: 2px solid var(--border-color);
-      padding-bottom: 10px;
-    }
-    .section p, .section li {
-      font-size: 16px;
-      color: var(--accent-text);
-      margin-bottom: 10px;
-    }
-    .section ul {
-      list-style: none;
-    }
-    .job, .edu {
-      margin-bottom: 20px;
-      transition: transform var(--transition-speed);
-    }
-    .job:hover, .edu:hover {
-      transform: translateX(5px);
-    }
-    .job-details, .edu-details {
-      margin-bottom: 8px;
-    }
-    .job-title, .edu-title {
-      font-size: 20px;
-      font-weight: 500;
-      color: var(--dark-text);
-    }
-    .job-date, .edu-date {
-      font-size: 14px;
-      color: var(--accent-text);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
     }
     
     /* Sidebar */
     .sidebar {
-      background: var(--light-bg);
-      padding: 40px 30px;
-      border-radius: 8px;
-      height: fit-content;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: transform var(--transition-speed);
+      background: #2e3d49;
+      color: #fff;
+      width: 300px;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    .sidebar:hover {
-      transform: translateY(-5px);
-    }
-    /* Headshot Section */
     .headshot {
       width: 150px;
       height: 150px;
       border-radius: 50%;
-      margin: 0 auto 20px;
       overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      border: 5px solid var(--white);
+      border: 4px solid #fff;
+      margin-bottom: 20px;
     }
     .headshot img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
+    .profile {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .profile h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .profile p {
+      font-size: 16px;
+      line-height: 1.4;
+    }
     .skills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 10px;
+      width: 100%;
+      margin-bottom: 30px;
     }
-    .skill {
-      background-color: var(--border-color);
-      border-radius: 20px;
-      padding: 8px 15px;
-      font-size: 14px;
-      color: var(--accent-text);
-      transition: background-color var(--transition-speed);
+    .skills h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid rgba(255,255,255,0.3);
+      padding-bottom: 5px;
     }
-    .skill:hover {
-      background-color: var(--secondary-color);
-      color: var(--white);
+    .skills ul {
+      list-style: none;
+    }
+    .skills li {
+      margin-bottom: 10px;
+      font-size: 16px;
     }
     .contact {
-      margin-top: 30px;
       text-align: center;
       font-size: 16px;
-      color: var(--accent-text);
-      line-height: 1.8;
+      margin-top: auto;
+    }
+    .contact a {
+      color: #74ABE2;
+      text-decoration: none;
+    }
+    .contact a:hover {
+      text-decoration: underline;
     }
     
-    /* Responsive */
-    @media (max-width: 992px) {
-      .content {
-        grid-template-columns: 1fr;
+    /* Main Content */
+    .main-content {
+      background: #fff;
+      flex: 1;
+      padding: 40px;
+      overflow-y: auto;
+    }
+    .section {
+      margin-bottom: 40px;
+    }
+    .section h2 {
+      font-family: 'Roboto', sans-serif;
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #2e3d49;
+      border-bottom: 2px solid #eaeaea;
+      padding-bottom: 10px;
+    }
+    .section p {
+      font-size: 16px;
+      margin-bottom: 15px;
+      line-height: 1.6;
+      color: #555;
+    }
+    .entry {
+      margin-bottom: 20px;
+    }
+    .entry h3 {
+      font-size: 22px;
+      margin-bottom: 5px;
+      color: #2e3d49;
+    }
+    .entry .date {
+      font-size: 14px;
+      color: #999;
+      margin-bottom: 10px;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
       }
       .sidebar {
-        margin-top: 40px;
+        width: 100%;
+        padding: 20px;
+      }
+      .main-content {
+        padding: 20px;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1>Michael Doe</h1>
-      <p>Full Stack Developer | UI/UX Designer | Technology Enthusiast</p>
-    </header>
-    <div class="content">
-      <div class="main">
-        <section class="section" id="profile">
-          <h2>Profile</h2>
-          <p>A results-driven professional with a strong background in software development and design. Adept at creating innovative solutions, leading teams, and delivering user-friendly experiences with precision and creativity.</p>
-        </section>
-        <section class="section" id="experience">
-          <h2>Experience</h2>
-          <ul>
-            <li class="job">
-              <div class="job-details">
-                <div class="job-title">Senior Developer at TechCorp</div>
-                <p>Led a team in developing cutting-edge web solutions, implementing modern technologies, and ensuring high-quality project delivery.</p>
-              </div>
-              <div class="job-date">
-                <span>2018 - Present</span>
-              </div>
-            </li>
-            <li class="job">
-              <div class="job-details">
-                <div class="job-title">UI/UX Designer at Creative Solutions</div>
-                <p>Crafted user-centric interfaces that enhanced digital engagement and streamlined the user experience across multiple platforms.</p>
-              </div>
-              <div class="job-date">
-                <span>2015 - 2018</span>
-              </div>
-            </li>
-            <li class="job">
-              <div class="job-details">
-                <div class="job-title">Junior Developer at WebWorks</div>
-                <p>Collaborated in developing responsive web applications, mastering modern web technologies and agile methodologies.</p>
-              </div>
-              <div class="job-date">
-                <span>2013 - 2015</span>
-              </div>
-            </li>
-          </ul>
-        </section>
-        <section class="section" id="education">
-          <h2>Education</h2>
-          <ul>
-            <li class="edu">
-              <div class="edu-details">
-                <div class="edu-title">Bachelor of Science in Computer Science</div>
-                <p>University of Technology – Specialized in software development, digital design, and innovative programming paradigms.</p>
-              </div>
-              <div class="edu-date">
-                <span>2009 - 2013</span>
-              </div>
-            </li>
-          </ul>
-        </section>
+    <!-- Sidebar Section -->
+    <aside class="sidebar">
+      <div class="headshot">
+        <img src="https://via.placeholder.com/150" alt="Professional Headshot">
       </div>
-      <aside class="sidebar">
-        <!-- Professional Headshot Area -->
-        <div class="headshot">
-          <img src="https://via.placeholder.com/150" alt="Professional Headshot">
+      <div class="profile">
+        <h1>Michael Doe</h1>
+        <p>Full Stack Developer<br>UI/UX Designer</p>
+      </div>
+      <div class="skills">
+        <h2>Skills</h2>
+        <ul>
+          <li>HTML5 / CSS3</li>
+          <li>JavaScript / React</li>
+          <li>Node.js</li>
+          <li>UI/UX Design</li>
+          <li>Responsive Design</li>
+          <li>Adobe XD</li>
+        </ul>
+      </div>
+      <div class="contact">
+        <p><a href="mailto:michael.doe@example.com">michael.doe@example.com</a></p>
+        <p>(123) 456-7890</p>
+        <p><a href="https://linkedin.com/in/michaeldoe" target="_blank">LinkedIn</a></p>
+      </div>
+    </aside>
+    
+    <!-- Main Content Section -->
+    <div class="main-content">
+      <section class="section" id="profile">
+        <h2>Profile</h2>
+        <p>A results-driven professional with a strong background in software development and digital design. Adept at creating innovative, user-centric solutions and leading teams to achieve excellence.</p>
+      </section>
+      
+      <section class="section" id="experience">
+        <h2>Experience</h2>
+        <div class="entry">
+          <h3>Senior Developer at TechCorp</h3>
+          <div class="date">2018 - Present</div>
+          <p>Led a dynamic team in creating cutting-edge web solutions, integrating modern technologies to drive business success and innovation.</p>
         </div>
-        <section class="section" id="skills">
-          <h2>Skills</h2>
-          <div class="skills">
-            <div class="skill">HTML5</div>
-            <div class="skill">CSS3</div>
-            <div class="skill">JavaScript</div>
-            <div class="skill">React</div>
-            <div class="skill">UI/UX Design</div>
-            <div class="skill">Node.js</div>
-            <div class="skill">Responsive Design</div>
-            <div class="skill">Adobe XD</div>
-          </div>
-        </section>
-        <section class="section" id="contact">
-          <h2>Contact</h2>
-          <div class="contact">
-            <p>Email: <a href="mailto:michael.doe@example.com">michael.doe@example.com</a></p>
-            <p>Phone: (123) 456-7890</p>
-            <p>LinkedIn: <a href="https://linkedin.com/in/michaeldoe" target="_blank">linkedin.com/in/michaeldoe</a></p>
-          </div>
-        </section>
-      </aside>
+        <div class="entry">
+          <h3>UI/UX Designer at Creative Solutions</h3>
+          <div class="date">2015 - 2018</div>
+          <p>Developed engaging and user-friendly interfaces, significantly enhancing digital experiences across multiple platforms.</p>
+        </div>
+        <div class="entry">
+          <h3>Junior Developer at WebWorks</h3>
+          <div class="date">2013 - 2015</div>
+          <p>Contributed to responsive web application development, honing skills in modern programming frameworks and agile methodologies.</p>
+        </div>
+      </section>
+      
+      <section class="section" id="education">
+        <h2>Education</h2>
+        <div class="entry">
+          <h3>B.Sc. in Computer Science</h3>
+          <div class="date">2009 - 2013</div>
+          <p>University of Technology – Specialized in software engineering, digital design, and innovative programming practices.</p>
+        </div>
+      </section>
     </div>
   </div>
 </body>

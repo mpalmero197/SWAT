@@ -468,6 +468,7 @@
       background: rgba(255, 255, 255, 0.2);
       outline: none;
     }
+    /* Custom innovative color picker for Basic Settings */
     .basic-card input[type="color"] {
       -webkit-appearance: none;
       appearance: none;
@@ -554,25 +555,14 @@
       background: #f2f2f2;
       border-color: #ccc;
     }
+    /* Ensure labels in section items are dark */
     .light-theme .sectionItem label {
       color: #333;
-    }
-    /* Light-theme overrides for all .field inputs */
-    .light-theme .field input,
-    .light-theme .field textarea,
-    .light-theme .field select {
-      background: #f9f9f9;
-      color: #111;
-      border: 1px solid #ccc;
     }
     .light-theme .templateItem {
       background: #f9f9f9;
       border-color: #ddd;
       color: #111;
-    }
-    /* Specifically fix templateItem h3 color in light mode */
-    .light-theme .templateItem h3 {
-      color: #111 !important;
     }
     .light-theme #previewFrame {
       background: #fff;
@@ -590,7 +580,6 @@
     }
     .light-theme .basic-card {
       background: #fff;
-      color: #111;
     }
     .light-theme .basic-card label {
       color: #333;
@@ -603,21 +592,20 @@
       color: #111;
       border: 1px solid #ccc;
     }
+    /* Make reorder buttons lighter in light theme */
     .light-theme .reorder-btns button {
       background: #ddd;
       color: #333;
     }
+    /* Edit Element Panel in light theme */
     .light-theme #editElementPanel {
       background: #f9f9f9;
       border: 1px solid #ccc;
       color: #111;
     }
+    /* Make all labels dark in light theme */
     .light-theme label {
       color: #333;
-    }
-    /* Optional placeholder color in light mode */
-    .light-theme ::placeholder {
-      color: #666;
     }
   </style>
 </head>
@@ -657,6 +645,7 @@
     <div class="field">
       <label for="localImageInput">Or Choose Image:</label>
       <label for="localImageInput" class="custom-file-label">Browse...</label>
+      <input type="file" id="localImageInput" accept="image/*">
     </div>
     <div class="buttons">
       <button id="undoBtn">Undo</button>
@@ -771,6 +760,7 @@
       </div>
       <iframe id="previewFrame"></iframe>
       <div id="viewSourcePanel"></div>
+      <!-- Edit Element Panel -->
       <div id="editElementPanel" style="display:none; margin-top:10px; background:#1f1f1f; padding:10px; border:1px solid #444; border-radius:4px;">
         <textarea id="editElementTextarea" style="width:100%; height:150px; font-family:'Courier New', monospace; font-size:0.8rem;"></textarea>
         <div class="buttons">

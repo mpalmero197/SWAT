@@ -3,9 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Resume</title>
+  <title>Michael's Award-Winning Resume</title>
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700|Open+Sans:300,400&display=swap" rel="stylesheet">
+  <meta name="description" content="Michael's Award-Winning Resume, showcasing skills, experience, and education in a modern, interactive design.">
   <style>
+    /* CSS Reset */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     /* CSS Variables for a cohesive color scheme */
     :root {
       --primary: #5563DE;
@@ -15,13 +23,7 @@
       --accent: #f1f1f1;
       --white: #ffffff;
       --transition: 0.3s;
-    }
-
-    /* Global Reset */
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+      --shadow: rgba(0, 0, 0, 0.1);
     }
 
     html, body {
@@ -29,16 +31,16 @@
       font-family: 'Open Sans', sans-serif;
       color: var(--dark);
       background: linear-gradient(135deg, var(--secondary), var(--primary));
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
-    /* Container: Full-Screen Split Layout */
+    /* Container: Full Screen Layout with subtle animations */
     .container {
       display: flex;
-      height: 100vh;
-      width: 100vw;
+      min-height: 100vh;
+      width: 100%;
       background: var(--white);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 10px 30px var(--shadow);
       animation: fadeIn 1s ease-out;
     }
 
@@ -54,7 +56,7 @@
     }
 
     /* Sidebar Styles */
-    .sidebar {
+    aside.sidebar {
       background: linear-gradient(135deg, var(--dark), #394d5b);
       width: 320px;
       padding: 40px 20px;
@@ -62,21 +64,33 @@
       flex-direction: column;
       align-items: center;
       color: var(--white);
+      position: relative;
+      overflow: hidden;
+    }
+
+    aside.sidebar::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.3));
+      pointer-events: none;
     }
 
     .headshot {
       width: 160px;
       height: 160px;
-      background-color: #ccc;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
+      background: url('https://via.placeholder.com/160') center/cover no-repeat;
+      border-radius: 50%;
+      border: 4px solid var(--secondary);
+      box-shadow: 0 4px 8px var(--shadow);
       margin-bottom: 30px;
-      transition: background var(--transition);
+      transition: transform var(--transition);
     }
     .headshot:hover {
-      background: #bbb;
+      transform: scale(1.05);
     }
 
     .profile {
@@ -111,6 +125,16 @@
       font-size: 16px;
       transition: color var(--transition);
       cursor: default;
+      position: relative;
+      padding-left: 20px;
+    }
+    .skills li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--secondary);
+      font-size: 14px;
+      top: 1px;
     }
     .skills li:hover {
       color: var(--secondary);
@@ -120,6 +144,7 @@
       text-align: center;
       font-size: 16px;
       margin-top: auto;
+      z-index: 1;
     }
     .contact a {
       color: var(--secondary);
@@ -147,6 +172,16 @@
       color: var(--primary);
       border-bottom: 2px solid var(--accent);
       padding-bottom: 10px;
+      position: relative;
+    }
+    .section h2::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 50px;
+      height: 2px;
+      background: var(--primary);
     }
     .section p {
       font-size: 16px;
@@ -156,10 +191,13 @@
     }
     .entry {
       margin-bottom: 25px;
-      transition: transform var(--transition);
+      transition: transform var(--transition), box-shadow var(--transition);
+      padding: 15px;
+      border-radius: 8px;
     }
     .entry:hover {
       transform: translateX(8px);
+      box-shadow: 0 4px 12px var(--shadow);
     }
     .entry h3 {
       font-family: 'Roboto', sans-serif;
@@ -173,13 +211,24 @@
       margin-bottom: 10px;
     }
 
+    /* Custom Scrollbar */
+    .main-content::-webkit-scrollbar {
+      width: 8px;
+    }
+    .main-content::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 4px;
+    }
+    .main-content::-webkit-scrollbar-track {
+      background: var(--accent);
+    }
+
     /* Responsive Design */
     @media (max-width: 768px) {
       .container {
         flex-direction: column;
-        height: auto;
       }
-      .sidebar {
+      aside.sidebar {
         width: 100%;
         padding: 20px;
       }
@@ -193,9 +242,7 @@
   <div class="container">
     <!-- Sidebar Section -->
     <aside class="sidebar">
-      <div class="headshot">
-        <!-- Empty square div for headshot insertion -->
-      </div>
+      <div class="headshot"></div>
       <div class="profile">
         <h1>Michael Doe</h1>
         <p>Full Stack Developer<br>UI/UX Designer</p>
@@ -219,7 +266,7 @@
     </aside>
     
     <!-- Main Content Section -->
-    <div class="main-content">
+    <main class="main-content">
       <section class="section" id="profile">
         <h2>Profile</h2>
         <p>A results-driven professional with extensive experience in software development and digital design. Adept at creating innovative, user-centric solutions and leading teams to excellence.</p>
@@ -252,7 +299,7 @@
           <p>University of Technology – Specialized in software engineering, digital design, and innovative programming practices.</p>
         </div>
       </section>
-    </div>
+    </main>
   </div>
 </body>
 </html>

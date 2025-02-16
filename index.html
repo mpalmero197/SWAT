@@ -63,7 +63,6 @@
       height: calc(100vh - 60px);
       background: #1f1f1f;
       padding: 20px;
-      /* Removed overflow-y here so that only the image results scroll */
       border-left: 2px solid #4A88F6;
       z-index: 1000;
     }
@@ -469,7 +468,6 @@
       background: rgba(255, 255, 255, 0.2);
       outline: none;
     }
-    /* Custom innovative color picker for Basic Settings */
     .basic-card input[type="color"] {
       -webkit-appearance: none;
       appearance: none;
@@ -497,6 +495,130 @@
     /* =========================
        Basic Settings Revamp End
        ========================= */
+
+    /* ======================================
+       Light Theme Overrides (Toggled Class)
+       ====================================== */
+    body.light-theme {
+      background: #fafafa;
+      color: #1a1a1a;
+    }
+    .light-theme .sidebar {
+      background: #f4f4f4;
+      border-bottom: 2px solid #4A88F6;
+    }
+    .light-theme .sidebar h1 {
+      color: #1a1a1a;
+    }
+    .light-theme .tab-btn {
+      color: #555;
+    }
+    .light-theme .tab-btn.active {
+      color: #4A88F6;
+    }
+    .light-theme #mediaSidebar {
+      background: #eaeaea;
+      border-left: 2px solid #4A88F6;
+    }
+    .light-theme #mediaSidebar h2 {
+      color: #333;
+    }
+    .light-theme #mediaSidebar input[type="text"],
+    .light-theme #mediaSidebar input[type="file"] {
+      background: #f4f4f4;
+      color: #333;
+      border: 1px solid #ccc;
+    }
+    .light-theme #mediaSidebar .buttons button {
+      background: #4A88F6;
+      color: #fff;
+    }
+    .light-theme .main-content {
+      background: #fff;
+      color: #333;
+    }
+    .light-theme .main-content h2 {
+      color: #111;
+    }
+    .light-theme .main-content p {
+      color: #444;
+    }
+    .light-theme .pageItem {
+      background: #f9f9f9;
+      border-color: #ddd;
+    }
+    .light-theme .pageItem h3 {
+      color: #111;
+    }
+    .light-theme .sectionItem {
+      background: #f2f2f2;
+      border-color: #ccc;
+    }
+    .light-theme .sectionItem label {
+      color: #333;
+    }
+    /* Light-theme overrides for all .field inputs */
+    .light-theme .field input,
+    .light-theme .field textarea,
+    .light-theme .field select {
+      background: #f9f9f9;
+      color: #111;
+      border: 1px solid #ccc;
+    }
+    .light-theme .templateItem {
+      background: #f9f9f9;
+      border-color: #ddd;
+      color: #111;
+    }
+    /* Specifically fix templateItem h3 color in light mode */
+    .light-theme .templateItem h3 {
+      color: #111 !important;
+    }
+    .light-theme #previewFrame {
+      background: #fff;
+    }
+    .light-theme #generatedCode {
+      background: #eee;
+      color: #333;
+      border: 1px solid #bbb;
+    }
+    .light-theme #basicTab {
+      background: linear-gradient(135deg, #f9f9f9, #efefef);
+    }
+    .light-theme #basicTab h2 {
+      color: #111;
+    }
+    .light-theme .basic-card {
+      background: #fff;
+      color: #111;
+    }
+    .light-theme .basic-card label {
+      color: #333;
+    }
+    .light-theme .basic-card input[type="text"],
+    .light-theme .basic-card input[type="number"],
+    .light-theme .basic-card textarea,
+    .light-theme .basic-card select {
+      background: #f9f9f9;
+      color: #111;
+      border: 1px solid #ccc;
+    }
+    .light-theme .reorder-btns button {
+      background: #ddd;
+      color: #333;
+    }
+    .light-theme #editElementPanel {
+      background: #f9f9f9;
+      border: 1px solid #ccc;
+      color: #111;
+    }
+    .light-theme label {
+      color: #333;
+    }
+    /* Optional placeholder color in light mode */
+    .light-theme ::placeholder {
+      color: #666;
+    }
   </style>
 </head>
 <body>
@@ -507,6 +629,12 @@
   <!-- Top Navigation Bar -->
   <div class="sidebar">
     <h1>SWAT Experimental</h1>
+
+    <!-- Theme Toggle Button (top right) -->
+    <button id="themeToggle" style="background: #4A88F6; color: #fff; border-radius: 4px; padding: 8px 16px; margin-left: 20px; cursor: pointer;">
+      Toggle Theme
+    </button>
+
     <div class="tab-nav">
       <button class="tab-btn active" data-tab="basicTab">Basic Settings</button>
       <button class="tab-btn" data-tab="pagesTab">Pages & Navigation</button>
@@ -795,7 +923,10 @@
     function createPageEditor(parentPage) {
       const pageId = pageCount++;
       const pageObj = { id: pageId, title: "Untitled Page", layout: "single", sections: [], subPages: [], importedParts: null };
-      if (parentPage) { pageObj.parent = parentPage.id; parentPage.subPages.push(pageObj); }
+      if (parentPage) {
+        pageObj.parent = parentPage.id;
+        parentPage.subPages.push(pageObj);
+      }
       else { pages.push(pageObj); }
       const pageDiv = document.createElement('div');
       pageDiv.classList.add('pageItem');
@@ -837,7 +968,9 @@
         const parentDiv = pagesContainer.querySelector(`.pageItem[data-pageid="${parentPage.id}"]`);
         if (!parentDiv) { pagesContainer.appendChild(pageDiv); }
         else { parentDiv.insertAdjacentElement('afterend', pageDiv); }
-      } else { pagesContainer.appendChild(pageDiv); }
+      } else {
+        pagesContainer.appendChild(pageDiv);
+      }
       pageDiv.querySelector('.removePageBtn').addEventListener('click', () => { removePage(pageObj, pageDiv); });
       const titleInput = pageDiv.querySelector('.pageTitleInput');
       titleInput.addEventListener('input', (e) => { pageObj.title = e.target.value.trim(); });
@@ -849,16 +982,23 @@
       pageDiv.querySelector('.addSectionBtn').addEventListener('click', () => { createSectionEditor(pageObj, sectionContainer); });
       if (!parentPage) {
         const addSubPageBtn = pageDiv.querySelector('.addSubPageBtn');
-        if(addSubPageBtn) { addSubPageBtn.addEventListener('click', () => { createPageEditor(pageObj); }); }
+        if(addSubPageBtn) {
+          addSubPageBtn.addEventListener('click', () => { createPageEditor(pageObj); });
+        }
       }
     }
     function removePage(pageObj, pageDiv) {
-      if (pageObj) { pageObjSubSearch(pageObj.id, pages); }
+      if (pageObj) {
+        pageObjSubSearch(pageObj.id, pages);
+      }
       pageDiv.remove();
     }
     function pageObjSubSearch(id, pageArr) {
       for (let i = 0; i < pageArr.length; i++) {
-        if (pageArr[i].id === id) { pageArr.splice(i, 1); return true; }
+        if (pageArr[i].id === id) {
+          pageArr.splice(i, 1);
+          return true;
+        }
         else if (pageArr[i].subPages.length > 0) {
           const found = pageObjSubSearch(id, pageArr[i].subPages);
           if (found) return true;
@@ -976,12 +1116,22 @@
       secHeadingColor.value = sectionData.headingColor;
       secParagraphColor.value = sectionData.paragraphColor;
       function updateBgFields() {
-        if (bgTypeSelect.value === "color") { bgColorField.style.display = "block"; bgImageField.style.display = "none"; }
-        else if (bgTypeSelect.value === "graphic") { bgColorField.style.display = "none"; bgImageField.style.display = "block"; }
-        else { bgColorField.style.display = "none"; bgImageField.style.display = "none"; }
+        if (bgTypeSelect.value === "color") {
+          bgColorField.style.display = "block";
+          bgImageField.style.display = "none";
+        } else if (bgTypeSelect.value === "graphic") {
+          bgColorField.style.display = "none";
+          bgImageField.style.display = "block";
+        } else {
+          bgColorField.style.display = "none";
+          bgImageField.style.display = "none";
+        }
       }
       updateBgFields();
-      bgTypeSelect.addEventListener('change', () => { sectionData.bgType = bgTypeSelect.value; updateBgFields(); });
+      bgTypeSelect.addEventListener('change', () => {
+        sectionData.bgType = bgTypeSelect.value;
+        updateBgFields();
+      });
       secBgColor.addEventListener('input', e => { sectionData.bgColor = e.target.value; });
       secBgImage.addEventListener('input', e => { sectionData.bgImage = e.target.value.trim(); });
       secHeadingColor.addEventListener('input', e => { sectionData.headingColor = e.target.value; });
@@ -992,11 +1142,17 @@
       paragraphIndentInput.addEventListener('input', e => { sectionData.paragraphIndent = parseInt(e.target.value, 10) || 0; });
       artInput.addEventListener('input', e => { sectionData.art = e.target.value.trim(); });
       imageInput.addEventListener('input', e => { sectionData.image = e.target.value.trim(); });
-      iconLibrarySelect.addEventListener('change', () => { sectionData.iconLibrary = iconLibrarySelect.value; renderIconField(); });
+      iconLibrarySelect.addEventListener('change', () => {
+        sectionData.iconLibrary = iconLibrarySelect.value;
+        renderIconField();
+      });
       function renderIconField() {
         iconValueContainer.innerHTML = "";
         const currentLib = iconLibrarySelect.value;
-        if (currentLib === "none") { sectionData.iconValue = ""; return; }
+        if (currentLib === "none") {
+          sectionData.iconValue = "";
+          return;
+        }
         else if (currentLib === "fontAwesome") {
           const selectEl = document.createElement('select');
           selectEl.innerHTML = `
@@ -1012,13 +1168,15 @@
           iconValueContainer.appendChild(selectEl);
         } else if (currentLib === "materialIcons") {
           const inputEl = document.createElement('input');
-          inputEl.type = "text"; inputEl.placeholder = "e.g. 'face', 'home'";
+          inputEl.type = "text"; 
+          inputEl.placeholder = "e.g. 'face', 'home'";
           inputEl.value = sectionData.iconValue || "";
           inputEl.addEventListener('input', e => { sectionData.iconValue = e.target.value.trim(); });
           iconValueContainer.appendChild(inputEl);
         } else if (currentLib === "nounProject") {
           const inputEl = document.createElement('input');
-          inputEl.type = "text"; inputEl.placeholder = "Icon URL";
+          inputEl.type = "text";
+          inputEl.placeholder = "Icon URL";
           inputEl.value = sectionData.iconValue || "";
           inputEl.addEventListener('input', e => { sectionData.iconValue = e.target.value.trim(); });
           iconValueContainer.appendChild(inputEl);
@@ -1027,7 +1185,9 @@
       renderIconField();
       removeSectionBtn.addEventListener('click', () => {
         const idx = pageObj.sections.indexOf(sectionData);
-        if (idx !== -1) { pageObj.sections.splice(idx, 1); }
+        if (idx !== -1) {
+          pageObj.sections.splice(idx, 1);
+        }
         secDiv.remove();
       });
       moveUpBtn.addEventListener('click', () => {
@@ -1074,18 +1234,26 @@
     const manualHtmlInput = document.getElementById('manualHtmlInput');
     importHtmlBtn.addEventListener('click', () => {
       const htmlString = manualHtmlInput.value.trim();
-      if (!htmlString) { alert("Please paste HTML code."); return; }
+      if (!htmlString) {
+        alert("Please paste HTML code.");
+        return;
+      }
       const parts = separateHTMLParts(htmlString);
       showImportOptions(parts, (selectedParts) => {
         const pageId = prompt("Enter the Page ID to import these parts (e.g., 0, 1):");
         if (pageId === null) return;
         const targetPage = findPageById(parseInt(pageId, 10), pages);
-        if (!targetPage) { alert("Page not found."); return; }
+        if (!targetPage) {
+          alert("Page not found.");
+          return;
+        }
         targetPage.importedParts = selectedParts;
         targetPage.layout = "ReferencedSiteLayout";
         const pageDiv = document.querySelector(`.pageItem[data-pageid="${targetPage.id}"]`);
         const layoutSelect = pageDiv.querySelector('.pageLayoutSelect');
-        if (layoutSelect) { layoutSelect.value = "ReferencedSiteLayout"; }
+        if (layoutSelect) {
+          layoutSelect.value = "ReferencedSiteLayout";
+        }
         alert("Imported selected HTML parts into the page!");
       });
     });
@@ -1097,12 +1265,18 @@
       let styleContent = "";
       let scriptContent = "";
       const styleElements = doc.head ? doc.head.querySelectorAll("style") : [];
-      styleElements.forEach(styleEl => { styleContent += styleEl.outerHTML; headContent = headContent.replace(styleEl.outerHTML, ""); });
+      styleElements.forEach(styleEl => {
+        styleContent += styleEl.outerHTML;
+        headContent = headContent.replace(styleEl.outerHTML, "");
+      });
       const scriptElements = doc.querySelectorAll("script");
       scriptElements.forEach(scriptEl => {
         scriptContent += scriptEl.outerHTML;
-        if (scriptEl.parentNode.tagName.toLowerCase() === "head") { headContent = headContent.replace(scriptEl.outerHTML, ""); }
-        else if (scriptEl.parentNode.tagName.toLowerCase() === "body") { bodyContent = bodyContent.replace(scriptEl.outerHTML, ""); }
+        if (scriptEl.parentNode.tagName.toLowerCase() === "head") {
+          headContent = headContent.replace(scriptEl.outerHTML, "");
+        } else if (scriptEl.parentNode.tagName.toLowerCase() === "body") {
+          bodyContent = bodyContent.replace(scriptEl.outerHTML, "");
+        }
       });
       return { head: headContent.trim(), style: styleContent.trim(), body: bodyContent.trim(), scripts: scriptContent.trim() };
     }
@@ -1124,7 +1298,9 @@
       `;
       overlay.appendChild(modal);
       document.body.appendChild(overlay);
-      document.getElementById('cancelImport').addEventListener('click', () => { document.body.removeChild(overlay); });
+      document.getElementById('cancelImport').addEventListener('click', () => {
+        document.body.removeChild(overlay);
+      });
       document.getElementById('confirmImport').addEventListener('click', () => {
         const selectedParts = {};
         if (document.getElementById('importHead').checked) { selectedParts.head = parts.head; }
@@ -1223,7 +1399,7 @@
       const googleFonts = {
         "Montserrat": "https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap",
         "Roboto": "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap",
-        "Open Sans": "https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600,700&display=swap",
+        "Open Sans": "https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap",
         "Lato": "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",
         "Oswald": "https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap",
         "Raleway": "https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap",
@@ -1272,7 +1448,9 @@
       }
       const sectionsHTML = buildSectionsHTML(pageObj.sections, pageObj.id);
       let navHTML = "";
-      if (includeNav.checked && isTopLevel(pageObj)) { navHTML = buildNavHTML(pages, isPreviewNav); }
+      if (includeNav.checked && isTopLevel(pageObj)) {
+        navHTML = buildNavHTML(pages, isPreviewNav);
+      }
       let layoutCSS = (pageObj.layout === "ReferencedSiteLayout") ? getReferencedLayoutCSS(pageObj) : getLayoutCSS(pageObj.layout);
       const usedFA = checkIconUse(pageObj, "fontAwesome");
       const usedMI = checkIconUse(pageObj, "materialIcons");
@@ -1351,7 +1529,9 @@
       let result = [];
       for (let p of pageArr) {
         result.push(p);
-        if (p.subPages && p.subPages.length > 0) { result = result.concat(flattenPages(p.subPages)); }
+        if (p.subPages && p.subPages.length > 0) {
+          result = result.concat(flattenPages(p.subPages));
+        }
       }
       return result;
     }
@@ -1359,7 +1539,39 @@
       const t = pg.title.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/gi, '');
       return t ? t + ".html" : "page-" + pg.id + ".html";
     }
-    function isTopLevel(pageObj) { return pages.includes(pageObj); }
+    function isTopLevel(pageObj) {
+      return pages.includes(pageObj);
+    }
+    // Build Navigation HTML
+    function buildNavHTML(pageArr, isPreviewNav) {
+      let navHTML = `<nav><ul>`;
+      pageArr.forEach(p => {
+        const filename = pageFilename(p);
+        if (p.subPages.length > 0) {
+          navHTML += `
+            <li class="has-submenu">
+              <a href="${isPreviewNav ? '#' : filename}" onclick="${isPreviewNav ? `openPageInPreview('${filename}')` : ''}">${p.title}</a>
+              <ul class="submenu">
+          `;
+          p.subPages.forEach(sp => {
+            const subFilename = pageFilename(sp);
+            navHTML += `
+              <li><a href="${isPreviewNav ? '#' : subFilename}" onclick="${isPreviewNav ? `openPageInPreview('${subFilename}')` : ''}">${sp.title}</a></li>
+            `;
+          });
+          navHTML += `</ul></li>`;
+        } else {
+          navHTML += `
+            <li>
+              <a href="${isPreviewNav ? '#' : filename}" onclick="${isPreviewNav ? `openPageInPreview('${filename}')` : ''}">${p.title}</a>
+            </li>
+          `;
+        }
+      });
+      navHTML += `</ul></nav>`;
+      return navHTML;
+    }
+    
     // Fetch Remote Templates from GitHub
     fetch('https://api.github.com/repos/mpalmero197/webbuilder/contents/')
       .then(response => response.json())
@@ -1505,8 +1717,13 @@
       viewSourceEnabled = !viewSourceEnabled;
       this.textContent = viewSourceEnabled ? "Disable View Source" : "Enable View Source";
       const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
-      if (viewSourceEnabled) { attachViewSourceListeners(iframeDoc); }
-      else { detachViewSourceListeners(iframeDoc); removeHighlight(); viewSourcePanel.style.display = "none"; }
+      if (viewSourceEnabled) {
+        attachViewSourceListeners(iframeDoc);
+      } else {
+        detachViewSourceListeners(iframeDoc);
+        removeHighlight();
+        viewSourcePanel.style.display = "none";
+      }
     });
     function attachViewSourceListeners(doc) {
       if (!doc) return;
@@ -1528,7 +1745,9 @@
       doc.removeEventListener('click', handleElementClick);
       if (doc.head) {
         const titleElem = doc.head.querySelector('title');
-        if (titleElem) { titleElem.removeEventListener('click', handleElementClick); }
+        if (titleElem) {
+          titleElem.removeEventListener('click', handleElementClick);
+        }
       }
     }
     function handleElementMouseOver(e) {
@@ -1563,7 +1782,11 @@
     }
     function removeHighlight() {
       const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
-      if (iframeDoc) { iframeDoc.querySelectorAll('*').forEach(elem => { elem.style.outline = ""; }); }
+      if (iframeDoc) {
+        iframeDoc.querySelectorAll('*').forEach(elem => {
+          elem.style.outline = "";
+        });
+      }
     }
     function performUpdateElement() {
       const newHTML = document.getElementById('editElementTextarea').value;
@@ -1577,7 +1800,9 @@
           const sectionIndex = window.currentlySelectedElement.getAttribute('data-section-index');
           if (pageId !== null && sectionIndex !== null) {
             const targetPage = findPageById(parseInt(pageId, 10), pages);
-            if (targetPage) { targetPage.sections.splice(parseInt(sectionIndex, 10), 1); }
+            if (targetPage) {
+              targetPage.sections.splice(parseInt(sectionIndex, 10), 1);
+            }
           }
           window.currentlySelectedElement.parentNode.removeChild(window.currentlySelectedElement);
           window.currentlySelectedElement = null;
@@ -1601,7 +1826,9 @@
                 const pageDiv = document.querySelector(`.pageItem[data-pageid="${pageId}"]`);
                 if (pageDiv) {
                   const titleInput = pageDiv.querySelector('.pageTitleInput');
-                  if (titleInput) { titleInput.value = newTitleText; }
+                  if (titleInput) {
+                    titleInput.value = newTitleText;
+                  }
                 }
                 document.getElementById('editElementPanel').style.display = 'none';
                 window.currentlySelectedElement = null;
@@ -1633,7 +1860,10 @@
             window.currentlySelectedElement = null;
             document.getElementById('editElementPanel').style.display = 'none';
             return true;
-          } else { alert("Invalid HTML."); return false; }
+          } else {
+            alert("Invalid HTML.");
+            return false;
+          }
         }
       }
       return false;
@@ -1662,7 +1892,9 @@
         const sectionIndex = window.currentlySelectedElement.getAttribute('data-section-index');
         if (pageId !== null && sectionIndex !== null) {
           const targetPage = findPageById(parseInt(pageId, 10), pages);
-          if (targetPage) { targetPage.sections.splice(parseInt(sectionIndex, 10), 1); }
+          if (targetPage) {
+            targetPage.sections.splice(parseInt(sectionIndex, 10), 1);
+          }
         }
         window.currentlySelectedElement.parentNode.removeChild(window.currentlySelectedElement);
         window.currentlySelectedElement = null;
@@ -1707,7 +1939,9 @@
         e.dataTransfer.dropEffect = "copy";
       });
       makeAllElementsDropZones();
-      if (viewSourceEnabled) { attachViewSourceListeners(iframeDoc); }
+      if (viewSourceEnabled) {
+        attachViewSourceListeners(iframeDoc);
+      }
     });
     // Undo/Redo Buttons
     document.getElementById("undoBtn").addEventListener("click", function() {
@@ -1738,25 +1972,31 @@
     const generatedCode = document.getElementById('generatedCode');
     let siteMap = {};
     previewBtn.addEventListener('click', () => {
-      if (pages.length === 0) { previewFrame.srcdoc = "<p style='color:red;'>No pages defined.</p>"; return; }
+      if (pages.length === 0) {
+        previewFrame.srcdoc = "<p style='color:red;'>No pages defined.</p>";
+        return;
+      }
       siteMap = {};
       const flatList = flattenPages(pages);
-      flatList.forEach(pg => { 
-        const code = buildPageHTML(pg, true); 
-        const fname = pageFilename(pg); 
-        siteMap[fname] = code; 
+      flatList.forEach(pg => {
+        const code = buildPageHTML(pg, true);
+        const fname = pageFilename(pg);
+        siteMap[fname] = code;
       });
       const homePage = pages[0];
       const homeFilename = pageFilename(homePage);
       previewFrame.srcdoc = siteMap[homeFilename];
     });
     window.openPageInPreview = function(filename) {
-      if (siteMap[filename]) { previewFrame.srcdoc = siteMap[filename]; }
+      if (siteMap[filename]) {
+        previewFrame.srcdoc = siteMap[filename];
+      }
     };
     generateBtn.addEventListener('click', () => {
       let allCode = "";
-      if (pages.length === 0) { allCode = "<!-- No pages defined -->"; }
-      else {
+      if (pages.length === 0) {
+        allCode = "<!-- No pages defined -->";
+      } else {
         siteMap = {};
         const flatList = flattenPages(pages);
         flatList.forEach(pg => {
@@ -1782,7 +2022,8 @@
       globalLinkColor.value = "#4A88F6";
       globalBgImage.value = "";
       globalCustomCSS.value = "";
-      pageCount = 0; pages = [];
+      pageCount = 0; 
+      pages = [];
       pagesContainer.innerHTML = "";
       manualHtmlInput.value = "";
       previewFrame.srcdoc = "";
@@ -1845,14 +2086,20 @@
     replaceAllBtn.addEventListener('click', function() {
       const searchText = codeSearchInput.value;
       const replaceText = codeReplaceInput.value;
-      if (!searchText) { alert("Enter text to search for."); return; }
+      if (!searchText) {
+        alert("Enter text to search for.");
+        return;
+      }
       const codeContent = generatedCode.value;
       const updatedCode = codeContent.split(searchText).join(replaceText);
       generatedCode.value = updatedCode;
     });
     exportHTMLBtn.addEventListener('click', function() {
       const codeContent = generatedCode.value;
-      if (!codeContent) { alert("No generated code to export."); return; }
+      if (!codeContent) {
+        alert("No generated code to export.");
+        return;
+      }
       const parser = new DOMParser();
       const doc = parser.parseFromString(codeContent, "text/html");
       doc.body.removeAttribute("contenteditable");
@@ -1860,11 +2107,18 @@
       const blob = new Blob([cleanedHTML], { type: 'text/html' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = url; a.download = "exported_site.html";
+      a.href = url;
+      a.download = "exported_site.html";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
+    });
+
+    // Theme Toggle Logic
+    const themeToggleBtn = document.getElementById('themeToggle');
+    themeToggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('light-theme');
     });
   </script>
 </body>

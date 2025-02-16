@@ -60,8 +60,18 @@
       height: 100vh;
       background: #222;
       padding: 10px;
-      overflow-y: auto;
       z-index: 1001;
+    }
+    /* New: Fixed header area inside media sidebar */
+    #mediaSidebar .media-header {
+      padding-bottom: 10px;
+      border-bottom: 1px solid #444;
+      margin-bottom: 10px;
+    }
+    /* The scrollable container for images */
+    .media-content {
+      overflow-y: auto;
+      height: calc(100vh - 220px);
     }
     #mediaSidebar h2 {
       color: #fff;
@@ -290,6 +300,29 @@
       align-items: center;
       justify-content: center;
     }
+    /* Custom Scrollbar Styles */
+    /* Custom scrollbar styling for WebKit-based browsers */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #2a2a2a;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #4A88F6;
+      border-radius: 4px;
+      border: 2px solid #2a2a2a;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: #3c74d4;
+    }
+    /* Custom scrollbar styling for Firefox */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #4A88F6 #2a2a2a;
+    }
   </style>
 </head>
 <body>
@@ -311,24 +344,28 @@
 
   <!-- Right Media Sidebar -->
   <div id="mediaSidebar">
-    <h2>Media Options</h2>
-    <div class="field">
-      <label for="mediaSearchInput">Search Query:</label>
-      <input type="text" id="mediaSearchInput" placeholder="e.g. 'nature', 'city'..." />
+    <div class="media-header">
+      <h2>Media Options</h2>
+      <div class="field">
+        <label for="mediaSearchInput">Search Query:</label>
+        <input type="text" id="mediaSearchInput" placeholder="e.g. 'nature', 'city'..." />
+      </div>
+      <div class="buttons">
+        <button id="mediaSearchBtn">Search Images</button>
+      </div>
+      <div class="field">
+        <label for="localImageInput">Or Choose Image from Device:</label>
+        <label for="localImageInput" class="custom-file-label">Browse...</label>
+        <input type="file" id="localImageInput" accept="image/*" />
+      </div>
+      <div class="buttons">
+        <button id="undoBtn">Undo</button>
+        <button id="redoBtn">Redo</button>
+      </div>
     </div>
-    <div class="buttons">
-      <button id="mediaSearchBtn">Search Images</button>
+    <div class="media-content">
+      <div id="mediaResults" class="results-grid"></div>
     </div>
-    <div class="field">
-      <label for="localImageInput">Or Choose Image from Device:</label>
-      <label for="localImageInput" class="custom-file-label">Browse...</label>
-      <input type="file" id="localImageInput" accept="image/*" />
-    </div>
-    <div class="buttons">
-      <button id="undoBtn">Undo</button>
-      <button id="redoBtn">Redo</button>
-    </div>
-    <div id="mediaResults" class="results-grid"></div>
   </div>
 
   <!-- Main Content -->
@@ -1680,7 +1717,12 @@
     exportHTMLBtn.addEventListener('click', function() {
       const codeContent = generatedCode.value;
       if (!codeContent) { alert("There is no generated code to export."); return; }
-      const blob = new Blob([codeContent], { type: 'text/html' });
+      // Remove the contentEditable attribute from the exported HTML
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(codeContent, "text/html");
+      doc.body.removeAttribute("contenteditable");
+      const cleanedHTML = doc.documentElement.outerHTML;
+      const blob = new Blob([cleanedHTML], { type: 'text/html' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url; a.download = "exported_site.html";

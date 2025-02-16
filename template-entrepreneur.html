@@ -3,92 +3,236 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Small Business Premium Template</title>
+  <title>Premium Business Template</title>
   <meta name="description" content="Delivering exceptional service and quality solutions for your success.">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
   <style>
+    /* CSS Variables and Global Styles */
     :root {
       --primary-color: #007BFF;
       --secondary-color: #0056b3;
+      --accent-color: #f39c12;
       --text-color: #333;
       --bg-color: #fff;
-      --dark-bg: #333;
+      --dark-bg: #222;
       --font-family: 'Montserrat', sans-serif;
-      --transition-duration: 0.3s;
+      --transition: 0.3s ease;
     }
 
-    /* CSS Reset */
-    * {
+    /* Reset */
+    *, *::before, *::after {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    body {
-      font-family: var(--font-family);
-      line-height: 1.6;
-      color: var(--text-color);
+
+    html {
+      scroll-behavior: smooth;
     }
 
+    body {
+      font-family: var(--font-family);
+      color: var(--text-color);
+      background: var(--bg-color);
+      line-height: 1.6;
+    }
+
+    /* Header Styles */
     header {
       background: var(--bg-color);
       padding: 20px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       position: fixed;
       width: 100%;
       top: 0;
       z-index: 1000;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    header .logo {
+    .logo {
       font-size: 1.8em;
       font-weight: 600;
       color: var(--text-color);
     }
-
-    /* Navigation Styles */
     nav {
       position: relative;
     }
     nav ul {
       list-style: none;
       display: flex;
+      gap: 20px;
     }
-    nav ul li {
-      margin-left: 20px;
-    }
-    nav ul li a {
+    nav a {
       text-decoration: none;
       color: var(--text-color);
-      transition: color var(--transition-duration) ease;
+      padding: 5px 10px;
+      transition: color var(--transition);
     }
-    nav ul li a:hover {
+    nav a:hover {
       color: var(--primary-color);
     }
-
-    /* Hamburger Menu for Mobile */
     .menu-toggle {
       display: none;
       flex-direction: column;
       cursor: pointer;
+      background: none;
+      border: none;
     }
     .menu-toggle span {
-      width: 25px;
       height: 3px;
+      width: 25px;
       background: var(--text-color);
       margin: 4px 0;
-      transition: background var(--transition-duration) ease;
+      transition: background var(--transition);
     }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://via.placeholder.com/1500x800') center/cover no-repeat;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+      color: #fff;
+    }
+    .hero h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+    }
+    .hero p {
+      font-size: 1.2em;
+      margin-bottom: 30px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+    .hero .btn {
+      background: var(--primary-color);
+      color: #fff;
+      padding: 15px 30px;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background var(--transition);
+    }
+    .hero .btn:hover {
+      background: var(--secondary-color);
+    }
+
+    /* Main Content */
+    main {
+      margin-top: 80px;
+    }
+    section {
+      padding: 80px 40px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h2 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    p {
+      font-size: 1.1em;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    /* About Section */
+    .about { background: #f9f9f9; }
+
+    /* Services Section */
+    .services .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 40px;
+    }
+    .card {
+      background: var(--bg-color);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .card h3 {
+      margin-bottom: 15px;
+    }
+
+    /* Contact Section */
+    .contact form {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .contact input, .contact textarea {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
+    }
+    .contact button {
+      background: var(--primary-color);
+      color: #fff;
+      border: none;
+      padding: 12px;
+      font-size: 1em;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .contact button:hover {
+      background: var(--secondary-color);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--dark-bg);
+      color: #fff;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    footer p { margin-bottom: 10px; }
+    footer .socials {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+    footer .socials a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.2em;
+      transition: color var(--transition);
+    }
+    footer .socials a:hover {
+      color: var(--primary-color);
+    }
+
+    /* Responsive Styles */
     @media (max-width: 768px) {
+      header {
+        padding: 10px 20px;
+      }
       nav ul {
         flex-direction: column;
-        background: var(--bg-color);
         position: absolute;
         top: 60px;
         right: 0;
+        background: var(--bg-color);
         width: 200px;
-        border: 1px solid #ccc;
+        border: 1px solid #ddd;
         border-radius: 5px;
         display: none;
       }
@@ -102,137 +246,6 @@
       }
       .menu-toggle {
         display: flex;
-      }
-    }
-
-    .hero {
-      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://via.placeholder.com/1500x800') center/cover no-repeat;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      color: #fff;
-      padding: 0 20px;
-    }
-    .hero h1 {
-      font-size: 3em;
-      margin-bottom: 20px;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    }
-    .hero p {
-      font-size: 1.2em;
-      margin-bottom: 30px;
-      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-    }
-    .hero .btn {
-      background: var(--primary-color);
-      color: #fff;
-      padding: 15px 30px;
-      text-decoration: none;
-      font-size: 1em;
-      border-radius: 5px;
-      transition: background var(--transition-duration) ease;
-    }
-    .hero .btn:hover {
-      background: var(--secondary-color);
-    }
-
-    main {
-      margin-top: 80px;
-    }
-    section {
-      padding: 80px 40px;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .about h2, .services h2, .contact h2 {
-      font-size: 2.5em;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    .about p, .services p, .contact p {
-      font-size: 1.1em;
-      line-height: 1.8;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-
-    .services .cards {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-    }
-    .services .card {
-      background: var(--bg-color);
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      flex: 1 1 300px;
-      text-align: center;
-      transition: transform var(--transition-duration) ease;
-    }
-    .services .card:hover {
-      transform: translateY(-5px);
-    }
-
-    .contact form {
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    .contact input, .contact textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    .contact button {
-      background: var(--primary-color);
-      color: #fff;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background var(--transition-duration) ease;
-    }
-    .contact button:hover {
-      background: var(--secondary-color);
-    }
-
-    footer {
-      background: var(--dark-bg);
-      color: #fff;
-      padding: 40px 20px;
-      text-align: center;
-    }
-    footer p {
-      margin-bottom: 10px;
-    }
-    footer .socials {
-      margin-top: 10px;
-    }
-    footer .socials a {
-      color: #fff;
-      margin: 0 10px;
-      font-size: 1.2em;
-      text-decoration: none;
-      transition: color var(--transition-duration) ease;
-    }
-    footer .socials a:hover {
-      color: var(--primary-color);
-    }
-
-    @media(max-width: 768px) {
-      header {
-        padding: 10px 20px;
-      }
-      nav ul li {
-        margin-left: 10px;
       }
       .hero h1 {
         font-size: 2.5em;
@@ -250,11 +263,11 @@
   <header>
     <div class="logo">YourBrand</div>
     <nav>
-      <div class="menu-toggle" id="mobile-menu" aria-label="Toggle Navigation">
+      <button class="menu-toggle" id="mobile-menu" aria-label="Toggle Navigation" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
-      </div>
+      </button>
       <ul id="nav-list">
         <li><a href="#hero">Home</a></li>
         <li><a href="#about">About</a></li>
@@ -274,26 +287,26 @@
     <section class="about" id="about">
       <div class="container">
         <h2>About Us</h2>
-        <p>Our business is committed to delivering high-quality services and innovative solutions to help your business thrive in today's competitive market.</p>
+        <p>We are committed to delivering high-quality services and innovative solutions that drive your business forward in today's competitive market.</p>
       </div>
     </section>
 
     <section class="services" id="services">
       <div class="container">
         <h2>Our Services</h2>
-        <p>We offer a range of services tailored to your business needs:</p>
+        <p>Explore our range of services designed to elevate your business:</p>
         <div class="cards">
           <div class="card">
             <h3>Consulting</h3>
-            <p>Expert advice and strategies to enhance your business growth.</p>
+            <p>Expert advice and strategies tailored to your business growth.</p>
           </div>
           <div class="card">
             <h3>Design</h3>
-            <p>Modern and intuitive designs to boost your brand presence.</p>
+            <p>Modern, intuitive designs to boost your brand's online presence.</p>
           </div>
           <div class="card">
             <h3>Development</h3>
-            <p>Cutting-edge technology solutions to streamline your operations.</p>
+            <p>Cutting-edge solutions that streamline your operations.</p>
           </div>
         </div>
       </div>
@@ -302,7 +315,7 @@
     <section class="contact" id="contact">
       <div class="container">
         <h2>Contact Us</h2>
-        <p>Ready to take your business to the next level? Reach out to us today!</p>
+        <p>Ready to transform your business? Reach out to us today!</p>
         <form action="#" method="post">
           <input type="text" name="name" placeholder="Your Name" required>
           <input type="email" name="email" placeholder="Your Email" required>
@@ -323,11 +336,13 @@
   </footer>
 
   <script>
-    // Mobile menu toggle script
+    // Mobile Navigation Toggle
     const menuToggle = document.getElementById('mobile-menu');
     const navList = document.getElementById('nav-list');
 
-    menuToggle.addEventListener('click', () => {
+    menuToggle.addEventListener('click', function() {
+      const isExpanded = this.getAttribute('aria-expanded') === 'true';
+      this.setAttribute('aria-expanded', !isExpanded);
       navList.classList.toggle('show');
     });
   </script>

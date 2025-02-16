@@ -3,91 +3,140 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Award-Winning E-commerce Template</title>
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
+  <title>Innovative E-commerce Experience</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary-color: #ff6b6b;
+      --secondary-color: #feca57;
+      --dark-color: #2e2e2e;
+      --light-color: #ffffff;
+      --bg-color: #f0f0f0;
+    }
     /* CSS Reset */
-    * {
+    *, *::before, *::after {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
     body {
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--dark-color);
       line-height: 1.6;
-      background-color: #f9f9f9;
-      color: #333;
     }
     header {
-      background: #fff;
-      padding: 20px 40px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       position: sticky;
       top: 0;
       z-index: 1000;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
     .logo {
       font-size: 1.8em;
-      font-weight: 700;
-      color: #007BFF;
+      font-weight: 600;
+      color: var(--light-color);
     }
     nav {
-      float: right;
+      position: relative;
     }
     nav ul {
       list-style: none;
       display: flex;
     }
     nav ul li {
-      margin-left: 20px;
+      margin-left: 30px;
     }
     nav ul li a {
       text-decoration: none;
-      color: #333;
+      color: var(--light-color);
       font-weight: 500;
       transition: color 0.3s;
     }
     nav ul li a:hover {
-      color: #007BFF;
+      color: var(--bg-color);
     }
+    .hamburger {
+      display: none;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+    .hamburger .bar {
+      display: block;
+      width: 25px;
+      height: 3px;
+      margin: 5px auto;
+      background-color: var(--light-color);
+      transition: all 0.3s;
+    }
+    /* Hero Section */
     .hero {
-      background: url('https://via.placeholder.com/1500x500') center/cover no-repeat;
-      height: 500px;
+      position: relative;
+      background: url('https://via.placeholder.com/1500x600') center/cover no-repeat;
+      height: 600px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
       text-align: center;
     }
-    .hero h1 {
-      font-size: 3em;
-      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(46, 46, 46, 0.5);
+    }
+    .hero-content {
+      position: relative;
+      color: var(--light-color);
+      z-index: 1;
+      animation: fadeIn 2s ease-in-out;
+    }
+    .hero-content h1 {
+      font-size: 3.5em;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+    }
+    .hero-content p {
+      font-size: 1.2em;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     .container {
       max-width: 1200px;
-      margin: 40px auto;
+      margin: 60px auto;
       padding: 0 20px;
     }
     .products {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
+      gap: 40px;
     }
     .product-card {
-      background: #fff;
-      border-radius: 8px;
+      background: var(--light-color);
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       transition: transform 0.3s, box-shadow 0.3s;
     }
     .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transform: translateY(-10px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     }
     .product-image {
       width: 100%;
-      height: 200px;
-      background: #eee;
+      height: 220px;
       background-size: cover;
       background-position: center;
     }
@@ -95,111 +144,156 @@
       padding: 20px;
     }
     .product-title {
-      font-size: 1.2em;
+      font-size: 1.4em;
       margin-bottom: 10px;
+      font-weight: 600;
     }
     .product-price {
-      color: #007BFF;
-      font-size: 1.1em;
+      color: var(--primary-color);
+      font-size: 1.2em;
       margin-bottom: 15px;
     }
     .add-to-cart {
       display: inline-block;
-      padding: 10px 20px;
-      background: #007BFF;
-      color: #fff;
+      padding: 12px 24px;
+      background: var(--primary-color);
+      color: var(--light-color);
       border: none;
-      border-radius: 4px;
+      border-radius: 30px;
       cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
       text-decoration: none;
-      transition: background 0.3s;
+      font-weight: 500;
     }
     .add-to-cart:hover {
-      background: #0056b3;
+      background: var(--secondary-color);
+      transform: scale(1.05);
     }
     footer {
-      background: #333;
-      color: #fff;
+      background: var(--dark-color);
+      color: var(--light-color);
       text-align: center;
-      padding: 20px;
-      margin-top: 40px;
+      padding: 30px 20px;
+      margin-top: 60px;
     }
+    /* Mobile Navigation */
     @media (max-width: 768px) {
-      nav {
-        float: none;
-        text-align: center;
-        margin-top: 10px;
+      .hamburger {
+        display: block;
       }
       nav ul {
         flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 40px;
+        background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        padding: 20px;
+        border-radius: 8px;
+        display: none;
+      }
+      nav ul.nav-active {
+        display: flex;
       }
       nav ul li {
         margin: 10px 0;
       }
       .hero {
-        height: 300px;
+        height: 400px;
       }
-      .hero h1 {
-        font-size: 2em;
+      .hero-content h1 {
+        font-size: 2.5em;
       }
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo">MyStore</div>
+    <div class="logo">NovaStore</div>
+    <button class="hamburger" aria-label="Toggle navigation">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
     <nav>
       <ul>
         <li><a href="#">Home</a></li>
-        <li><a href="#">Shop</a></li>
-        <li><a href="#">About</a></li>
+        <li><a href="#">Products</a></li>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Support</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
     </nav>
   </header>
   <section class="hero">
-    <h1>Discover the Best Deals</h1>
+    <div class="hero-content">
+      <h1>Experience the Future of Shopping</h1>
+      <p>Innovative designs, unbeatable deals, and a shopping experience like no other. Discover the latest trends now.</p>
+    </div>
   </section>
   <div class="container">
     <section class="products">
       <div class="product-card">
-        <div class="product-image" style="background-image: url('https://via.placeholder.com/400x200');"></div>
+        <div class="product-image" style="background-image: url('https://via.placeholder.com/400x220');"></div>
         <div class="product-details">
-          <h3 class="product-title">Product One</h3>
-          <p class="product-price">$49.99</p>
+          <h3 class="product-title">Innovative Gadget</h3>
+          <p class="product-price">$99.99</p>
           <a href="#" class="add-to-cart">Add to Cart</a>
         </div>
       </div>
       <div class="product-card">
-        <div class="product-image" style="background-image: url('https://via.placeholder.com/400x200');"></div>
+        <div class="product-image" style="background-image: url('https://via.placeholder.com/400x220');"></div>
         <div class="product-details">
-          <h3 class="product-title">Product Two</h3>
-          <p class="product-price">$59.99</p>
+          <h3 class="product-title">Smart Home Device</h3>
+          <p class="product-price">$149.99</p>
           <a href="#" class="add-to-cart">Add to Cart</a>
         </div>
       </div>
       <div class="product-card">
-        <div class="product-image" style="background-image: url('https://via.placeholder.com/400x200');"></div>
+        <div class="product-image" style="background-image: url('https://via.placeholder.com/400x220');"></div>
         <div class="product-details">
-          <h3 class="product-title">Product Three</h3>
-          <p class="product-price">$69.99</p>
-          <a href="#" class="add-to-cart">Add to Cart</a>
-        </div>
-      </div>
-      <div class="product-card">
-        <div class="product-image" style="background-image: url('https://via.placeholder.com/400x200');"></div>
-        <div class="product-details">
-          <h3 class="product-title">Product Four</h3>
+          <h3 class="product-title">Wireless Earbuds</h3>
           <p class="product-price">$79.99</p>
+          <a href="#" class="add-to-cart">Add to Cart</a>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-image" style="background-image: url('https://via.placeholder.com/400x220');"></div>
+        <div class="product-details">
+          <h3 class="product-title">Next-Gen Console</h3>
+          <p class="product-price">$399.99</p>
+          <a href="#" class="add-to-cart">Add to Cart</a>
+        </div>
+      </div>
+      <!-- Additional product cards -->
+      <div class="product-card">
+        <div class="product-image" style="background-image: url('https://via.placeholder.com/400x220');"></div>
+        <div class="product-details">
+          <h3 class="product-title">Ultra HD TV</h3>
+          <p class="product-price">$799.99</p>
+          <a href="#" class="add-to-cart">Add to Cart</a>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-image" style="background-image: url('https://via.placeholder.com/400x220');"></div>
+        <div class="product-details">
+          <h3 class="product-title">Gaming Laptop</h3>
+          <p class="product-price">$1299.99</p>
           <a href="#" class="add-to-cart">Add to Cart</a>
         </div>
       </div>
     </section>
   </div>
   <footer>
-    <p>&copy; 2025 MyStore. All Rights Reserved.</p>
+    <p>&copy; 2025 NovaStore. All Rights Reserved.</p>
   </footer>
   <script>
+    // Hamburger menu toggle for mobile navigation
+    const hamburger = document.querySelector('.hamburger');
+    const navUL = document.querySelector('nav ul');
+    hamburger.addEventListener('click', () => {
+      navUL.classList.toggle('nav-active');
+    });
+    
     document.querySelectorAll('.add-to-cart').forEach(button => {
       button.addEventListener('click', event => {
         event.preventDefault();

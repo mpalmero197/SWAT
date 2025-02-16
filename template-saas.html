@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>SaaS Startup Template</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #4CAF50;
+      --dark-color: #333;
+      --light-color: #fff;
+      --background-color: #f9f9f9;
+      --transition-speed: 0.3s;
+      --font-family: 'Roboto', sans-serif;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: var(--font-family);
+      line-height: 1.6;
+      color: var(--dark-color);
+      background: var(--light-color);
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 0 20px;
+    }
+    nav {
+      background: var(--dark-color);
+      color: var(--light-color);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav .logo h2 {
+      margin: 0;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+    }
+    nav li {
+      margin-left: 20px;
+    }
+    nav a {
+      color: var(--light-color);
+      font-weight: 500;
+      transition: color var(--transition-speed);
+    }
+    nav a:hover {
+      color: var(--primary-color);
+    }
+    header {
+      background: var(--primary-color);
+      color: var(--light-color);
+      padding: 100px 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::after {
+      content: "";
+      position: absolute;
+      bottom: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120%;
+      height: 40%;
+      background: var(--light-color);
+      border-radius: 50%;
+      opacity: 0.1;
+    }
+    header h1 {
+      font-size: 3rem;
+      margin-bottom: 15px;
+    }
+    header p {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+    section {
+      padding: 80px 20px;
+    }
+    /* Section Headings */
+    #features h2, #pricing h2, #testimonials h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5rem;
+      position: relative;
+    }
+    #features h2::after, #pricing h2::after, #testimonials h2::after {
+      content: "";
+      width: 80px;
+      height: 3px;
+      background: var(--primary-color);
+      display: block;
+      margin: 10px auto 0;
+    }
+    /* Features Section */
+    .feature-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .feature {
+      background: var(--light-color);
+      border-radius: 8px;
+      padding: 30px 20px;
+      width: calc(33.333% - 40px);
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    }
+    .feature:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+    .feature h3 {
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+    }
+    .feature p {
+      font-size: 1rem;
+    }
+    /* Pricing Section */
+    .pricing-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .pricing-card {
+      background: var(--light-color);
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      width: calc(33.333% - 40px);
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    }
+    .pricing-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+    .pricing-card h3 {
+      margin-bottom: 15px;
+      font-size: 1.8rem;
+    }
+    .pricing-card p.price {
+      font-size: 2rem;
+      color: var(--primary-color);
+      margin: 20px 0;
+    }
+    .pricing-card ul {
+      list-style: none;
+      margin-bottom: 20px;
+      padding: 0;
+    }
+    .pricing-card ul li {
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
+    .pricing-card button {
+      background: var(--primary-color);
+      border: none;
+      color: var(--light-color);
+      padding: 12px 25px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background var(--transition-speed);
+    }
+    .pricing-card button:hover {
+      background: #3aa43a;
+    }
+    /* Testimonials Section */
+    .testimonials-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+    }
+    .testimonial {
+      background: var(--background-color);
+      padding: 30px 20px;
+      border-radius: 8px;
+      max-width: 600px;
+      text-align: center;
+      font-style: italic;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    }
+    .testimonial:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+    .testimonial p {
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+    .testimonial span {
+      font-weight: bold;
+      font-size: 1rem;
+    }
+    /* Call to Action Section */
+    #cta {
+      background: var(--primary-color);
+      color: var(--light-color);
+      text-align: center;
+      padding: 100px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    #cta::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.2), transparent);
+      animation: pulse 6s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    #cta h2 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    #cta button {
+      background: var(--light-color);
+      color: var(--primary-color);
+      border: none;
+      padding: 15px 30px;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background var(--transition-speed);
+      position: relative;
+      z-index: 1;
+    }
+    #cta button:hover {
+      background: #f1f1f1;
+    }
+    /* Footer */
+    footer {
+      background: var(--dark-color);
+      color: var(--light-color);
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+    }
+    /* Responsive Styles */
+    @media (max-width: 1024px) {
+      .feature, .pricing-card {
+        width: calc(50% - 40px);
+      }
+    }
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+      }
+      nav ul {
+        flex-direction: column;
+        align-items: center;
+        margin-top: 10px;
+      }
+      nav li {
+        margin: 10px 0;
+      }
+      .feature, .pricing-card {
+        width: 100%;
+      }
+    }
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 2.5rem;
+      }
+      #cta h2 {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav aria-label="Main Navigation">
+    <div class="logo">
+      <h2>SaaS Startup</h2>
+    </div>
+    <ul>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+      <li><a href="#cta">Contact</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <h1>Welcome to SaaS Startup</h1>
+    <p>Empowering your business with cutting-edge technology solutions.</p>
+  </header>
+
+  <section id="features" class="container">
+    <h2>Product Features</h2>
+    <div class="feature-grid">
+      <div class="feature">
+        <h3>Innovative Design</h3>
+        <p>User-friendly interfaces designed for optimal efficiency.</p>
+      </div>
+      <div class="feature">
+        <h3>Robust Performance</h3>
+        <p>Scalable solutions that grow with your business needs.</p>
+      </div>
+      <div class="feature">
+        <h3>Seamless Integration</h3>
+        <p>Easily integrate with your existing systems for enhanced workflow.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" class="container">
+    <h2>Pricing Plans</h2>
+    <div class="pricing-cards">
+      <div class="pricing-card">
+        <h3>Basic</h3>
+        <p class="price">$9/mo</p>
+        <ul>
+          <li>Essential Features</li>
+          <li>Email Support</li>
+          <li>Limited Integrations</li>
+        </ul>
+        <button>Choose Plan</button>
+      </div>
+      <div class="pricing-card">
+        <h3>Standard</h3>
+        <p class="price">$29/mo</p>
+        <ul>
+          <li>Advanced Features</li>
+          <li>Priority Support</li>
+          <li>Extended Integrations</li>
+        </ul>
+        <button>Choose Plan</button>
+      </div>
+      <div class="pricing-card">
+        <h3>Premium</h3>
+        <p class="price">$49/mo</p>
+        <ul>
+          <li>All Features</li>
+          <li>24/7 Support</li>
+          <li>Custom Integrations</li>
+        </ul>
+        <button>Choose Plan</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonials" class="container">
+    <h2>What Our Customers Say</h2>
+    <div class="testimonials-container">
+      <div class="testimonial">
+        <p>"This platform revolutionized our workflow and boosted our efficiency dramatically."</p>
+        <span>- Customer One</span>
+      </div>
+      <div class="testimonial">
+        <p>"Exceptional service and remarkable features. A must-have for any tech company."</p>
+        <span>- Customer Two</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta">
+    <h2>Ready to Get Started?</h2>
+    <button>Sign Up Now</button>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 SaaS Startup. All rights reserved.</p>
+  </footer>
+</body>
+</html>

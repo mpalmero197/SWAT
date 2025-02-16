@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Award-Winning Non-Profit Charity - Auto-Cycling Carousel</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Global Styles */
+    html {
+      scroll-behavior: smooth;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #f4f4f4;
+      color: #000;
+    }
+    
+    /* Header and Navigation */
+    header {
+      background: linear-gradient(135deg, #0a74da, #005bb5);
+      color: #fff;
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    header h1 {
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+    }
+    nav ul li {
+      margin: 0 15px;
+    }
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    nav ul li a:hover {
+      color: #d1e8ff;
+    }
+    
+    /* Hero Section */
+    .hero {
+      background: url('https://via.placeholder.com/1500x600') no-repeat center center/cover;
+      height: 600px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+    }
+    .hero h1 {
+      position: relative;
+      z-index: 2;
+      font-size: 3.5em;
+      color: #fff; /* Explicitly setting text to white */
+      animation: fadeIn 2s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Container */
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+      overflow: hidden;
+      padding: 20px 0;
+    }
+    
+    /* Section Styling */
+    section {
+      padding: 60px 0;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    section h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 700;
+      color: #0a74da;
+    }
+    
+    /* Card Component */
+    .card {
+      background: #fff;
+      padding: 30px;
+      margin-bottom: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    
+    /* Form Styles */
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    form label {
+      margin: 10px 0 5px;
+      font-weight: 500;
+    }
+    form input {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+    form button {
+      margin-top: 15px;
+      padding: 12px;
+      border: none;
+      background: linear-gradient(135deg, #0a74da, #005bb5);
+      color: #fff;
+      font-size: 1em;
+      font-weight: 600;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    form button:hover {
+      background: linear-gradient(135deg, #005bb5, #0a74da);
+    }
+    
+    /* Revamped Carousel Styles */
+    .carousel {
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      background: #fff;
+      margin: 20px auto;
+    }
+    .carousel-track {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+    .carousel-item {
+      min-width: 100%;
+      flex-shrink: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    .carousel-item h3 {
+      font-size: 1.5em;
+      color: #0a74da;
+      margin-bottom: 10px;
+    }
+    .carousel-item p {
+      font-size: 1em;
+      line-height: 1.5;
+    }
+    /* Dot Indicators */
+    .carousel-dots {
+      text-align: center;
+      margin: 10px 0 20px;
+    }
+    .carousel-dots .dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      margin: 0 5px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .carousel-dots .dot.active {
+      background: rgba(0, 0, 0, 0.7);
+    }
+    
+    /* Calendar Table */
+    .calendar table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .calendar th,
+    .calendar td {
+      border: 1px solid #ddd;
+      padding: 15px;
+      text-align: center;
+    }
+    .calendar th {
+      background: #f0f0f0;
+      font-weight: 600;
+    }
+    
+    /* Back-to-Top Button */
+    #backToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #0a74da;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+    #backToTop:hover {
+      background: #005bb5;
+    }
+    
+    /* Footer */
+    footer {
+      background: #333;
+      color: #fff;
+      text-align: center;
+      padding: 15px 0;
+      font-size: 0.9em;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      nav ul {
+        flex-direction: column;
+        text-align: center;
+      }
+      nav ul li {
+        margin: 10px 0;
+      }
+      .hero h1 {
+        font-size: 2.5em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Section -->
+  <header>
+    <div class="container">
+      <h1>Award-Winning Non-Profit Charity</h1>
+      <nav aria-label="Main Navigation">
+        <ul>
+          <li><a href="#donate">Donate</a></li>
+          <li><a href="#volunteer">Volunteer</a></li>
+          <li><a href="#stories">Impact Stories</a></li>
+          <li><a href="#calendar">Events</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Inspire Change, Empower Lives</h1>
+  </section>
+  
+  <div class="container">
+    <!-- Donation Section -->
+    <section id="donate">
+      <div class="card">
+        <h2>Support Our Cause</h2>
+        <p>Your generous contribution fuels our mission to create lasting impact. Every donation counts.</p>
+        <form action="https://www.example-donation-processor.com" method="POST">
+          <label for="donationAmount">Donation Amount ($):</label>
+          <input type="number" id="donationAmount" name="donationAmount" placeholder="Enter amount" required>
+          <button type="submit">Donate Now</button>
+        </form>
+      </div>
+    </section>
+    
+    <!-- Volunteer Section -->
+    <section id="volunteer">
+      <div class="card">
+        <h2>Join Our Volunteer Team</h2>
+        <p>Become a part of a dedicated group driving positive change. Sign up to volunteer with us.</p>
+        <form action="/volunteer-signup" method="POST">
+          <label for="volunteerName">Full Name:</label>
+          <input type="text" id="volunteerName" name="volunteerName" placeholder="Your Name" required>
+          <label for="volunteerEmail">Email Address:</label>
+          <input type="email" id="volunteerEmail" name="volunteerEmail" placeholder="Your Email" required>
+          <button type="submit">Sign Up</button>
+        </form>
+      </div>
+    </section>
+    
+    <!-- Impact Stories Carousel Section -->
+    <section id="stories">
+      <div class="card">
+        <h2>Impact Stories</h2>
+        <div class="carousel">
+          <div class="carousel-track">
+            <div class="carousel-item">
+              <h3>Transforming Lives</h3>
+              <p>Discover how our initiatives have touched communities and transformed lives through inspiring success stories.</p>
+            </div>
+            <div class="carousel-item">
+              <h3>Community Empowerment</h3>
+              <p>Read about the powerful journeys of those who have overcome challenges with the support of our programs.</p>
+            </div>
+            <div class="carousel-item">
+              <h3>Hope & Resilience</h3>
+              <p>Explore narratives of hope, resilience, and the positive impact of collective community efforts.</p>
+            </div>
+          </div>
+          <!-- Dot Indicators -->
+          <div class="carousel-dots">
+            <span class="dot active" data-index="0"></span>
+            <span class="dot" data-index="1"></span>
+            <span class="dot" data-index="2"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Calendar Section -->
+    <section id="calendar">
+      <div class="card calendar">
+        <h2>Upcoming Events</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Event</th>
+              <th>Location</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2025-03-01</td>
+              <td>Charity Run</td>
+              <td>Central Park</td>
+            </tr>
+            <tr>
+              <td>2025-04-15</td>
+              <td>Community Outreach</td>
+              <td>Community Center</td>
+            </tr>
+            <tr>
+              <td>2025-05-20</td>
+              <td>Fundraising Gala</td>
+              <td>Grand Hotel Ballroom</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+  
+  <!-- Footer Section -->
+  <footer>
+    <p>&copy; 2025 Award-Winning Non-Profit Charity. All rights reserved.</p>
+  </footer>
+  
+  <!-- Back-to-Top Button -->
+  <button id="backToTop" aria-label="Back to Top">&#8679;</button>
+  
+  <!-- JavaScript for Interactivity -->
+  <script>
+    // Section Animation using Intersection Observer
+    const sections = document.querySelectorAll('section');
+    const observerOptions = { threshold: 0.2 };
+    const sectionObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+    sections.forEach(section => sectionObserver.observe(section));
+    
+    // Revamped Carousel Functionality with Auto-Cycle and Dot Navigation
+    const track = document.querySelector('.carousel-track');
+    const slides = Array.from(track.children);
+    const dotsNav = document.querySelector('.carousel-dots');
+    const dots = Array.from(dotsNav.children);
+    let currentSlide = 0;
+    
+    // Set slide positions
+    const slideWidth = slides[0].getBoundingClientRect().width;
+    slides.forEach((slide, index) => {
+      slide.style.left = slideWidth * index + 'px';
+    });
+    
+    function moveToSlide(targetIndex) {
+      const amountToMove = slides[targetIndex].style.left;
+      track.style.transform = 'translateX(-' + amountToMove + ')';
+      // Update active dot
+      dots[currentSlide].classList.remove('active');
+      dots[targetIndex].classList.add('active');
+      currentSlide = targetIndex;
+    }
+    
+    // Auto-cycle functionality
+    setInterval(() => {
+      const nextIndex = currentSlide === slides.length - 1 ? 0 : currentSlide + 1;
+      moveToSlide(nextIndex);
+    }, 4000); // 4 seconds interval
+    
+    // Dot navigation click events
+    dotsNav.addEventListener('click', e => {
+      const targetDot = e.target.closest('.dot');
+      if (!targetDot) return;
+      const targetIndex = dots.findIndex(dot => dot === targetDot);
+      moveToSlide(targetIndex);
+    });
+    
+    // Back-to-Top Button Functionality
+    const backToTopBtn = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      backToTopBtn.style.display = window.pageYOffset > 300 ? 'block' : 'none';
+    });
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

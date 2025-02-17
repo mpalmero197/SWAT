@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="U.S.A. Bassin innovative full-screen site">
+  <meta name="keywords" content="U.S.A Bassin, fishing tournament, bass fishing, tournament trail">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="fb:app_id" content="237953562918277">
+  <meta property="og:image" content="http://www.usabassin.com/images/facebooklogo.png">
+  <meta property="og:site_name" content="U.S.A. Bassin - www.usabassin.com">
+  <meta property="og:description" content="National Tournament Fishing Trails. Visit www.usabassin.com for schedules and information.">
+  <title>U.S.A. Bassin - Innovative Full Screen</title>
+  
+  <!-- External CSS Files -->
+  <link rel="stylesheet" href="styles/jquery/jquery-ui-1.8.9.custom.css">
+  <link rel="stylesheet" href="styles/jquery/jquery.pagination.css">
+  <link rel="stylesheet" href="themes/usab/style/contentslider.css">
+  <link rel="stylesheet" href="themes/usab/style/tab.css">
+  <link rel="stylesheet" href="styles/navigation.css">
+  <link rel="stylesheet" href="styles/adminMenu.css">
+  <link rel="stylesheet" href="styles/login.css">
+  <link rel="stylesheet" href="styles/admin.css">
+  <link rel="stylesheet" href="styles/reports.css">
+  <link rel="stylesheet" href="styles/cart.css">
+  <link rel="stylesheet" href="themes/usab/style/style.css">
+  <link rel="shortcut icon" href="themes/usab/images/favicon.ico" type="image/x-icon">
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="backend.php">
+  
+  <!-- Custom CSS for Innovative Full-Screen Design with Vertical Dropdowns -->
+  <style>
+    :root {
+      --primary-color: #007BFF;
+      --secondary-color: #333;
+      --bg-color: #fafafa;
+      --header-bg: rgba(255,255,255,0.95);
+      --transition-speed: 0.3s;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: var(--bg-color);
+      color: var(--secondary-color);
+      scroll-behavior: smooth;
+    }
+    /* Full-Screen Container */
+    #outer { width: 100%; min-height: 100vh; overflow-x: hidden; }
+    
+    /* Fixed Header */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: var(--header-bg);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+    }
+    header .logo img { max-height: 60px; }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+    nav ul li { position: relative; }
+    nav ul li a {
+      text-decoration: none;
+      color: var(--secondary-color);
+      padding: 8px 12px;
+      transition: color var(--transition-speed);
+    }
+    nav ul li a:hover { color: var(--primary-color); }
+    /* Vertical Dropdown Menus */
+    .dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #fff;
+      border: 1px solid #eaeaea;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--transition-speed);
+      z-index: 500;
+    }
+    nav ul li:hover .dropdown { opacity: 1; visibility: visible; }
+    .dropdown ul, .dropdown .levels {
+      display: block;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+    }
+    .dropdown ul li, .dropdown .levels li {
+      display: block;
+    }
+    .dropdown a {
+      display: block;
+      padding: 10px;
+      border-bottom: 1px solid #eaeaea;
+      color: var(--secondary-color);
+    }
+    .dropdown a:hover { background: #f0f0f0; }
+    /* Hamburger Menu */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: var(--secondary-color);
+      border-radius: 2px;
+    }
+    @media (max-width: 768px) {
+      nav ul { flex-direction: column; background: #fff; position: absolute; top: 60px; left: 0; right: 0; display: none; }
+      nav ul.active { display: flex; }
+      .hamburger { display: flex; }
+    }
+    
+    /* Director Login Form */
+    .director-login {
+      position: relative;
+    }
+    .director-login a.signin {
+      text-decoration: none;
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+    .director-login fieldset {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 10px;
+      display: none;
+      z-index: 1000;
+    }
+    
+    /* Hero Section with Background Video */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .hero video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+      filter: brightness(0.7);
+    }
+    .hero .overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #fff;
+      padding: 20px;
+    }
+    .hero .overlay h1 { font-size: 3em; margin-bottom: 20px; }
+    .hero .overlay p { font-size: 1.2em; max-width: 800px; }
+    
+    /* Innovative Slider */
+    .slider {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 8px;
+      margin: 40px 0;
+    }
+    .slider .slide {
+      position: absolute;
+      width: 100%;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    .slider .slide.active { opacity: 1; position: relative; }
+    .slider .slide img { width: 100%; display: block; border-radius: 8px; }
+    .slider .caption {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      padding: 15px;
+      border-radius: 4px;
+    }
+    
+    /* Innovative Grid Layout */
+    .innovative-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      width: 100%;
+      padding: 20px;
+    }
+    .innovative-card {
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    .innovative-card:hover { transform: translateY(-5px); }
+    .card-body { padding: 15px; }
+    .card-body h3 { margin-bottom: 10px; }
+    .card-body p, .card-body ul { font-size: 0.9em; line-height: 1.5; }
+    .card-body ul { list-style: disc inside; }
+    
+    /* Footer */
+    footer {
+      width: 100%;
+      background: #f0f0f0;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.85em;
+      margin-top: 40px;
+    }
+  </style>
+  
+  <!-- External JavaScript Files -->
+  <script src="scripts/jquery/jquery-1.7.2.min.js"></script>
+  <script src="scripts/jquery/jquery-ui-1.8.9.custom.min.js"></script>
+  <script src="scripts/jquery/jquery.metadata.js"></script>
+  <script src="scripts/jquery/jquery.validate.min-1.7.js" charset="ISO-8859-1"></script>
+  <script src="scripts/jquery/jquery.validate.additional-methods-1.7.js"></script>
+  <script src="scripts/jquery/jquery.jeditable.min.js" charset="ISO-8859-1"></script>
+  <script src="scripts/jquery/jquery.neosmart.fb.wall.js" charset="ISO-8859-1"></script>
+  <script src="js/contentslider.js"></script>
+  <script src="js/tourn-functions.js"></script>
+  <script src="js/tabpane.js"></script>
+  <script src="ckeditor/ckeditor.js"></script>
+  <script src="ckeditor/adapters/jquery.js"></script>
+  <script src="js/footer.js"></script>
+</head>
+<body>
+  <div id="outer">
+    <!-- Header -->
+    <header>
+      <div class="container">
+        <div class="logo">
+          <a href="index.php">
+            <img src="themes/usab/images/header_01.png" alt="U.S.A. Bassin Logo">
+          </a>
+        </div>
+        <div class="hamburger" id="hamburger">
+          <span></span><span></span><span></span>
+        </div>
+        <nav>
+          <ul class="menu" id="menu">
+            <li class="noDrop"><a href="index.php">Home</a></li>
+            <li class="noDrop"><a href="modules.php?name=NewsArchive">News</a></li>
+            <li>
+              <a href="#" class="drop">Membership</a>
+              <div class="dropdown">
+                <a href="#"><img src="themes/usab/images/membershipCard.png" alt="Membership Card"></a>
+                <div>
+                  <h3>Affordable &amp; Easy Membership</h3>
+                  <p>
+                    * Experience professionally ran tournaments<br>
+                    * Free membership for youth (18 and under)<br>
+                    * Participate in any tournament<br>
+                    * Receive sponsor products at select events<br>
+                    * Compete in the Ranger Comanche &amp; Aluminum Cups <em>(Qualifications Apply)</em>
+                  </p>
+                  <p><a href="http://www.usabassin.com/modules/FileManager/admin/files/Forms/membershipForm.pdf" target="_blank"><b>Print &amp; Mail Form</b></a></p>
+                  <p><a href="https://docs.google.com/forms/d/e/1FAIpQLSfFLow-6pI63d0chhTaW7PN68L52AEONEYb9LOKiEk77TaaEA/viewform?usp=sf_link" target="_blank"><b>Online Membership</b></a></p>
+                </div>
+              </div>
+            </li>
+            <li>
+              <a href="#" class="drop">Tournaments</a>
+              <div class="dropdown">
+                <ul class="levels">
+                  <li>
+                    <a href="#" class="parent">Team Trail Divisions</a>
+                    <ul>
+                      <li><a href="menuDivisions.php?state=Alabama&amp;trailID=1">Alabama</a></li>
+                      <li><a href="menuDivisions.php?state=Arkansas&amp;trailID=1">Arkansas</a></li>
+                      <li><a href="menuDivisions.php?state=Florida&amp;trailID=1">Florida</a></li>
+                      <li><a href="menuDivisions.php?state=Illinois&amp;trailID=1">Illinois</a></li>
+                      <li><a href="menuDivisions.php?state=Indiana&amp;trailID=1">Indiana</a></li>
+                      <li><a href="menuDivisions.php?state=Kansas&amp;trailID=1">Kansas</a></li>
+                      <li><a href="menuDivisions.php?state=Kentucky&amp;trailID=1">Kentucky</a></li>
+                      <li><a href="menuDivisions.php?state=Massachusetts&amp;trailID=1">Massachusetts</a></li>
+                      <li><a href="menuDivisions.php?state=Michigan&amp;trailID=1">Michigan</a></li>
+                      <li><a href="menuDivisions.php?state=Mississippi&amp;trailID=1">Mississippi</a></li>
+                      <li><a href="menuDivisions.php?state=Missouri&amp;trailID=1">Missouri</a></li>
+                      <li><a href="menuDivisions.php?state=New Jersey&amp;trailID=1">New Jersey</a></li>
+                      <li><a href="menuDivisions.php?state=Ohio&amp;trailID=1">Ohio</a></li>
+                      <li><a href="menuDivisions.php?state=Oklahoma&amp;trailID=1">Oklahoma</a></li>
+                      <li><a href="menuDivisions.php?state=South Carolina&amp;trailID=1">South Carolina</a></li>
+                      <li><a href="menuDivisions.php?state=South Dakota&amp;trailID=1">South Dakota</a></li>
+                      <li><a href="menuDivisions.php?state=Tennessee&amp;trailID=1">Tennessee</a></li>
+                      <li><a href="menuDivisions.php?state=Virginia&amp;trailID=1">Virginia</a></li>
+                      <li><a href="menuDivisions.php?state=West Virginia&amp;trailID=1">West Virginia</a></li>
+                      <li><a href="menuDivisions.php?state=Wisconsin&amp;trailID=1">Wisconsin</a></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="#" class="parent">Land Big Fish Opens</a>
+                    <ul>
+                      <li><a href="menuDivisions.php?state=Illinois&amp;trailID=7">Illinois</a></li>
+                      <li><a href="menuDivisions.php?state=Indiana&amp;trailID=7">Indiana</a></li>
+                      <li><a href="menuDivisions.php?state=Kentucky&amp;trailID=7">Kentucky</a></li>
+                      <li><a href="menuDivisions.php?state=Michigan&amp;trailID=7">Michigan</a></li>
+                      <li><a href="menuDivisions.php?state=Missouri&amp;trailID=7">Missouri</a></li>
+                      <li><a href="menuDivisions.php?state=South Dakota&amp;trailID=7">South Dakota</a></li>
+                      <li><a href="menuDivisions.php?state=Tennessee&amp;trailID=7">Tennessee</a></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="#" class="parent">Jackson Kayak Trail</a>
+                    <ul>
+                      <li><a href="menuDivisions.php?state=Indiana&amp;trailID=10">Indiana</a></li>
+                      <li><a href="menuDivisions.php?state=Kansas&amp;trailID=10">Kansas</a></li>
+                      <li><a href="menuDivisions.php?state=Kentucky&amp;trailID=10">Kentucky</a></li>
+                      <li><a href="menuDivisions.php?state=Maryland&amp;trailID=10">Maryland</a></li>
+                      <li><a href="menuDivisions.php?state=Missouri&amp;trailID=10">Missouri</a></li>
+                      <li><a href="menuDivisions.php?state=New York&amp;trailID=10">New York</a></li>
+                      <li><a href="menuDivisions.php?state=Oklahoma&amp;trailID=10">Oklahoma</a></li>
+                      <li><a href="menuDivisions.php?state=Tennessee&amp;trailID=10">Tennessee</a></li>
+                      <li><a href="menuDivisions.php?state=Texas&amp;trailID=10">Texas</a></li>
+                      <li><a href="menuDivisions.php?state=Virginia&amp;trailID=10">Virginia</a></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="#" class="parent">MegaBucks Tournaments</a>
+                    <ul>
+                      <li><a href="menuDivisions.php?state=Indiana&amp;trailID=21">Indiana</a></li>
+                      <li><a href="menuDivisions.php?state=Kentucky&amp;trailID=21">Kentucky</a></li>
+                      <li><a href="menuDivisions.php?state=Tennessee&amp;trailID=21">Tennessee</a></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="#" class="parent">Senior's Trail Divisions</a>
+                    <ul>
+                      <li><a href="menuDivisions.php?state=Illinois&amp;trailID=26">Illinois</a></li>
+                      <li><a href="menuDivisions.php?state=Indiana&amp;trailID=26">Indiana</a></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="#" class="parent">Points Standings</a>
+                    <ul>
+                      <li><a href="modules.php?name=Standings&amp;trailID=1">Team Trail Divisions</a></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="#" class="parent">All Tournaments</a>
+                    <ul>
+                      <li><a href="modules.php?name=Events&amp;trailID=1">Team Trail Divisions</a></li>
+                      <li><a href="modules.php?name=Events&amp;trailID=7">Land Big Fish Opens</a></li>
+                      <li><a href="modules.php?name=Events&amp;trailID=10">Jackson Kayak Trail</a></li>
+                      <li><a href="modules.php?name=Events&amp;trailID=21">MegaBucks Tournaments</a></li>
+                      <li><a href="modules.php?name=Events&amp;trailID=22">Regional Tournaments</a></li>
+                      <li><a href="modules.php?name=Events&amp;trailID=26">Senior's Trail Divisions</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <a href="#" class="drop">Regionals</a>
+              <div class="dropdown">
+                <ul class="levels">
+                  <li>
+                    <a href="#" class="parent">Regional Tournaments</a>
+                    <ul>
+                      <li><a href="menuRegionals.php?state=Florida&amp;trailID=22">Florida</a></li>
+                      <li><a href="menuRegionals.php?state=Illinois&amp;trailID=22">Illinois</a></li>
+                      <li><a href="menuRegionals.php?state=Indiana&amp;trailID=22">Indiana</a></li>
+                      <li><a href="menuRegionals.php?state=Kansas&amp;trailID=22">Kansas</a></li>
+                      <li><a href="menuRegionals.php?state=Kentucky&amp;trailID=22">Kentucky</a></li>
+                      <li><a href="menuRegionals.php?state=Michigan&amp;trailID=22">Michigan</a></li>
+                      <li><a href="menuRegionals.php?state=Missouri&amp;trailID=22">Missouri</a></li>
+                      <li><a href="menuRegionals.php?state=New Jersey&amp;trailID=22">New Jersey</a></li>
+                      <li><a href="menuRegionals.php?state=Ohio&amp;trailID=22">Ohio</a></li>
+                      <li><a href="menuRegionals.php?state=Oklahoma&amp;trailID=22">Oklahoma</a></li>
+                      <li><a href="menuRegionals.php?state=South Dakota&amp;trailID=22">South Dakota</a></li>
+                      <li><a href="menuRegionals.php?state=Tennessee&amp;trailID=22">Tennessee</a></li>
+                      <li><a href="menuRegionals.php?state=Virginia&amp;trailID=22">Virginia</a></li>
+                      <li><a href="menuRegionals.php?state=West Virginia&amp;trailID=22">West Virginia</a></li>
+                      <li><a href="menuRegionals.php?state=Wisconsin&amp;trailID=22">Wisconsin</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <a href="#" class="drop">Championships</a>
+              <div class="dropdown">
+                <ul class="levels">
+                  <li><a href="modules.php?name=Championships&amp;championshipID=1">Bass Cat Classic</a></li>
+                  <li><a href="modules.php?name=Championships&amp;championshipID=8">Bass Cat Silver Cup</a></li>
+                  <li><a href="modules.php?name=Championships&amp;championshipID=22">Big Bass Classic</a></li>
+                  <li><a href="modules.php?name=Championships&amp;championshipID=10">Co-Ed Classic</a></li>
+                  <li><a href="modules.php?name=Championships&amp;championshipID=20">Director's Classic</a></li>
+                  <li><a href="modules.php?name=Championships&amp;championshipID=21">Jackson Kayak Classic</a></li>
+                  <li><a href="modules.php?name=Championships&amp;championshipID=13">LAND BIG FISH Tournament Of Champions</a></li>
+                  <li><a href="modules.php?name=Championships&amp;championshipID=9">Next Generation Classic</a></li>
+                  <li><a href="modules.php?name=Championships&amp;championshipID=23">Senior's Classic</a></li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <a href="#" class="drop">Information</a>
+              <div class="dropdown">
+                <ul class="levels">
+                  <li><a href="modules.php?name=AboutUs">About Us</a></li>
+                  <li><a href="modules.php?name=Advertising">Advertising Opportunities</a></li>
+                  <li><a href="modules.php?name=Contact">Contact Us</a></li>
+                  <li><a href="modules.php?name=TOS">Terms of Use</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="noDrop"><a href="https://unclesamstacklebox.com/">Store</a></li>
+          </ul>
+        </nav>
+        <!-- Director Login -->
+        <div class="director-login">
+          <a href="login" class="signin">Director Login</a>
+          <fieldset id="signin_menu">
+            <form method="post" id="signin" action="admin.php">
+              <input type="hidden" name="random_num" value="319007">
+              <input type="hidden" name="op" value="login">
+              <label for="aid">Username</label>
+              <input id="aid" name="aid" type="text" title="username">
+              <label for="pwd">Password</label>
+              <input id="pwd" name="pwd" type="password" title="password">
+              <p class="remember">
+                <input id="signin_submit" value="Login" type="submit">
+              </p>
+            </form>
+          </fieldset>
+        </div>
+      </div>
+    </header>
+    
+    <!-- Hero Section with Background Video -->
+    <section class="hero">
+      <video autoplay muted loop playsinline>
+        <source src="videos/hero.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="overlay">
+        <h1>Welcome to U.S.A. Bassin</h1>
+        <p>Experience the thrill of competitive bass fishing tournaments and join our innovative community.</p>
+      </div>
+    </section>
+    
+    <!-- Main Content -->
+    <main>
+      <!-- Leaderboard Ad -->
+      <div id="load_adTop" style="text-align: center; margin: 20px 0;">
+        <a href="index.php?op=ad_click&amp;bid=188" target="_blank">
+          <img src="http://www.usabassin.com/modules/FileManager/admin/files/Images/04 Top Water/WR_960x100_2.jpg" alt="">
+        </a>
+      </div>
+      
+      <!-- Innovative Slider -->
+      <section class="slider" id="slider">
+        <div class="slide active">
+          <img src="http://www.usabassin.com/modules/FileManager/admin/files/Images/2025/BassCat.png" alt="Bass Cat Boats">
+          <div class="caption">
+            <h2>Bass Cat Boats</h2>
+            <p>Get to know the Bass Cat Pantera II <a href="modules.php?name=News&amp;file=article&amp;sid=2600"><b>Full Story</b></a></p>
+          </div>
+        </div>
+        <div class="slide">
+          <img src="http://www.usabassin.com/modules/FileManager/admin/files/Images/2025/NEW%20directors.png" alt="Growing the USA Bassin Community">
+          <div class="caption">
+            <h2>Growing the USA Bassin Community</h2>
+            <p>The USA Bassin Team Trail welcomes new divisions and directors ahead of the 2025 spring season <a href="modules.php?name=News&amp;file=article&amp;sid=2599"><b>Full Story</b></a></p>
+          </div>
+        </div>
+        <!-- Additional slides can be added similarly -->
+      </section>
+      <script>
+        $(document).ready(function(){
+          let currentSlide = 0;
+          const slides = $('#slider .slide');
+          const totalSlides = slides.length;
+          setInterval(function(){
+            slides.eq(currentSlide).removeClass('active');
+            currentSlide = (currentSlide + 1) % totalSlides;
+            slides.eq(currentSlide).addClass('active');
+          }, 15000);
+        });
+      </script>
+      
+      <!-- Responsive Grid: Tournament Updates, Upcoming Tournaments & National Standings -->
+      <section class="innovative-grid">
+        <!-- Latest Tournament Updates -->
+        <div class="innovative-card">
+          <div class="card-body">
+            <h3>LATEST TOURNAMENT UPDATES</h3>
+            <ul>
+              <li><a href="modules.php?name=Divisions&amp;divisionID=2" title="2025"><b>IN-24 Lake Lemon Division</b></a></li>
+              <li><a href="modules.php?name=Divisions&amp;divisionID=673" title="Tournament Fee Changes"><b>KY-05 Taylorsville Lake Spring...</b></a></li>
+              <li><a href="modules.php?name=Divisions&amp;divisionID=304" title="Sullivan Lake Fall Division"><b>IN-45 Sullivan Lake Fall Divis...</b></a></li>
+              <li><a href="modules.php?name=Divisions&amp;divisionID=142" title="Attention free membership"><b>NJ-01 Southern New Jersey Divi...</b></a></li>
+              <li><a href="modules.php?name=Divisions&amp;divisionID=326" title="IL-03 Mill Creek Division"><b>IL-03 Mill Creek Spring Divisi...</b></a></li>
+              <li><a href="modules.php?name=Divisions&amp;divisionID=355" title="22 February MOVED"><b>TN-15 C&O Marine Barkley Lake ...</b></a></li>
+              <li><a href="modules.php?name=Divisions&amp;divisionID=678" title="Moved first tournament date"><b>IN-48 Monroe Summer Division</b></a></li>
+              <li><a href="modules.php?name=Divisions&amp;divisionID=38" title="2024 wednesday night tournaments"><b>IN-13 Patoka Weeknight Divisio...</b></a></li>
+              <li><a href="modules.php?name=Divisions&amp;divisionID=283" title="Bischoff Reservoir Division IN-04"><b>IN-04 Bischoff Spring Division...</b></a></li>
+              <li><a href="modules.php?name=Divisions&amp;divisionID=694" title="Information"><b>IN-80 Brookville Wednesday Nig...</b></a></li>
+              <li><a href="modules.php?name=Divisions&amp;divisionID=510" title="2020 Tournament Season Cancelled"><b>IN-40 Rocky Point Ohio River D...</b></a></li>
+              <li><a href="modules.php?name=Divisions&amp;divisionID=627" title="Welcome to the Hoosier Division"><b>KIN-01 Hoosier Division</b></a></li>
+              <li><a href="modules.php?name=Divisions&amp;divisionID=675" title="2025 Season Is Here!"><b>KTX-01 Texas Kayak Trail</b></a></li>
+              <li><a href="modules.php?name=Divisions&amp;divisionID=101" title="Important Tournament Information"><b>MO-01 Pomme De Terre Division</b></a></li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Upcoming Tournaments with Tabs & Pagination -->
+        <div class="innovative-card">
+          <div class="card-body">
+            <h3>UPCOMING TOURNAMENTS</h3>
+            <div id="FPUtabs">
+              <ul>
+                <li><a href="#FPUtabs-1">DIVISIONAL</a></li>
+                <li><a href="modules/Front_Page/upcomingOPEN.php">OPEN</a></li>
+                <li><a href="modules/Front_Page/upcomingBB.php">KAYAK</a></li>
+                <li><a href="modules/Front_Page/upcomingMB.php">MEGABUCKS</a></li>
+              </ul>
+              <div id="FPUtabs-1">
+                <h4>Upcoming Events for 02/14 to 02/21 <span style="float:right;"><a href="modules.php?name=Events&amp;trailID=1">View All Events</a></span></h4>
+                <div id="jqpagination" style="padding:5px 0;"></div>
+                <div id="Searchresult">This content will be replaced when pagination inits.</div>
+                <div id="hiddenresult" style="display:none;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- National Points Standings with Tabs -->
+        <div class="innovative-card">
+          <div class="card-body">
+            <h3>NATIONAL POINTS STANDINGS</h3>
+            <div id="FPRtabs">
+              <ul>
+                <li><a href="#FPRtabs-1">ALL</a></li>
+                <li><a href="#FPRtabs-2">Kayak</a></li>
+              </ul>
+              <div id="FPRtabs-1">
+                <h4>Top 10 Team Leaders <span style="float:right;"><a href="modules.php?name=Standings&amp;trailID=1">View All Standings</a></span></h4>
+                <table width="100%" cellpadding="2" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th style="border-bottom:1px solid #e6e6e6;" width="10%">Pos</th>
+                      <th style="border-bottom:1px solid #e6e6e6;" width="60%">Team</th>
+                      <th style="border-bottom:1px solid #e6e6e6;" width="15%">Points</th>
+                      <th style="border-bottom:1px solid #e6e6e6;" width="15%">Behind</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr bgcolor="#f9f9f9">
+                      <td align="center">1</td>
+                      <td>Zimmerman / Hauser</td>
+                      <td align="center">1200</td>
+                      <td align="center">Leader</td>
+                    </tr>
+                    <tr bgcolor="#ffffff">
+                      <td align="center">2</td>
+                      <td>Robinson / Robinson</td>
+                      <td align="center">1163</td>
+                      <td align="center">-37</td>
+                    </tr>
+                    <tr bgcolor="#f9f9f9">
+                      <td align="center">3</td>
+                      <td>Romanowski / Sellers</td>
+                      <td align="center">1090</td>
+                      <td align="center">-110</td>
+                    </tr>
+                    <!-- Additional rows... -->
+                  </tbody>
+                </table>
+              </div>
+              <div id="FPRtabs-2">
+                <h4>Top 10 Team Leaders <span style="float:right;"><a href="modules.php?name=Standings&amp;trailID=10">View All Standings</a></span></h4>
+                <table width="100%" cellpadding="2" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th style="border-bottom:1px solid #e6e6e6;" width="10%">Pos</th>
+                      <th style="border-bottom:1px solid #e6e6e6;" width="60%">Team</th>
+                      <th style="border-bottom:1px solid #e6e6e6;" width="15%">Points</th>
+                      <th style="border-bottom:1px solid #e6e6e6;" width="15%">Behind</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr bgcolor="#f9f9f9">
+                      <td align="center">1</td>
+                      <td>Eager / None</td>
+                      <td align="center">248</td>
+                      <td align="center">Leader</td>
+                    </tr>
+                    <!-- Additional rows... -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Additional Grid: Facebook Widget, Ads, Video, etc. -->
+      <section class="innovative-grid">
+        <div class="innovative-card">
+          <div class="card-body">
+            <h3>ON FACEBOOK</h3>
+            <div id="fb-root"></div>
+            <script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
+            <fb:like-box href="http://www.facebook.com/USABassin" width="300" height="475" show_faces="false" stream="true" header="false" force_wall="true"></fb:like-box>
+          </div>
+        </div>
+        <div class="innovative-card">
+          <div class="card-body">
+            <h3>300x250 AD</h3>
+            <div id="load_adOfficial" style="text-align: center;">
+              <a href="index.php?op=ad_click&amp;bid=179" target="_blank">
+                <img src="http://www.usabassin.com/modules/FileManager/admin/files/Forms/Sponsors/SeaArk/SA%20300%20Logo.jpg" alt="">
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="innovative-card">
+          <div class="card-body">
+            <h3>VIDEO</h3>
+            <iframe width="300" height="250" src="https://www.youtube.com/embed/S6japQjfe8k" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="innovative-card">
+          <div class="card-body">
+            <h3>300x250 AD</h3>
+            <div id="load_adSupporting" style="text-align: center;">
+              <a href="index.php?op=ad_click&amp;bid=185" target="_blank">
+                <img src="http://www.usabassin.com/modules/FileManager/admin/files/Images/03 Shallow Water/Clipboard08.jpg" alt="">
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Uncle Sam Bass Challenge -->
+      <section class="innovative-card" style="margin: 40px 0;">
+        <div class="card-body">
+          <h3>Uncle Sam Bass Challenge</h3>
+          <a href="http://www.usabassin.com/modules/FileManager/admin/files/Forms/Uncle Sam Bass/USBC%20Rules%202-1-25.pdf">
+            <img src="http://www.usabassin.com/modules/FileManager/admin/files/Forms/Uncle Sam Bass/USA%20Logo%202-1-2025.jpg" alt="">
+          </a>
+        </div>
+      </section>
+      
+      <!-- USA BASSIN National Sponsors (All Rows Restored) -->
+      <section class="innovative-card" style="margin: 40px 0;">
+        <div class="card-body">
+          <h3>USA BASSIN National Sponsors</h3>
+          <table border="0" cellpadding="14" cellspacing="1" style="width:500px; margin: auto;">
+            <tbody>
+              <tr>
+                <td><a href="https://basscat.com/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/Bass%20Cat%20200.jpg" /></a></td>
+                <td><a href="https://www.mercurymarine.com/en/us/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/Mercury%20200.jpg" /></a></td>
+                <td><a href="http://www.usabassin.com/modules/FileManager/admin/files/Forms/Sponsors/Bassmaster%20Ad.pdf"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/National Sponsors/Bassmaster.jpg" /></a></td>
+                <td><a href="https://www.landbigfish.com/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/LBF%20Logo%20200.jpg" /></a></td>
+              </tr>
+              <tr>
+                <td><a href="https://www.wildriverjerky.com/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/04 Top Water/WR_300x100.jpg" /></a></td>
+                <td><a href="https://jacksonkayak.com/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/National Sponsors/Jackson%20Kayak%20200.jpg" /></a></td>
+                <td><a href="https://jacksonkayak.com/outdoors/orion-coolers/coolers/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/National Sponsors/Orion%20Coolers%20200.jpg" /></a></td>
+                <td>
+                  <img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/National Sponsors/Logo%20300.jpg" />
+                  <img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/National Sponsors/Logo%20250.jpg" />
+                  <a href="https://www.zprolithium.com/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/National Sponsors/Logo%20200.jpg" /></a>
+                </td>
+              </tr>
+              <tr>
+                <td><a href="https://googansquad.com/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/National Sponsors/Googan%20Logo%20200.jpg" /></a></td>
+                <td><a href="https://mafiaoutdoors.com/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/National Sponsors/Bass%20Mafia%20200.jpg" /></a></td>
+                <td><a href="https://www.bassmedics.com/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/Rejuvenade%20200.jpg" style="height:76px; width:190px" /></a></td>
+                <td><a href="https://bajiosunglasses.com/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/Bajio%20200.jpg" /></a></td>
+              </tr>
+              <tr>
+                <td><a href="http://www.allterraintackle.com/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/ATT%20200.jpg" /></a></td>
+                <td><a href="https://www.hoorag.com/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/HooRag%20200.jpg" /></a></td>
+                <td><a href="https://www.tourhardincounty.org/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/Hardin%20County%20200.jpg" /></a></td>
+                <td><a href="http://www.p-line.com/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/P-Line_Logo%20200.jpg" /></a></td>
+              </tr>
+              <tr>
+                <td><a href="https://unclesamstacklebox.com/collections/usa-bassin-fishstix"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/FishStix-Logo-Black200.jpg" /></a></td>
+                <td><a href="https://tournamentscales.com/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/PTS%20200.jpg" /></a></td>
+                <td><a href="https://www.facebook.com/TournamentWear"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/Tournament%20Wear%20200.jpg" /></a></td>
+                <td><a href="https://www.precisionsonar.com/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/PSL%20200.jpg" /></a></td>
+              </tr>
+              <tr>
+                <td><a href="https://www.candomarine.com/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/QMP%20200.jpg" /></a></td>
+                <td><a href="https://www.candomarine.com/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/C%20O%20Marine%20200.jpg" /></a></td>
+                <td><a href="https://www.renegademarine.net/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/Renegade%20Logo%20200.jpg" /></a></td>
+                <td><a href="https://www.gatorgrip.com/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/GG%20200.jpg" /></a></td>
+              </tr>
+              <tr>
+                <td><a href="http://www.legacymarineky.com/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/Legacy%20Logo%20200.jpg" /></a></td>
+                <td><a href="http://www.lakebarkley.org/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/Lyon%20County%20200.jpg" /></a></td>
+                <td><a href="https://www.visitclintoncounty.com/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/Clinton%20County%20200.jpg" /></a></td>
+                <td><a href="http://www.gocadiz.com/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/Go%20Cadiz%20200.jpg" /></a></td>
+              </tr>
+              <tr>
+                <td><a href="http://www.kentuckylake.org/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Classic/Marshall%20County%20Logo%20200.jpg" /></a></td>
+                <td><a href="http://parishenrycoedc.com/henry-county-tourism-authority/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/03 Shallow Water/Henry%20County%20Logo%20200.jpg" /></a></td>
+                <td><a href="https://visitmorehead.com/"><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/National Sponsors/Morehead%20Logo.jpg" /></a></td>
+                <td><img alt="" src="http://www.usabassin.com/modules/FileManager/admin/files/Images/Mercury%20QR%20Code" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2003-2025 U.S.A. BASSIN All rights reserved.<br>
+      Use of this website signifies your agreement to the <a href="modules.php?name=TOS">Terms of Use</a>.<br>
+      Designed and optimized for modern browsers.<br>
+      Site by <a href="www.millstechindustry.com">Mills Tech Industry</a></p>
+    </footer>
+  </div>
+  
+  <script>
+    $(document).ready(function(){
+      // Director Login Toggle
+      $(".signin").click(function(e){
+        e.preventDefault();
+        $("fieldset#signin_menu").toggle();
+        $(".signin").toggleClass("menu-open");
+      });
+      $("fieldset#signin_menu").mouseup(function(){ return false; });
+      $(document).mouseup(function(e){
+        if($(e.target).parent("a.signin").length==0){
+          $(".signin").removeClass("menu-open");
+          $("fieldset#signin_menu").hide();
+        }
+      });
+      
+      // Hamburger Toggle for Mobile
+      $("#hamburger").click(function(){
+        $("#menu").toggleClass("active");
+      });
+      
+      // Initialize Tabs for Upcoming Tournaments and Standings
+      $("#FPUtabs").tabs({
+        ajaxOptions: {
+          error: function(xhr, status, index, anchor) {
+            $(anchor.hash).html("<div id='tab-loading' style='margin:100px 0;'>There was a problem loading this tab. Try refreshing the page.</div>");
+          }
+        }
+      });
+      $("#FPRtabs").tabs({
+        ajaxOptions: {
+          error: function(xhr, status, index, anchor) {
+            $(anchor.hash).html("<div id='tab-loading' style='margin:100px 0;'>There was a problem loading this tab. Try refreshing the page.</div>");
+          }
+        }
+      });
+      
+      // Slider Auto-Fade
+      let currentSlide = 0;
+      const slides = $('#slider .slide');
+      const totalSlides = slides.length;
+      setInterval(function(){
+        slides.eq(currentSlide).removeClass('active');
+        currentSlide = (currentSlide + 1) % totalSlides;
+        slides.eq(currentSlide).addClass('active');
+      }, 15000);
+      
+      // Load Ads Periodically
+      $.ajaxSettings.cache = false;
+      setInterval(function(){
+        $('#load_adTop').load('modules/Advertising/loadAdvertisement.php?p=0');
+        $('#load_adOfficial').load('modules/Advertising/loadAdvertisement.php?p=1');
+        $('#load_adPresenting').load('modules/Advertising/loadAdvertisement.php?p=2');
+        $('#load_adSupporting').load('modules/Advertising/loadAdvertisement.php?p=3');
+        $('#load_adLeaderLeft').load('modules/Advertising/loadAdvertisement.php?p=4');
+        $('#load_adLeaderRight').load('modules/Advertising/loadAdvertisement.php?p=5');
+        $('#load_adNewsletter').load('modules/Advertising/loadAdvertisement.php?p=6');
+        $('#load_adClassic').load('modules/Advertising/loadAdvertisement.php?p=7');
+      }, 15000);
+      
+      // Pagination for Upcoming Tournaments
+      function pageselectCallback(page_index, jq){
+        const items_per_page = 12;
+        const offset = page_index * items_per_page;
+        const new_content = $('#hiddenresult div.result').slice(offset, offset + items_per_page).clone();
+        $('#Searchresult').empty().append(new_content);
+        return false;
+      }
+      function initPagination(){
+        const num_entries = $('#hiddenresult div.result').length;
+        $("#jqpagination").pagination(num_entries, {
+          num_edge_entries: 0,
+          num_display_entries: 5,
+          callback: pageselectCallback,
+          items_per_page: 12
+        });
+      }
+      $('#hiddenresult').load('modules/Front_Page/upcomingData.php?trailID=1', null, initPagination);
+    });
+  </script>
+</body>
+</html>

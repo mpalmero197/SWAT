@@ -738,6 +738,59 @@
     #localImageInput {
       display: none;
     }
+
+    /* ========================
+       THEME TOGGLE SWITCH - SMALLER
+       ======================== */
+    .theme-switch-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: 20px;
+    }
+    .theme-switch {
+      position: relative;
+      display: inline-block;
+      width: 30px;
+      height: 17px;
+    }
+    .theme-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; 
+      left: 0;
+      right: 0; 
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 17px;
+    }
+    /* Insert day or night icon in the slider */
+    .slider:before {
+      position: absolute;
+      content: "🌞";
+      left: 3px;
+      bottom: 1px;
+      font-size: 14px;
+      transition: 0.4s;
+    }
+    /* When switch is checked, move icon, change content to moon */
+    input:checked + .slider {
+      background-color: #555;
+    }
+    input:checked + .slider:before {
+      transform: translateX(13px);
+      content: "🌙";
+      font-size: 14px;
+    }
+    input:focus + .slider {
+      box-shadow: 0 0 1px #4A88F6;
+    }
   </style>
 </head>
 <body>
@@ -749,10 +802,15 @@
   <div class="sidebar">
     <h1>SWAT Experimental</h1>
 
-    <!-- Theme Toggle Button (top right) -->
-    <button id="themeToggle" style="background: #4A88F6; color: #fff; border-radius: 4px; padding: 8px 16px; margin-left: 20px; cursor: pointer;">
-      Toggle Theme
-    </button>
+    <!-- THEME TOGGLE SWITCH (smaller) -->
+    <div class="theme-switch-wrapper">
+      <span style="color:#fff;">Theme</span>
+      <label class="theme-switch">
+        <!-- Checkbox for toggling the theme -->
+        <input type="checkbox" id="themeToggleSwitch">
+        <span class="slider"></span>
+      </label>
+    </div>
 
     <div class="tab-nav">
       <button class="tab-btn active" data-tab="landingTab">Welcome</button>
@@ -2283,9 +2341,9 @@
       URL.revokeObjectURL(url);
     });
 
-    // Theme Toggle Logic
-    const themeToggleBtn = document.getElementById('themeToggle');
-    themeToggleBtn.addEventListener('click', () => {
+    // THEME TOGGLE SWITCH LOGIC
+    const themeToggleSwitch = document.getElementById('themeToggleSwitch');
+    themeToggleSwitch.addEventListener('change', () => {
       document.body.classList.toggle('light-theme');
     });
   </script>

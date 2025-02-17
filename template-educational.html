@@ -172,7 +172,7 @@
       position: relative;
       perspective: 1000px;
       transition: transform 0.3s ease;
-      height: 350px; /* Added fixed height */
+      height: 350px; /* Fixed height */
     }
     .course-card:hover {
       transform: translateY(-8px);
@@ -181,9 +181,10 @@
       position: relative;
       transform-style: preserve-3d;
       transition: transform 0.6s;
-      height: 100%; /* Ensure it fills the card */
+      height: 100%;
     }
-    .course-card:hover .course-inner {
+    /* Toggle flip on button click */
+    .course-inner.flipped {
       transform: rotateY(180deg);
     }
     .course-front, .course-back {
@@ -203,6 +204,7 @@
       transform: rotateY(180deg);
       padding: 20px;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
@@ -210,7 +212,7 @@
     /* Blank Image Placeholder with visible border */
     .image-placeholder {
       width: 100%;
-      padding-top: 50%; /* Creates a 4:2 aspect ratio block */
+      padding-top: 50%; /* Creates an aspect ratio block */
       background: #eaeaea;
       border: 2px dashed #ccc;
     }
@@ -227,7 +229,8 @@
       color: #666;
       margin-bottom: 15px;
     }
-    .course-front .btn {
+    /* Button styling */
+    .btn {
       padding: 10px 20px;
       background: var(--accent-color);
       border: none;
@@ -236,7 +239,7 @@
       font-size: 0.9rem;
       transition: background 0.3s ease;
     }
-    .course-front .btn:hover {
+    .btn:hover {
       background: var(--secondary-color);
     }
     /* About Section */
@@ -353,11 +356,12 @@
               <div class="content">
                 <h3>Modern Coding</h3>
                 <p>Learn cutting-edge programming languages and frameworks.</p>
-                <button class="btn">Discover</button>
+                <button class="btn">Read More</button>
               </div>
             </div>
             <div class="course-back">
               <p>Master JavaScript, Python, and more with real-world projects!</p>
+              <button class="btn">Discover</button>
             </div>
           </div>
         </div>
@@ -368,11 +372,12 @@
               <div class="content">
                 <h3>Creative Design</h3>
                 <p>Explore innovative design techniques to elevate your creativity.</p>
-                <button class="btn">Discover</button>
+                <button class="btn">Read More</button>
               </div>
             </div>
             <div class="course-back">
               <p>Dive into typography, color theory, and layout strategies for modern design.</p>
+              <button class="btn">Discover</button>
             </div>
           </div>
         </div>
@@ -383,11 +388,12 @@
               <div class="content">
                 <h3>Digital Marketing</h3>
                 <p>Boost your brand with strategic digital marketing insights.</p>
-                <button class="btn">Discover</button>
+                <button class="btn">Read More</button>
               </div>
             </div>
             <div class="course-back">
               <p>Learn SEO, social media, and analytics from industry leaders.</p>
+              <button class="btn">Discover</button>
             </div>
           </div>
         </div>
@@ -441,6 +447,23 @@
       } else {
         header.style.background = 'rgba(255, 255, 255, 0.9)';
       }
+    });
+    
+    // Toggle flip on button clicks for course cards
+    document.querySelectorAll('.course-card').forEach(card => {
+      const courseInner = card.querySelector('.course-inner');
+      const frontButton = card.querySelector('.course-front .btn');
+      const backButton = card.querySelector('.course-back .btn');
+      
+      frontButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        courseInner.classList.add('flipped');
+      });
+      
+      backButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        courseInner.classList.remove('flipped');
+      });
     });
   </script>
 </body>

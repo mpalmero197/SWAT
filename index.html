@@ -47,9 +47,7 @@
       transition: color 0.3s, border-bottom 0.3s;
       border-bottom: 2px solid transparent;
     }
-    .tab-btn:hover {
-      color: #fff;
-    }
+    .tab-btn:hover { color: #fff; }
     .tab-btn.active {
       color: #4A88F6;
       border-bottom: 2px solid #4A88F6;
@@ -108,9 +106,7 @@
       margin-bottom: 10px;
       transition: background 0.3s;
     }
-    #mediaSidebar .buttons button:hover {
-      background: #3c74d4;
-    }
+    #mediaSidebar .buttons button:hover { background: #3c74d4; }
     #undoBtn { background: #f0ad4e; }
     #redoBtn { background: #5bc0de; }
     /* Scrollable media content container */
@@ -153,16 +149,10 @@
       cursor: pointer;
     }
     /* Tab Contents */
-    .tab-content {
-      display: none;
-    }
-    .tab-content.active {
-      display: block;
-    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
     /* Form Fields */
-    .field {
-      margin-bottom: 15px;
-    }
+    .field { margin-bottom: 15px; }
     .field label {
       font-size: 0.9rem;
       color: #bbb;
@@ -183,9 +173,7 @@
     }
     .field input:focus,
     .field select:focus,
-    .field textarea:focus {
-      border-color: #4A88F6;
-    }
+    .field textarea:focus { border-color: #4A88F6; }
     /* Buttons */
     .buttons {
       display: flex;
@@ -203,10 +191,7 @@
       font-size: 0.95rem;
       transition: background 0.3s, transform 0.2s;
     }
-    button:hover {
-      background: #3c74d4;
-      transform: translateY(-2px);
-    }
+    button:hover { background: #3c74d4; transform: translateY(-2px); }
     button.removePageBtn { background: #d9534f; }
     button.removePageBtn:hover { background: #c9302c; }
     /* Page Editor UI */
@@ -218,9 +203,7 @@
       margin-bottom: 20px;
       transition: box-shadow 0.3s;
     }
-    .pageItem:hover {
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    }
+    .pageItem:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
     .pageItem .pageHeader {
       display: flex;
       align-items: center;
@@ -233,9 +216,7 @@
       color: #fff;
     }
     /* Section Container */
-    .sectionContainer {
-      margin-top: 15px;
-    }
+    .sectionContainer { margin-top: 15px; }
     .sectionItem {
       background: #242424;
       padding: 15px;
@@ -266,9 +247,7 @@
       cursor: pointer;
       transition: background 0.2s;
     }
-    .reorder-btns button:hover {
-      background: #666;
-    }
+    .reorder-btns button:hover { background: #666; }
     /* Template Cards Styles */
     .templateItem {
       background: #2b2b2b;
@@ -297,9 +276,7 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-    .templateItem button:hover {
-      background: #3c74d4;
-    }
+    .templateItem button:hover { background: #3c74d4; }
     /* Preview & Generated Code */
     #previewFrame {
       width: 100%;
@@ -324,14 +301,9 @@
     /* Modal Styles */
     .import-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(0,0,0,0.7);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      display: flex; justify-content: center; align-items: center;
       z-index: 3000;
     }
     .import-modal {
@@ -342,16 +314,9 @@
       width: 100%;
       color: #000;
     }
-    .import-modal h3 {
-      margin-bottom: 15px;
-    }
-    .import-modal div {
-      margin-bottom: 10px;
-    }
-    .import-modal button {
-      padding: 6px 12px;
-      margin-top: 10px;
-    }
+    .import-modal h3 { margin-bottom: 15px; }
+    .import-modal div { margin-bottom: 10px; }
+    .import-modal button { padding: 6px 12px; margin-top: 10px; }
     /* Floating View Source Panel */
     #viewSourcePanel {
       position: fixed;
@@ -610,133 +575,106 @@
       border: 1px solid #ccc;
       color: #111;
     }
-    .light-theme label {
-      color: #333;
-    }
-    .light-theme ::placeholder {
-      color: #666;
-    }
+    .light-theme label { color: #333; }
+    .light-theme ::placeholder { color: #666; }
 
     /* =========================
-       Landing Page Styles
+       Landing Page Styles - Improved
        ========================= */
     #landingTab {
       padding: 30px;
-      background: linear-gradient(135deg, #2b2b2b, #1a1a1a);
+      background: #1a1a1a;
       border-radius: 8px;
       margin: 20px;
     }
-    .landing-hero {
-      position: relative;
-      text-align: center;
-      padding: 60px 20px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      background: linear-gradient(135deg, #2b2b2b, #1a1a1a);
-    }
-    .landing-hero::before {
-      content: "";
-      position: absolute;
-      top: 0; 
-      left: 0; 
-      right: 0; 
-      bottom: 0;
-      background: rgba(0,0,0,0.5);
-      border-radius: 8px;
-    }
-    .landing-hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 40px 20px;
-    }
-    .landing-hero h1 {
-      font-family: 'Poppins', sans-serif;
-      font-size: 2.5rem;
-      color: #fff;
-      margin-bottom: 15px;
-    }
-    .landing-hero p {
-      color: #ccc;
-      font-size: 1.1rem;
-      line-height: 1.6;
-      margin-bottom: 30px;
-    }
-    .landing-hero .cta-buttons {
+    .landing-container {
       display: flex;
-      gap: 15px;
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
-      flex-wrap: wrap;
-    }
-    .landing-hero .cta-buttons button {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 600;
-      border-radius: 6px;
-      padding: 12px 20px;
-      font-size: 1rem;
-      background: #4A88F6;
-      transition: background 0.3s;
-    }
-    .landing-hero .cta-buttons button:hover {
-      background: #3c74d4;
-    }
-    .landing-steps {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 20px;
-      margin-top: 30px;
-    }
-    .landing-step-card {
-      background-color: rgba(255,255,255,0.05);
-      border-radius: 8px;
-      padding: 20px;
-      transition: transform 0.3s, box-shadow 0.3s;
+      padding: 60px 20px;
       text-align: center;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
-    .landing-step-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.4);
-    }
-    .landing-step-card h3 {
+    .landing-header {
       font-family: 'Poppins', sans-serif;
+      font-size: 3rem;
+      margin-bottom: 20px;
       color: #fff;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+      animation: fadeInDown 1s ease-out;
+    }
+    .landing-subheader {
+      font-size: 1.5rem;
+      max-width: 800px;
+      margin: 20px auto;
+      color: #ddd;
+      animation: fadeIn 1s ease-out 0.5s forwards;
+      opacity: 0;
+    }
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 40px;
+    }
+    .feature-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 20px;
+      width: 260px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      animation: fadeInUp 1s ease-out;
+    }
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+    }
+    .feature-card h3 {
       margin-bottom: 10px;
-      font-size: 1.2rem;
+      font-size: 1.3rem;
+      color: #fff;
     }
-    .landing-step-card p {
+    .feature-card p {
+      font-size: 0.95rem;
       color: #ccc;
-      line-height: 1.4;
     }
-    .light-theme #landingTab {
-      background: linear-gradient(135deg, #f9f9f9, #efefef);
+    .cta-button {
+      background: #4A88F6;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 50px;
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: transform 0.3s, background 0.3s;
+      margin-top: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+      animation: pulse 2s infinite;
     }
-    .light-theme .landing-hero {
-      background: linear-gradient(135deg, #f9f9f9, #ddd);
+     .cta-button:hover {
+       background: #FFFFFF;
+       color: #4A88F6;
+       transform: scale(1.05);
     }
-    .light-theme .landing-hero::before {
-      background: rgba(255,255,255,0.35);
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    .light-theme .landing-hero h1 {
-      color: #111;
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
-    .light-theme .landing-hero p {
-      color: #555;
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    .light-theme .landing-step-card {
-      background-color: rgba(0,0,0,0.05);
-    }
-    .light-theme .landing-step-card h3 {
-      color: #111;
-    }
-    .light-theme .landing-step-card p {
-      color: #333;
-    }
-
-    /* Hide the default file input button so that only the custom label is shown */
-    #localImageInput {
-      display: none;
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+      100% { transform: scale(1); }
     }
 
     /* ========================
@@ -762,35 +700,34 @@
     .slider {
       position: absolute;
       cursor: pointer;
-      top: 0; 
+      top: 0;
       left: 0;
-      right: 0; 
+      right: 0;
       bottom: 0;
       background-color: #ccc;
       transition: 0.4s;
       border-radius: 17px;
     }
-    /* Insert day or night icon in the slider */
     .slider:before {
       position: absolute;
-      content: "🌞";
+      content: "🌑";
       left: 3px;
       bottom: 1px;
       font-size: 14px;
       transition: 0.4s;
     }
-    /* When switch is checked, move icon, change content to moon */
     input:checked + .slider {
       background-color: #555;
     }
     input:checked + .slider:before {
       transform: translateX(13px);
-      content: "🌙";
+      content: "☀️";
       font-size: 14px;
     }
-    input:focus + .slider {
-      box-shadow: 0 0 1px #4A88F6;
-    }
+    input:focus + .slider { box-shadow: 0 0 1px #4A88F6; }
+    
+    /* Hide the default file input button */
+    #localImageInput { display: none; }
   </style>
 </head>
 <body>
@@ -801,17 +738,14 @@
   <!-- Top Navigation Bar -->
   <div class="sidebar">
     <h1>SWAT Experimental</h1>
-
     <!-- THEME TOGGLE SWITCH (smaller) -->
     <div class="theme-switch-wrapper">
       <span style="color:#fff;">Theme</span>
       <label class="theme-switch">
-        <!-- Checkbox for toggling the theme -->
         <input type="checkbox" id="themeToggleSwitch">
         <span class="slider"></span>
       </label>
     </div>
-
     <div class="tab-nav">
       <button class="tab-btn active" data-tab="landingTab">Welcome</button>
       <button class="tab-btn" data-tab="basicTab">Basic Settings</button>
@@ -850,39 +784,35 @@
   <div class="main-content">
     <!-- LANDING PAGE TAB -->
     <div id="landingTab" class="tab-content active">
-      <div class="landing-hero">
-        <div class="landing-hero-content">
-          <h1>Welcome to SWAT Experimental</h1>
-          <p>
-            Build and customize pages quickly with intuitive controls.  
-            Add sections, tweak layouts, and preview in real-time.
-          </p>
-          <div class="cta-buttons">
-            <button id="getStartedBtn">Get Started</button>
+      <!-- Improved Landing Page -->
+      <div class="landing-container">
+        <h1 class="landing-header">Welcome to SWAT Experimental</h1>
+        <p class="landing-subheader">
+          The ultimate website builder that fuses intuitive design with cutting‑edge technology.
+          Build, customize, and preview your website in real time with our dynamic, innovative platform.
+        </p>
+        <div class="features">
+          <div class="feature-card">
+            <h3>Intuitive Drag &amp; Drop</h3>
+            <p>Effortlessly design your site with our user‑friendly interface.</p>
+          </div>
+          <div class="feature-card">
+            <h3>Real‑Time Preview</h3>
+            <p>Instantly see your changes as they happen, ensuring flawless design.</p>
+          </div>
+          <div class="feature-card">
+            <h3>Flexible Templates</h3>
+            <p>Kickstart your project with a variety of innovative templates.</p>
+          </div>
+          <div class="feature-card">
+            <h3>Advanced Customization</h3>
+            <p>Fine‑tune every detail with comprehensive global settings and custom CSS.</p>
           </div>
         </div>
-      </div>
-      <div class="landing-steps">
-        <div class="landing-step-card">
-          <h3>1. Configure Basics</h3>
-          <p>Set global colors, fonts, and other default settings under “Basic Settings.”</p>
-        </div>
-        <div class="landing-step-card">
-          <h3>2. Create Pages</h3>
-          <p>Use “Pages & Navigation” to define top-level and sub-pages for your site.</p>
-        </div>
-        <div class="landing-step-card">
-          <h3>3. Reference Layouts</h3>
-          <p>Import an existing HTML layout into a page under “Reference Layout.”</p>
-        </div>
-        <div class="landing-step-card">
-          <h3>4. Use Templates</h3>
-          <p>Browse or create templates to speed up page creation in “Templates.”</p>
-        </div>
-        <div class="landing-step-card">
-          <h3>5. Preview & Export</h3>
-          <p>Generate code in “Preview & Code” to see your final product and export it.</p>
-        </div>
+        <!-- The Get Started button has an id for event binding -->
+        <button class="cta-button" id="getStartedBtn">
+          Get Started Now
+        </button>
       </div>
     </div>
 
@@ -939,7 +869,7 @@
     <!-- PAGES & NAVIGATION TAB -->
     <div id="pagesTab" class="tab-content">
       <h2>Pages & Navigation</h2>
-      <p>Add pages (and sub-pages). Sub-pages appear as dropdown items in navigation.</p>
+      <p>Add pages (and sub‑pages). Sub‑pages appear as dropdown items in navigation.</p>
       <div class="buttons">
         <button id="addPageBtn" style="background:#4A88F6;">Add New Page</button>
       </div>
@@ -980,11 +910,12 @@
     <!-- PREVIEW & CODE TAB -->
     <div id="previewCodeTab" class="tab-content">
       <h2>Live Preview (Home Page)</h2>
-      <p>Preview shows the first top-level page. Navigation links are interactive.</p>
+      <p>Preview shows the first top‑level page. Navigation links are interactive.</p>
       <div class="buttons">
         <button id="previewBtn">Update Preview</button>
         <button id="toggleViewSourceBtn">Enable View Source</button>
         <button id="changeTextColorBtn">Change Text Color</button>
+        <button id="fullscreenBtn">Full Screen</button>
       </div>
       <iframe id="previewFrame"></iframe>
       <div id="viewSourcePanel"></div>
@@ -998,7 +929,7 @@
       </div>
       <hr style="margin:20px 0;">
       <h2>Generated Code (All Pages)</h2>
-      <p>Each top-level page is generated with a navigation bar; sub-pages appear as dropdowns.</p>
+      <p>Each top‑level page is generated with a navigation bar; sub‑pages appear as dropdowns.</p>
       <div class="buttons">
         <button id="generateBtn">Generate Site Code</button>
         <button id="clearBtn" style="background:#d9534f;">Clear All</button>
@@ -1040,7 +971,7 @@
     }
     .import-modal h3 { margin-bottom: 15px; }
     .import-modal div { margin-bottom: 10px; }
-    .import-modal button { padding: 6px 12px; }
+    .import-modal button { padding: 6px 12px; margin-top: 10px; }
   </style>
   
   <script>
@@ -1082,14 +1013,13 @@
     document.getElementById('landingTab').classList.add('active');
     tabButtons[0].classList.add('active');
     
-    // -------------- ADDED EVENT LISTENER FOR "Get Started" BUTTON --------------
+    // "Get Started" Button - Switch to Basic Settings Tab
     document.getElementById('getStartedBtn').addEventListener('click', () => {
       tabButtons.forEach(b => b.classList.remove('active'));
       tabContents.forEach(tc => tc.classList.remove('active'));
       document.querySelector('.tab-btn[data-tab="basicTab"]').classList.add('active');
       document.getElementById('basicTab').classList.add('active');
     });
-    // --------------------------------------------------------------------------
     
     // Font Selection Functionality
     const fontsList = [
@@ -1149,10 +1079,7 @@
     function createPageEditor(parentPage) {
       const pageId = pageCount++;
       const pageObj = { id: pageId, title: "Untitled Page", layout: "single", sections: [], subPages: [], importedParts: null };
-      if (parentPage) {
-        pageObj.parent = parentPage.id;
-        parentPage.subPages.push(pageObj);
-      }
+      if (parentPage) { pageObj.parent = parentPage.id; parentPage.subPages.push(pageObj); }
       else { pages.push(pageObj); }
       const pageDiv = document.createElement('div');
       pageDiv.classList.add('pageItem');
@@ -1194,9 +1121,7 @@
         const parentDiv = pagesContainer.querySelector(`.pageItem[data-pageid="${parentPage.id}"]`);
         if (!parentDiv) { pagesContainer.appendChild(pageDiv); }
         else { parentDiv.insertAdjacentElement('afterend', pageDiv); }
-      } else {
-        pagesContainer.appendChild(pageDiv);
-      }
+      } else { pagesContainer.appendChild(pageDiv); }
       pageDiv.querySelector('.removePageBtn').addEventListener('click', () => { removePage(pageObj, pageDiv); });
       const titleInput = pageDiv.querySelector('.pageTitleInput');
       titleInput.addEventListener('input', (e) => { pageObj.title = e.target.value.trim(); });
@@ -1208,23 +1133,16 @@
       pageDiv.querySelector('.addSectionBtn').addEventListener('click', () => { createSectionEditor(pageObj, sectionContainer); });
       if (!parentPage) {
         const addSubPageBtn = pageDiv.querySelector('.addSubPageBtn');
-        if(addSubPageBtn) {
-          addSubPageBtn.addEventListener('click', () => { createPageEditor(pageObj); });
-        }
+        if(addSubPageBtn) { addSubPageBtn.addEventListener('click', () => { createPageEditor(pageObj); }); }
       }
     }
     function removePage(pageObj, pageDiv) {
-      if (pageObj) {
-        pageObjSubSearch(pageObj.id, pages);
-      }
+      if (pageObj) { pageObjSubSearch(pageObj.id, pages); }
       pageDiv.remove();
     }
     function pageObjSubSearch(id, pageArr) {
       for (let i = 0; i < pageArr.length; i++) {
-        if (pageArr[i].id === id) {
-          pageArr.splice(i, 1);
-          return true;
-        }
+        if (pageArr[i].id === id) { pageArr.splice(i, 1); return true; }
         else if (pageArr[i].subPages.length > 0) {
           const found = pageObjSubSearch(id, pageArr[i].subPages);
           if (found) return true;
@@ -1375,10 +1293,7 @@
       function renderIconField() {
         iconValueContainer.innerHTML = "";
         const currentLib = iconLibrarySelect.value;
-        if (currentLib === "none") {
-          sectionData.iconValue = "";
-          return;
-        }
+        if (currentLib === "none") { sectionData.iconValue = ""; return; }
         else if (currentLib === "fontAwesome") {
           const selectEl = document.createElement('select');
           selectEl.innerHTML = `
@@ -1394,7 +1309,7 @@
           iconValueContainer.appendChild(selectEl);
         } else if (currentLib === "materialIcons") {
           const inputEl = document.createElement('input');
-          inputEl.type = "text"; 
+          inputEl.type = "text";
           inputEl.placeholder = "e.g. 'face', 'home'";
           inputEl.value = sectionData.iconValue || "";
           inputEl.addEventListener('input', e => { sectionData.iconValue = e.target.value.trim(); });
@@ -1411,9 +1326,7 @@
       renderIconField();
       removeSectionBtn.addEventListener('click', () => {
         const idx = pageObj.sections.indexOf(sectionData);
-        if (idx !== -1) {
-          pageObj.sections.splice(idx, 1);
-        }
+        if (idx !== -1) { pageObj.sections.splice(idx, 1); }
         secDiv.remove();
       });
       moveUpBtn.addEventListener('click', () => {
@@ -1460,26 +1373,18 @@
     const manualHtmlInput = document.getElementById('manualHtmlInput');
     importHtmlBtn.addEventListener('click', () => {
       const htmlString = manualHtmlInput.value.trim();
-      if (!htmlString) {
-        alert("Please paste HTML code.");
-        return;
-      }
+      if (!htmlString) { alert("Please paste HTML code."); return; }
       const parts = separateHTMLParts(htmlString);
       showImportOptions(parts, (selectedParts) => {
         const pageId = prompt("Enter the Page ID to import these parts (e.g., 0, 1):");
         if (pageId === null) return;
         const targetPage = findPageById(parseInt(pageId, 10), pages);
-        if (!targetPage) {
-          alert("Page not found.");
-          return;
-        }
+        if (!targetPage) { alert("Page not found."); return; }
         targetPage.importedParts = selectedParts;
         targetPage.layout = "ReferencedSiteLayout";
         const pageDiv = document.querySelector(`.pageItem[data-pageid="${targetPage.id}"]`);
         const layoutSelect = pageDiv.querySelector('.pageLayoutSelect');
-        if (layoutSelect) {
-          layoutSelect.value = "ReferencedSiteLayout";
-        }
+        if (layoutSelect) { layoutSelect.value = "ReferencedSiteLayout"; }
         alert("Imported selected HTML parts into the page!");
       });
     });
@@ -1524,9 +1429,7 @@
       `;
       overlay.appendChild(modal);
       document.body.appendChild(overlay);
-      document.getElementById('cancelImport').addEventListener('click', () => {
-        document.body.removeChild(overlay);
-      });
+      document.getElementById('cancelImport').addEventListener('click', () => { document.body.removeChild(overlay); });
       document.getElementById('confirmImport').addEventListener('click', () => {
         const selectedParts = {};
         if (document.getElementById('importHead').checked) { selectedParts.head = parts.head; }
@@ -1554,25 +1457,16 @@
     const mediaResults = document.getElementById('mediaResults');
     mediaSearchBtn.addEventListener('click', async () => {
       const query = mediaSearchInput.value.trim();
-      if (!query) {
-        mediaResults.innerHTML = "<p style='color:red;'>Please enter a search term.</p>";
-        return;
-      }
+      if (!query) { mediaResults.innerHTML = "<p style='color:red;'>Please enter a search term.</p>"; return; }
       mediaResults.innerHTML = "Searching...";
       try {
         const response = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=50`, {
           headers: { Authorization: "2mxS3gi2IIXAmd4anXuVaaNs5k98X0F6KaTpszZYFCJstNfWXVH71gN1" }
         });
-        if (!response.ok) {
-          mediaResults.innerHTML = "<p style='color:red;'>Error fetching images.</p>";
-          return;
-        }
+        if (!response.ok) { mediaResults.innerHTML = "<p style='color:red;'>Error fetching images.</p>"; return; }
         const data = await response.json();
         const images = data.photos || [];
-        if (!images.length) {
-          mediaResults.innerHTML = "<p style='color:#bbb;'>No results found.</p>";
-          return;
-        }
+        if (!images.length) { mediaResults.innerHTML = "<p style='color:#bbb;'>No results found.</p>"; return; }
         mediaResults.innerHTML = "";
         images.forEach(imgObj => {
           const thumbUrl = imgObj.src.small;
@@ -1587,10 +1481,7 @@
           });
           mediaResults.appendChild(wrapper);
         });
-      } catch (err) {
-        console.error(err);
-        mediaResults.innerHTML = "<p style='color:red;'>Failed to retrieve images.</p>";
-      }
+      } catch (err) { console.error(err); mediaResults.innerHTML = "<p style='color:red;'>Failed to retrieve images.</p>"; }
     });
     
     // Local Image Handler
@@ -1610,16 +1501,12 @@
           mediaResults.appendChild(wrapper);
         };
         reader.readAsDataURL(file);
-      } else {
-        alert("Please select a valid image file.");
-      }
+      } else { alert("Please select a valid image file."); }
     });
     
     // Preview & Code Generation
     function buildPageHTML(pageObj, isPreviewNav) {
-      if (pageObj.layout === "raw" && pageObj.rawHTML) {
-        return pageObj.rawHTML;
-      }
+      if (pageObj.layout === "raw" && pageObj.rawHTML) { return pageObj.rawHTML; }
       const gFont = selectedFont || "Arial, sans-serif";
       const fontName = gFont.split(',')[0].replace(/['"]/g, '').trim();
       const googleFonts = {
@@ -1636,9 +1523,7 @@
         "Poppins": "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
       };
       let fontLink = "";
-      if (googleFonts[fontName]) {
-        fontLink = `<link href="${googleFonts[fontName]}" rel="stylesheet">`;
-      }
+      if (googleFonts[fontName]) { fontLink = `<link href="${googleFonts[fontName]}" rel="stylesheet">`; }
       const pageTitle = pageObj.title.trim() || "Untitled Page";
       if (pageObj.layout === "ReferencedSiteLayout" && pageObj.importedParts) {
         return `
@@ -1674,9 +1559,7 @@
       }
       const sectionsHTML = buildSectionsHTML(pageObj.sections, pageObj.id);
       let navHTML = "";
-      if (includeNav.checked && isTopLevel(pageObj)) {
-        navHTML = buildNavHTML(pages, isPreviewNav);
-      }
+      if (includeNav.checked && isTopLevel(pageObj)) { navHTML = buildNavHTML(pages, isPreviewNav); }
       let layoutCSS = (pageObj.layout === "ReferencedSiteLayout") ? getReferencedLayoutCSS(pageObj) : getLayoutCSS(pageObj.layout);
       const usedFA = checkIconUse(pageObj, "fontAwesome");
       const usedMI = checkIconUse(pageObj, "materialIcons");
@@ -1734,9 +1617,7 @@
       background-color: ${gBg}; color: ${gTxt}; padding: 20px; border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: transform 0.2s ease;
     }
-    .layout-container .layout-item:hover {
-      transform: translateY(-3px);
-    }
+    .layout-container .layout-item:hover { transform: translateY(-3px); }
     ${customCSS}
   </style>
 </head>
@@ -1765,9 +1646,7 @@
       const t = pg.title.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/gi, '');
       return t ? t + ".html" : "page-" + pg.id + ".html";
     }
-    function isTopLevel(pageObj) {
-      return pages.includes(pageObj);
-    }
+    function isTopLevel(pageObj) { return pages.includes(pageObj); }
     // Build Navigation HTML
     function buildNavHTML(pageArr, isPreviewNav) {
       let navHTML = `<nav><ul>`;
@@ -1881,19 +1760,14 @@
     }
     function loadLocalTemplates() {
       const localTemplates = JSON.parse(localStorage.getItem("localTemplates") || "[]");
-      localTemplates.forEach(template => {
-           addLocalTemplateToList(template.filename, template.content, template.folder);
-      });
+      localTemplates.forEach(template => { addLocalTemplateToList(template.filename, template.content, template.folder); });
     }
     window.addEventListener("load", loadLocalTemplates);
     
     // Save Current Template
     document.getElementById("saveTemplateBtn").addEventListener("click", function() {
       const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
-      if (!iframeDoc) {
-        alert("Preview not loaded.");
-        return;
-      }
+      if (!iframeDoc) { alert("Preview not loaded."); return; }
       const templateHTML = iframeDoc.documentElement.outerHTML;
       let fileName = prompt("Enter filename for template (e.g., template-myLayout):", "template-");
       if (fileName) {
@@ -1921,10 +1795,7 @@
     document.getElementById("changeTextColorBtn").addEventListener("click", function() {
       const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
       const selection = iframeDoc.getSelection();
-      if (selection.isCollapsed) {
-        alert("Select text in preview pane.");
-        return;
-      }
+      if (selection.isCollapsed) { alert("Select text in preview pane."); return; }
       document.getElementById("textColorPicker").click();
     });
     document.getElementById("textColorPicker").addEventListener("input", function() {
@@ -1935,6 +1806,18 @@
       iframeDoc.execCommand("foreColor", false, color);
     });
     
+    // Full Screen Toggle for Preview Pane
+    document.getElementById('fullscreenBtn').addEventListener('click', function() {
+      const previewFrame = document.getElementById('previewFrame');
+      if (!document.fullscreenElement) {
+        previewFrame.requestFullscreen().catch(err => {
+          alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    });
+    
     // View Source & Update Element
     let viewSourceEnabled = false;
     const toggleViewSourceBtn = document.getElementById('toggleViewSourceBtn');
@@ -1943,13 +1826,8 @@
       viewSourceEnabled = !viewSourceEnabled;
       this.textContent = viewSourceEnabled ? "Disable View Source" : "Enable View Source";
       const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
-      if (viewSourceEnabled) {
-        attachViewSourceListeners(iframeDoc);
-      } else {
-        detachViewSourceListeners(iframeDoc);
-        removeHighlight();
-        viewSourcePanel.style.display = "none";
-      }
+      if (viewSourceEnabled) { attachViewSourceListeners(iframeDoc); }
+      else { detachViewSourceListeners(iframeDoc); removeHighlight(); viewSourcePanel.style.display = "none"; }
     });
     function attachViewSourceListeners(doc) {
       if (!doc) return;
@@ -1958,10 +1836,7 @@
       doc.addEventListener('click', handleElementClick);
       if (doc.head) {
         const titleElem = doc.head.querySelector('title');
-        if (titleElem) {
-          titleElem.style.cursor = 'pointer';
-          titleElem.addEventListener('click', handleElementClick);
-        }
+        if (titleElem) { titleElem.style.cursor = 'pointer'; titleElem.addEventListener('click', handleElementClick); }
       }
     }
     function detachViewSourceListeners(doc) {
@@ -1971,9 +1846,7 @@
       doc.removeEventListener('click', handleElementClick);
       if (doc.head) {
         const titleElem = doc.head.querySelector('title');
-        if (titleElem) {
-          titleElem.removeEventListener('click', handleElementClick);
-        }
+        if (titleElem) { titleElem.removeEventListener('click', handleElementClick); }
       }
     }
     function handleElementMouseOver(e) {
@@ -2008,11 +1881,7 @@
     }
     function removeHighlight() {
       const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
-      if (iframeDoc) {
-        iframeDoc.querySelectorAll('*').forEach(elem => {
-          elem.style.outline = "";
-        });
-      }
+      if (iframeDoc) { iframeDoc.querySelectorAll('*').forEach(elem => { elem.style.outline = ""; }); }
     }
     function performUpdateElement() {
       const newHTML = document.getElementById('editElementTextarea').value;
@@ -2026,9 +1895,7 @@
           const sectionIndex = window.currentlySelectedElement.getAttribute('data-section-index');
           if (pageId !== null && sectionIndex !== null) {
             const targetPage = findPageById(parseInt(pageId, 10), pages);
-            if (targetPage) {
-              targetPage.sections.splice(parseInt(sectionIndex, 10), 1);
-            }
+            if (targetPage) { targetPage.sections.splice(parseInt(sectionIndex, 10), 1); }
           }
           window.currentlySelectedElement.parentNode.removeChild(window.currentlySelectedElement);
           window.currentlySelectedElement = null;
@@ -2052,17 +1919,12 @@
                 const pageDiv = document.querySelector(`.pageItem[data-pageid="${pageId}"]`);
                 if (pageDiv) {
                   const titleInput = pageDiv.querySelector('.pageTitleInput');
-                  if (titleInput) {
-                    titleInput.value = newTitleText;
-                  }
+                  if (titleInput) { titleInput.value = newTitleText; }
                 }
                 document.getElementById('editElementPanel').style.display = 'none';
                 window.currentlySelectedElement = null;
                 return true;
-              } else {
-                alert("Invalid title HTML.");
-                return false;
-              }
+              } else { alert("Invalid title HTML."); return false; }
             }
           }
         } else {
@@ -2086,10 +1948,7 @@
             window.currentlySelectedElement = null;
             document.getElementById('editElementPanel').style.display = 'none';
             return true;
-          } else {
-            alert("Invalid HTML.");
-            return false;
-          }
+          } else { alert("Invalid HTML."); return false; }
         }
       }
       return false;
@@ -2100,14 +1959,10 @@
           removeHighlight();
           const updatedHTML = previewFrame.contentDocument.documentElement.outerHTML;
           generatedCode.value = updatedHTML;
-        } catch (err) {
-          console.error("Error:", err);
-        }
+        } catch (err) { console.error("Error:", err); }
       }
     });
-    document.getElementById('updateElementBtn').addEventListener('click', function() {
-      performUpdateElement();
-    });
+    document.getElementById('updateElementBtn').addEventListener('click', function() { performUpdateElement(); });
     document.getElementById('deleteElementBtn').addEventListener('click', function() {
       if (window.currentlySelectedElement) {
         if (window.currentlySelectedElement.tagName.toLowerCase() === 'title') {
@@ -2118,17 +1973,13 @@
         const sectionIndex = window.currentlySelectedElement.getAttribute('data-section-index');
         if (pageId !== null && sectionIndex !== null) {
           const targetPage = findPageById(parseInt(pageId, 10), pages);
-          if (targetPage) {
-            targetPage.sections.splice(parseInt(sectionIndex, 10), 1);
-          }
+          if (targetPage) { targetPage.sections.splice(parseInt(sectionIndex, 10), 1); }
         }
         window.currentlySelectedElement.parentNode.removeChild(window.currentlySelectedElement);
         window.currentlySelectedElement = null;
         document.getElementById('editElementPanel').style.display = 'none';
         alert("Element deleted.");
-      } else {
-        alert("No element selected.");
-      }
+      } else { alert("No element selected."); }
     });
     const previewFrame = document.getElementById('previewFrame');
     function makeAllElementsDropZones() {
@@ -2165,9 +2016,7 @@
         e.dataTransfer.dropEffect = "copy";
       });
       makeAllElementsDropZones();
-      if (viewSourceEnabled) {
-        attachViewSourceListeners(iframeDoc);
-      }
+      if (viewSourceEnabled) { attachViewSourceListeners(iframeDoc); }
     });
     // Undo/Redo Buttons
     document.getElementById("undoBtn").addEventListener("click", function() {
@@ -2177,9 +2026,7 @@
         const currentBackground = element.style.backgroundImage;
         redoStack.push({ element: element, background: currentBackground });
         element.style.backgroundImage = lastAction.background;
-      } else {
-        alert("Nothing to undo.");
-      }
+      } else { alert("Nothing to undo."); }
     });
     document.getElementById("redoBtn").addEventListener("click", function() {
       if (redoStack.length > 0) {
@@ -2188,9 +2035,7 @@
         const currentBackground = element.style.backgroundImage;
         undoStack.push({ element: element, background: currentBackground });
         element.style.backgroundImage = lastAction.background;
-      } else {
-        alert("Nothing to redo.");
-      }
+      } else { alert("Nothing to redo."); }
     });
     const previewBtn = document.getElementById('previewBtn');
     const generateBtn = document.getElementById('generateBtn');
@@ -2214,15 +2059,12 @@
       previewFrame.srcdoc = siteMap[homeFilename];
     });
     window.openPageInPreview = function(filename) {
-      if (siteMap[filename]) {
-        previewFrame.srcdoc = siteMap[filename];
-      }
+      if (siteMap[filename]) { previewFrame.srcdoc = siteMap[filename]; }
     };
     generateBtn.addEventListener('click', () => {
       let allCode = "";
-      if (pages.length === 0) {
-        allCode = "<!-- No pages defined -->";
-      } else {
+      if (pages.length === 0) { allCode = "<!-- No pages defined -->"; }
+      else {
         siteMap = {};
         const flatList = flattenPages(pages);
         flatList.forEach(pg => {
@@ -2248,7 +2090,7 @@
       globalLinkColor.value = "#4A88F6";
       globalBgImage.value = "";
       globalCustomCSS.value = "";
-      pageCount = 0; 
+      pageCount = 0;
       pages = [];
       pagesContainer.innerHTML = "";
       manualHtmlInput.value = "";
@@ -2267,16 +2109,11 @@
     let searchIndex = 0;
     document.getElementById('nextBtn').addEventListener('click', function() {
       const query = codeSearchInput.value;
-      if (!query) {
-        alert("Enter a search term.");
-        return;
-      }
+      if (!query) { alert("Enter a search term."); return; }
       const codeText = generatedCode.value;
       const foundIndex = codeText.indexOf(query, searchIndex);
-      if (foundIndex === -1) {
-        alert("No more matches. Restarting.");
-        searchIndex = 0;
-      } else {
+      if (foundIndex === -1) { alert("No more matches. Restarting."); searchIndex = 0; }
+      else {
         generatedCode.focus();
         generatedCode.setSelectionRange(foundIndex, foundIndex + query.length);
         const computedStyle = window.getComputedStyle(generatedCode);
@@ -2289,16 +2126,12 @@
     });
     document.getElementById('prevBtn').addEventListener('click', function() {
       const query = codeSearchInput.value;
-      if (!query) {
-        alert("Enter a search term.");
-        return;
-      }
+      if (!query) { alert("Enter a search term."); return; }
       const codeText = generatedCode.value;
       const currentStart = generatedCode.selectionStart;
       const foundIndex = codeText.lastIndexOf(query, currentStart - 1);
-      if (foundIndex === -1) {
-        alert("No previous matches found.");
-      } else {
+      if (foundIndex === -1) { alert("No previous matches found."); }
+      else {
         generatedCode.focus();
         generatedCode.setSelectionRange(foundIndex, foundIndex + query.length);
         const computedStyle = window.getComputedStyle(generatedCode);
@@ -2312,20 +2145,14 @@
     replaceAllBtn.addEventListener('click', function() {
       const searchText = codeSearchInput.value;
       const replaceText = codeReplaceInput.value;
-      if (!searchText) {
-        alert("Enter text to search for.");
-        return;
-      }
+      if (!searchText) { alert("Enter text to search for."); return; }
       const codeContent = generatedCode.value;
       const updatedCode = codeContent.split(searchText).join(replaceText);
       generatedCode.value = updatedCode;
     });
     exportHTMLBtn.addEventListener('click', function() {
       const codeContent = generatedCode.value;
-      if (!codeContent) {
-        alert("No generated code to export.");
-        return;
-      }
+      if (!codeContent) { alert("No generated code to export."); return; }
       const parser = new DOMParser();
       const doc = parser.parseFromString(codeContent, "text/html");
       doc.body.removeAttribute("contenteditable");

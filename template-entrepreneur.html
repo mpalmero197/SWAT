@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Premium Business Template</title>
   <meta name="description" content="Delivering exceptional service and quality solutions for your success.">
+  <meta name="keywords" content="Business, Consulting, Design, Development, Premium, Service">
+  <link rel="canonical" href="https://www.yourbrand.com/">
+  <meta property="og:title" content="Premium Business Template">
+  <meta property="og:description" content="Delivering exceptional service and quality solutions for your success.">
+  <meta property="og:image" content="https://via.placeholder.com/1500x800">
+  <meta property="og:url" content="https://www.yourbrand.com/">
+  <meta property="og:type" content="website">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
   <style>
     /* CSS Variables and Global Styles */
@@ -103,11 +110,13 @@
       font-size: 3em;
       margin-bottom: 20px;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+      animation: fadeInDown 1s both;
     }
     .hero p {
       font-size: 1.2em;
       margin-bottom: 30px;
       text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+      animation: fadeInUp 1s both;
     }
     .hero .btn {
       background: var(--primary-color);
@@ -116,6 +125,7 @@
       text-decoration: none;
       border-radius: 5px;
       transition: background var(--transition);
+      animation: fadeInUp 1s both;
     }
     .hero .btn:hover {
       background: var(--secondary-color);
@@ -220,6 +230,28 @@
       color: var(--primary-color);
     }
 
+    /* Animations */
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     /* Responsive Styles */
     @media (max-width: 768px) {
       header {
@@ -258,11 +290,19 @@
       }
     }
   </style>
+  <!-- Google Analytics (example snippet) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXXX-X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-XXXXXXXXX-X');
+  </script>
 </head>
 <body>
-  <header>
+  <header role="banner">
     <div class="logo">YourBrand</div>
-    <nav>
+    <nav role="navigation" aria-label="Main Navigation">
       <button class="menu-toggle" id="mobile-menu" aria-label="Toggle Navigation" aria-expanded="false">
         <span></span>
         <span></span>
@@ -278,20 +318,20 @@
   </header>
 
   <main>
-    <section class="hero" id="hero">
+    <section class="hero" id="hero" role="region" aria-label="Hero Section">
       <h1>Welcome to Your Premium Business</h1>
       <p>Delivering exceptional service and quality solutions for your success.</p>
       <a href="#contact" class="btn">Get in Touch</a>
     </section>
 
-    <section class="about" id="about">
+    <section class="about" id="about" role="region" aria-label="About Us">
       <div class="container">
         <h2>About Us</h2>
         <p>We are committed to delivering high-quality services and innovative solutions that drive your business forward in today's competitive market.</p>
       </div>
     </section>
 
-    <section class="services" id="services">
+    <section class="services" id="services" role="region" aria-label="Our Services">
       <div class="container">
         <h2>Our Services</h2>
         <p>Explore our range of services designed to elevate your business:</p>
@@ -312,21 +352,21 @@
       </div>
     </section>
 
-    <section class="contact" id="contact">
+    <section class="contact" id="contact" role="region" aria-label="Contact Us">
       <div class="container">
         <h2>Contact Us</h2>
         <p>Ready to transform your business? Reach out to us today!</p>
-        <form action="#" method="post">
-          <input type="text" name="name" placeholder="Your Name" required>
-          <input type="email" name="email" placeholder="Your Email" required>
-          <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+        <form action="#" method="post" novalidate>
+          <input type="text" name="name" placeholder="Your Name" aria-label="Your Name" required>
+          <input type="email" name="email" placeholder="Your Email" aria-label="Your Email" required>
+          <textarea name="message" placeholder="Your Message" aria-label="Your Message" rows="5" required></textarea>
           <button type="submit">Send Message</button>
         </form>
       </div>
     </section>
   </main>
 
-  <footer>
+  <footer role="contentinfo">
     <p>&copy; 2025 YourBrand. All Rights Reserved.</p>
     <div class="socials">
       <a href="#" target="_blank" aria-label="Facebook">Facebook</a>

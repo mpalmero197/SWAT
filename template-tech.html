@@ -10,6 +10,8 @@
     href="https://fonts.googleapis.com/css2?family=Helvetica:wght@300;400;700&display=swap"
     rel="stylesheet"
   />
+  <!-- Google Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <style>
     /* Dark Mode CSS Variables */
     :root {
@@ -199,14 +201,14 @@
       margin: 0 auto 20px;
       text-align: center;
     }
-    .extended-feature .icon svg {
-      width: 50px;
-      height: 50px;
-      fill: var(--primary-color);
-      transition: fill 0.3s;
+    /* Material Icons Styling */
+    .extended-feature .icon i {
+      font-size: 50px;
+      color: var(--primary-color);
+      transition: color 0.3s;
     }
-    .extended-feature:hover .icon svg { 
-      fill: var(--secondary-color); 
+    .extended-feature:hover .icon i { 
+      color: var(--secondary-color); 
     }
     .extended-feature h3 {
       font-size: 20px;
@@ -548,40 +550,32 @@
     <div class="extended-features">
       <div class="extended-feature">
         <div class="icon">
-          <!-- Updated Seamless Connectivity Icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M12 18c1.1046 0 2-.8954 2-2s-.8954-2-2-2-2 .8954-2 2 .8954 2 2 2zm5.66-5.66a8.014 8.014 0 0 0-11.32 0l1.42 1.42a6.014 6.014 0 0 1 8.48 0l1.42-1.42zM8.12 12.12a4.014 4.014 0 0 0 7.76 0l1.42 1.42a6.014 6.014 0 0 1-10.6 0l1.42-1.42z"/>
-          </svg>
+          <!-- Material Icon for Seamless Connectivity -->
+          <i class="material-icons">wifi</i>
         </div>
         <h3>Seamless Connectivity</h3>
         <p>Uninterrupted integration across all your devices.</p>
       </div>
       <div class="extended-feature">
         <div class="icon">
-          <!-- Sustainability Icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M12 2C9 6 4 7 4 12c0 3.866 3.134 7 7 7s7-3.134 7-7c0-5-5-6-7-10z"/>
-          </svg>
+          <!-- Material Icon for Sustainable Innovation -->
+          <i class="material-icons">eco</i>
         </div>
         <h3>Sustainable Innovation</h3>
         <p>Eco-friendly designs powering the future.</p>
       </div>
       <div class="extended-feature">
         <div class="icon">
-          <!-- AI Icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M12 2C8.134 2 5 5.134 5 9c0 3.866 3.134 7 7 7s7-3.134 7-7c0-3.866-3.134-7-7-7zm0 2a5 5 0 0 1 5 5c0 2.757-2.243 5-5 5s-5-2.243-5-5a5 5 0 0 1 5-5z"/>
-          </svg>
+          <!-- Material Icon for Next-Gen AI -->
+          <i class="material-icons">smart_toy</i>
         </div>
         <h3>Next-Gen AI</h3>
         <p>Intelligent systems that learn and evolve with you.</p>
       </div>
       <div class="extended-feature">
         <div class="icon">
-          <!-- OTA Updates Icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M17.5 11a4.5 4.5 0 0 0-8.965-1.393A5.5 5.5 0 1 0 17.5 11z"/>
-          </svg>
+          <!-- Material Icon for Over-the-Air Updates -->
+          <i class="material-icons">system_update_alt</i>
         </div>
         <h3>Over-the-Air Updates</h3>
         <p>Instant, seamless software updates keep you ahead.</p>

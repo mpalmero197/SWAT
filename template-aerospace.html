@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Futuristic Aerospace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    /* Base Styles */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+      background: #000;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+    }
+
+    header .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+
+    nav a {
+      margin: 0 1rem;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 300;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 0;
+      height: 2px;
+      background: #00eaff;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Hero Section with Starfield Canvas */
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    /* Fullscreen canvas for starfield background */
+    #starfield {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 0 2rem;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      letter-spacing: 3px;
+      text-shadow: 0 0 10px rgba(0, 234, 255, 0.7);
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      line-height: 1.5;
+    }
+
+    .cta-button {
+      padding: 1rem 2.5rem;
+      font-size: 1rem;
+      background: #00eaff;
+      color: #000;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Orbitron', sans-serif;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .cta-button:hover {
+      background: #00bcd4;
+      transform: scale(1.05);
+    }
+
+    /* Sections */
+    section {
+      padding: 5rem 2rem;
+    }
+
+    .services {
+      background: #121212;
+      text-align: center;
+    }
+
+    .services h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .service-item {
+      background: #1d1d1d;
+      border-radius: 8px;
+      padding: 2rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .service-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 15px rgba(0, 234, 255, 0.5);
+    }
+
+    .service-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #00eaff;
+    }
+
+    .about {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      align-items: center;
+    }
+
+    .about-text, .about-image {
+      flex: 1 1 400px;
+    }
+
+    .about-text h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .about-text p {
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .about-image img {
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0, 234, 255, 0.4);
+    }
+
+    footer {
+      background: #0b0b0b;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    footer p {
+      margin: 0.5rem 0;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      .about {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">AeroFuture</div>
+    <nav>
+      <a href="#hero">Home</a>
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="hero">
+    <!-- Canvas for animated starfield -->
+    <canvas id="starfield"></canvas>
+    <div class="hero-content">
+      <h1>Elevating The Future of Flight</h1>
+      <p>
+        Pioneering advanced aerospace solutions that propel humanity to new heights.
+      </p>
+      <button class="cta-button">Learn More</button>
+    </div>
+  </section>
+
+  <section class="services" id="services">
+    <h2>Our Expertise</h2>
+    <div class="service-grid">
+      <div class="service-item">
+        <div class="service-icon">🚀</div>
+        <h3>Rocket Propulsion</h3>
+        <p>Innovative propulsion systems that redefine launch efficiency and safety.</p>
+      </div>
+      <div class="service-item">
+        <div class="service-icon">🛩️</div>
+        <h3>Aviation Engineering</h3>
+        <p>Cutting-edge aircraft designs and aerodynamic solutions for commercial fleets.</p>
+      </div>
+      <div class="service-item">
+        <div class="service-icon">🛰️</div>
+        <h3>Satellite Tech</h3>
+        <p>Advanced satellite networks to enhance global communications and data transfer.</p>
+      </div>
+      <div class="service-item">
+        <div class="service-icon">⚙️</div>
+        <h3>R&D and Testing</h3>
+        <p>Research-driven innovation backed by state-of-the-art testing facilities.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="about-text">
+      <h2>About AeroFuture</h2>
+      <p>
+        We are a team of dedicated scientists, engineers, and visionaries committed
+        to transforming aerospace. Our relentless innovation pushes the boundaries of technology,
+        ensuring that humanity’s journey among the stars remains bold and limitless.
+      </p>
+      <p>
+        From revolutionizing commercial flight to pioneering deep-space exploration,
+        our mission is to architect the next generation of flight systems, enabling safer, faster,
+        and more sustainable travel.
+      </p>
+    </div>
+    <div class="about-image">
+      <img
+        src="https://images.unsplash.com/photo-1581094337482-7f29fe0c8707?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        alt="AeroFuture Team"
+      />
+    </div>
+  </section>
+
+  <footer id="contact">
+    <p>&copy; 2025 AeroFuture. All rights reserved.</p>
+    <p>Contact us at <a href="mailto:info@aerofuture.com" style="color:#00eaff;">info@aerofuture.com</a></p>
+  </footer>
+
+  <script>
+    // Starfield Animation
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    const numStars = 200;
+    let width, height;
+
+    function initCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      stars = [];
+      for (let i = 0; i < numStars; i++) {
+        stars.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 1.5,
+          speed: Math.random() * 0.5 + 0.2
+        });
+      }
+    }
+
+    function animateStars() {
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+        // Move star downward and reset if it moves past the bottom
+        star.y += star.speed;
+        if (star.y > height) {
+          star.y = 0;
+          star.x = Math.random() * width;
+        }
+      });
+      requestAnimationFrame(animateStars);
+    }
+
+    window.addEventListener('resize', initCanvas);
+    initCanvas();
+    animateStars();
+  </script>
+</body>
+</html>

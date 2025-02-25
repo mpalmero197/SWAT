@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Torque &amp; Chrome - Custom Builds &amp; Car Culture</title>
+  <style>
+    /* Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #e0e0e0;
+      background-color: #121212;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    /* Navigation */
+    nav {
+      background: #1a1a1a;
+      padding: 10px 0;
+    }
+    nav .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+      padding: 0 20px;
+    }
+    nav .brand a {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #f39c12;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+    }
+    nav ul li {
+      margin: 0 15px;
+    }
+    nav ul li a {
+      color: #e0e0e0;
+      font-size: 1.1em;
+      transition: color 0.3s ease;
+    }
+    nav ul li a:hover {
+      color: #f39c12;
+    }
+    /* Container */
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+      overflow: hidden;
+      padding: 20px 0;
+    }
+    /* Header / Hero Section */
+    header {
+      background: url('hero-custom.jpg') no-repeat center center/cover;
+      position: relative;
+      height: 100vh;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+    }
+    header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1;
+    }
+    header .container {
+      position: relative;
+      z-index: 2;
+    }
+    header h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+    }
+    header p {
+      font-size: 1.2em;
+      margin-bottom: 30px;
+    }
+    header a {
+      background: #f39c12;
+      color: #121212;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+    header a:hover {
+      background: #e08e0b;
+    }
+    /* Sections */
+    section {
+      padding: 60px 0;
+    }
+    section h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2em;
+      color: #f39c12;
+    }
+    /* Services Section */
+    .services {
+      background: #1e1e1e;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .service-item {
+      margin-bottom: 20px;
+    }
+    .service-item h3 {
+      color: #f39c12;
+      margin-bottom: 10px;
+    }
+    .service-item p {
+      color: #ccc;
+    }
+    /* About Section */
+    .about p {
+      max-width: 800px;
+      margin: auto;
+      font-size: 1.1em;
+      line-height: 1.8;
+      color: #ccc;
+      text-align: center;
+    }
+    /* Special Offers Section */
+    .offers {
+      background: #1e1e1e;
+      padding: 60px 0;
+    }
+    .offer-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .offer-card {
+      background: #2a2a2a;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .offer-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+    .offer-card h3 {
+      margin-bottom: 10px;
+      color: #f39c12;
+    }
+    .offer-card p {
+      color: #ccc;
+    }
+    /* Revamped Gallery Section */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .gallery-item {
+      background: #2a2a2a;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .gallery-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .image-box {
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 Aspect Ratio */
+      background: #1e1e1e;
+      position: relative;
+    }
+    .image-box img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .gallery-item:hover .image-box img {
+      transform: scale(1.05);
+    }
+    .gallery-caption {
+      padding: 15px;
+      color: #ccc;
+    }
+    .gallery-caption h3 {
+      margin-bottom: 10px;
+      color: #f39c12;
+    }
+    .gallery-caption p {
+      font-size: 0.9em;
+    }
+    /* Testimonials Section */
+    .testimonials {
+      background: #1e1e1e;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .testimonial-item {
+      margin-bottom: 20px;
+    }
+    .testimonial-item h3 {
+      margin-bottom: 10px;
+      color: #f39c12;
+    }
+    .testimonial-item p {
+      font-style: italic;
+      color: #ccc;
+    }
+    /* FAQ Section */
+    .faq {
+      background: #1e1e1e;
+      padding: 60px 0;
+    }
+    .faq-container {
+      max-width: 800px;
+      margin: auto;
+    }
+    .faq-item {
+      border-bottom: 1px solid #333;
+      padding: 15px 0;
+    }
+    .faq-question {
+      cursor: pointer;
+      position: relative;
+      padding-right: 30px;
+      color: #f39c12;
+    }
+    .faq-question::after {
+      content: '+';
+      position: absolute;
+      right: 0;
+      top: 0;
+      font-size: 1.5em;
+      transition: transform 0.3s ease;
+    }
+    .faq-item.active .faq-question::after {
+      transform: rotate(45deg);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      color: #ccc;
+    }
+    .faq-item.active .faq-answer {
+      max-height: 200px;
+      margin-top: 10px;
+    }
+    /* Contact Section */
+    .contact form {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      max-width: 600px;
+      margin: auto;
+    }
+    .contact form input,
+    .contact form textarea {
+      padding: 10px;
+      border: 1px solid #333;
+      border-radius: 4px;
+      font-size: 1em;
+      background: #2a2a2a;
+      color: #e0e0e0;
+    }
+    .contact form button {
+      padding: 10px;
+      border: none;
+      background: #f39c12;
+      color: #121212;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background 0.3s ease;
+    }
+    .contact form button:hover {
+      background: #e08e0b;
+    }
+    @media (min-width: 768px) {
+      .contact form {
+        grid-template-columns: 1fr 1fr;
+      }
+      .contact form textarea {
+        grid-column: span 2;
+      }
+    }
+    /* Back to Top Button */
+    #backToTop {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #f39c12;
+      color: #121212;
+      padding: 10px 15px;
+      border-radius: 50%;
+      display: none;
+      cursor: pointer;
+      z-index: 1000;
+      transition: background 0.3s ease;
+    }
+    #backToTop:hover {
+      background: #e08e0b;
+    }
+    /* Footer */
+    footer {
+      background: #1a1a1a;
+      color: #ccc;
+      text-align: center;
+      padding: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="container">
+      <div class="brand">
+        <a href="#home">Torque &amp; Chrome</a>
+      </div>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#offers">Special Offers</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+  
+  <header id="home">
+    <div class="container">
+      <h1>Torque &amp; Chrome</h1>
+      <p>Unleash Your Ride - Custom builds, tuning, and automotive artistry that celebrates car culture.</p>
+      <a href="#contact">Get Started</a>
+    </div>
+  </header>
+  
+  <section id="services" class="services">
+    <div class="container">
+      <h2>Our Services</h2>
+      <div class="service-item">
+        <h3>Custom Builds</h3>
+        <p>Tailor-made modifications and performance tuning to create a ride that stands out.</p>
+      </div>
+      <div class="service-item">
+        <h3>Routine Maintenance</h3>
+        <p>Regular servicing, oil changes, and inspections to ensure your vehicle remains at peak performance.</p>
+      </div>
+      <div class="service-item">
+        <h3>Engine &amp; Transmission Upgrades</h3>
+        <p>Enhance power and efficiency with our advanced engine and transmission tuning services.</p>
+      </div>
+      <div class="service-item">
+        <h3>Detailing &amp; Wraps</h3>
+        <p>Professional detailing and custom wraps to give your car a personalized look.</p>
+      </div>
+    </div>
+  </section>
+  
+  <section id="about" class="about">
+    <div class="container">
+      <h2>About Us</h2>
+      <p>We are passionate about car culture and custom builds. Our team of expert mechanics and designers work together to transform ordinary vehicles into works of art. With cutting-edge technology and a deep love for automotive innovation, we bring your dream ride to life.</p>
+    </div>
+  </section>
+  
+  <section id="offers" class="offers">
+    <div class="container">
+      <h2>Special Offers</h2>
+      <div class="offer-container">
+        <div class="offer-card">
+          <h3>Exclusive Build Package</h3>
+          <p>Unlock special pricing on custom build projects. Limited time offer.</p>
+        </div>
+        <div class="offer-card">
+          <h3>Tuning Discount</h3>
+          <p>Get a 15% discount on performance tuning services for your custom build.</p>
+        </div>
+        <div class="offer-card">
+          <h3>Detailing Deal</h3>
+          <p>Enhance your car’s look with a discounted detailing package, available for a limited period.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Revamped Gallery Section -->
+  <section id="gallery" class="gallery">
+    <div class="container">
+      <h2>Custom Builds Gallery</h2>
+      <div class="gallery-grid">
+        <!-- Repeat gallery items as needed -->
+        <div class="gallery-item">
+          <div class="image-box">
+          </div>
+          <div class="gallery-caption">
+            <h3>Project Title</h3>
+            <p>Brief description of the project.</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="image-box">
+          </div>
+          <div class="gallery-caption">
+            <h3>Project Title</h3>
+            <p>Brief description of the project.</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="image-box">
+          </div>
+          <div class="gallery-caption">
+            <h3>Project Title</h3>
+            <p>Brief description of the project.</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <div class="image-box">
+          </div>
+          <div class="gallery-caption">
+            <h3>Project Title</h3>
+            <p>Brief description of the project.</p>
+          </div>
+        </div>
+        <!-- Add more gallery items as desired -->
+      </div>
+    </div>
+  </section>
+  
+  <section id="testimonials" class="testimonials">
+    <div class="container">
+      <h2>Testimonials</h2>
+      <div class="testimonial-item">
+        <h3>Alex R.</h3>
+        <p>"Their custom build work is nothing short of amazing. They turned my vision into reality!"</p>
+      </div>
+      <div class="testimonial-item">
+        <h3>Jesse T.</h3>
+        <p>"Excellent service, top-notch tuning, and a true passion for car culture. Highly recommended."</p>
+      </div>
+    </div>
+  </section>
+  
+  <section id="faq" class="faq">
+    <div class="container faq-container">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-item">
+        <div class="faq-question">What custom build services do you offer?</div>
+        <div class="faq-answer"><p>We offer a range of custom build services including performance tuning, aesthetic modifications, and personalized detailing.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Do you provide warranties on custom builds?</div>
+        <div class="faq-answer"><p>Yes, all our custom builds come with a warranty. Details can be discussed during consultation.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">How can I get started on my custom build?</div>
+        <div class="faq-answer"><p>You can schedule a consultation through our contact form or call us directly to discuss your project.</p></div>
+      </div>
+    </div>
+  </section>
+  
+  <section id="contact" class="contact">
+    <div class="container">
+      <h2>Contact Us</h2>
+      <form>
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <input type="text" placeholder="Subject" required>
+        <textarea placeholder="Your Message" rows="5" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </section>
+  
+  <div id="backToTop">&#8679;</div>
+  
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Torque &amp; Chrome. All Rights Reserved.</p>
+    </div>
+  </footer>
+  
+  <script>
+    // Smooth Scrolling for Navigation Links
+    document.querySelectorAll('nav ul li a').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+    
+    // FAQ Accordion Functionality
+    document.querySelectorAll('.faq-question').forEach(question => {
+      question.addEventListener('click', () => {
+        question.parentElement.classList.toggle('active');
+      });
+    });
+    
+    // Back to Top Button Functionality
+    const backToTopButton = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      backToTopButton.style.display = window.pageYOffset > 300 ? 'block' : 'none';
+    });
+    backToTopButton.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    
+    // Intersection Observer for Gallery Fade-In Animation
+    document.addEventListener("DOMContentLoaded", function() {
+      const galleryItems = document.querySelectorAll('.gallery-item');
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      galleryItems.forEach(item => {
+        observer.observe(item);
+      });
+    });
+    
+    // Lazy Loading for Gallery Images
+    document.addEventListener("DOMContentLoaded", function() {
+      const lazyImages = document.querySelectorAll('img[data-src]');
+      const imageObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.getAttribute('data-src');
+            img.removeAttribute('data-src');
+            imageObserver.unobserve(img);
+          }
+        });
+      }, { threshold: 0.1 });
+      lazyImages.forEach(img => {
+        imageObserver.observe(img);
+      });
+    });
+  </script>
+</body>
+</html>

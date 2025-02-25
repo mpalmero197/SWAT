@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portfolio</title>
+  <meta name="description" content="A portfolio showcasing provocative, award-winning design.">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- AOS CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+  <!-- Custom CSS -->
+  <style>
+    :root {
+      --primary-color: #e94560;
+      --secondary-color: #0f3460;
+      --bg-color: #ffffff;
+      --text-color: #222222;
+      --dark-bg: #141414;
+      --dark-text: #fff;
+      --font-family: 'Montserrat', sans-serif;
+    }
+    * {
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box;
+    }
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      overflow-x: hidden;
+      transition: background-color 0.5s, color 0.5s;
+    }
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(15, 52, 96, 0.9);
+      z-index: 2000;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s;
+    }
+    header h1 {
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.8rem;
+    }
+    nav a {
+      color: #fff;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+    }
+    nav a::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      background: var(--primary-color);
+      left: 0;
+      bottom: -5px;
+      transition: width 0.3s;
+    }
+    nav a:hover::after {
+      width: 100%;
+    }
+    /* Hero Section */
+    .hero {
+      position: relative;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+      /* Instead of a solid color, use a gradient to simulate a light beam */
+      background: linear-gradient(
+        135deg, 
+        rgba(255, 240, 200, 0.6) 0%, 
+        rgba(15, 52, 96, 0.9) 100%
+      );
+    }
+    #heroCanvas {
+      position: absolute;
+      top: 0; 
+      left: 0;
+      width: 100%; 
+      height: 100%;
+      z-index: 1;
+    }
+    .hero .overlay {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      text-align: center;
+      color: #fff;
+      padding: 0 20px;
+      animation: fadeIn 2s ease-out;
+    }
+    @keyframes fadeIn {
+      from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+    .hero h2 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 600px;
+    }
+    /* About Section */
+    #about {
+      padding: 120px 30px 60px;
+    }
+    #about h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5rem;
+      color: var(--secondary-color);
+    }
+    #about p {
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.8;
+      font-size: 1.1rem;
+      text-align: center;
+    }
+    /* Gallery Section (Dark Minimal Style) */
+    #gallery {
+      padding: 120px 30px 60px;
+      background: var(--dark-bg);
+    }
+    #gallery h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5rem;
+      color: var(--dark-text);
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .gallery-item {
+      background: #222;
+      width: 100%;
+      padding-top: 66.66%; /* maintains a 3:2 aspect ratio */
+      transition: transform 0.5s;
+    }
+    .gallery-item:hover {
+      transform: scale(1.05);
+    }
+    /* Contact Section */
+    #contact {
+      padding: 120px 30px 60px;
+    }
+    #contact h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5rem;
+      color: var(--secondary-color);
+    }
+    #contact form {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    #contact .form-group label {
+      font-weight: 600;
+    }
+    #contact .btn {
+      background: var(--primary-color);
+      border: none;
+      transition: background 0.3s;
+    }
+    #contact .btn:hover {
+      background: #c03a4e;
+    }
+    /* Footer */
+    footer {
+      background: var(--secondary-color);
+      color: #fff;
+      text-align: center;
+      padding: 30px;
+    }
+    footer a {
+      color: var(--primary-color);
+      margin: 0 10px;
+      transition: color 0.3s;
+    }
+    footer a:hover {
+      color: #f38181;
+    }
+    /* Toggle Dark Mode & Scroll to Top */
+    .toggle-dark-mode,
+    #scrollToTop {
+      position: fixed;
+      right: 30px;
+      background: var(--primary-color);
+      border: none;
+      color: #fff;
+      padding: 12px;
+      border-radius: 50%;
+      z-index: 3000;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .toggle-dark-mode:hover,
+    #scrollToTop:hover {
+      background: #c03a4e;
+    }
+    .toggle-dark-mode {
+      bottom: 90px;
+    }
+    #scrollToTop {
+      bottom: 30px;
+      display: none;
+    }
+    /* Preloader */
+    #load,
+    #load-bg,
+    .iss-w,
+    iframe {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #load {
+      z-index: 9996;
+      position: fixed;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #load-bg {
+      position: absolute;
+      background: var(--dark-bg);
+    }
+    #load-no {
+      position: relative;
+      letter-spacing: .05em;
+      overflow: hidden;
+    }
+    #load-no div {
+      will-change: transform;
+      transform: translate3d(0,300%,0);
+    }
+    @media (min-aspect-ratio:16/9) {
+      #load-no {
+        font-size: 1.6667vh;
+        line-height: 2.0833vh;
+      }
+    }
+    @media (max-aspect-ratio:16/9) {
+      #load-no {
+        font-size: .9375vw;
+        line-height: 1.1719vw;
+      }
+    }
+    .iss-w {
+      z-index: 9999;
+      position: fixed;
+      text-align: center;
+      color: #fff;
+      font-family: Arial;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Preloader -->
+  <div id="load">
+    <div id="load-bg"></div>
+    <div id="load-no"><div>0%</div></div>
+  </div>
+  
+  <!-- Navbar -->
+  <header>
+    <h1> Portfolio</h1>
+    <nav>
+      <a href="#hero">Home</a>
+      <a href="#about">About</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+  
+  <!-- Hero Section with Three.js Canvas -->
+  <section class="hero" id="hero">
+    <canvas id="heroCanvas"></canvas>
+    <div class="overlay" data-aos="fade-up">
+      <h2>Defy the Ordinary</h2>
+      <p>Experience a provocative journey through creativity and innovation.</p>
+    </div>
+  </section>
+  
+  <!-- About Section -->
+  <section id="about">
+    <h2 data-aos="fade-right">About Me</h2>
+    <p data-aos="fade-right">
+      I am a visionary creator whose work transcends boundaries. Embracing art, technology, and design, I craft experiences that challenge conventions and inspire transformation.
+    </p>
+  </section>
+  
+  <!-- Gallery Section (Dark Minimal Style) -->
+  <section id="gallery">
+    <h2 data-aos="fade-up">Gallery</h2>
+    <div class="gallery-grid" data-aos="fade-up">
+      <div class="gallery-item"></div>
+      <div class="gallery-item"></div>
+      <div class="gallery-item"></div>
+      <div class="gallery-item"></div>
+      <div class="gallery-item"></div>
+      <div class="gallery-item"></div>
+      <div class="gallery-item"></div>
+      <div class="gallery-item"></div>
+      <div class="gallery-item"></div>
+      <div class="gallery-item"></div>
+    </div>
+  </section>
+  
+  <!-- Contact Section -->
+  <section id="contact">
+    <h2 data-aos="fade-left">Contact</h2>
+    <form id="contactForm" data-aos="fade-left">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" placeholder="Your Name" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" placeholder="Your Email" required>
+      </div>
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea class="form-control" id="message" rows="4" placeholder="Your Message" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Send Message</button>
+    </form>
+  </section>
+  
+  <!-- Dark Mode Toggle & Scroll to Top Buttons -->
+  <button class="toggle-dark-mode" id="darkModeToggle"><i class="fas fa-moon"></i></button>
+  <button id="scrollToTop"><i class="fas fa-chevron-up"></i></button>
+  
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025  Portfolio. All rights reserved.</p>
+    <div>
+      <a href="https://twitter.com" target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>
+      <a href="https://github.com" target="_blank" rel="noopener"><i class="fab fa-github"></i></a>
+    </div>
+  </footer>
+  
+  <!-- Scripts -->
+  <!-- jQuery (for preloader and form handling) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+  <!-- AOS JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js"></script>
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+  <!-- Custom JS -->
+  <script>
+    // Remove Preloader on Page Load
+    $(window).on('load', function() {
+      $('#load').fadeOut('slow');
+    });
+    
+    // Initialize AOS
+    AOS.init({ duration: 1000, once: true });
+    
+    // Dark Mode Toggle
+    document.getElementById('darkModeToggle').addEventListener('click', function() {
+      document.body.classList.toggle('dark-mode');
+    });
+    
+    // Scroll to Top Button Functionality
+    const scrollBtn = document.getElementById('scrollToTop');
+    window.addEventListener('scroll', function() {
+      scrollBtn.style.display = window.scrollY > 300 ? 'block' : 'none';
+    });
+    scrollBtn.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    
+    // Three.js Hero Animation
+    let scene, camera, renderer, particleSystem;
+    function initThree() {
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(
+        75, 
+        window.innerWidth / window.innerHeight, 
+        1, 
+        1000
+      );
+      camera.position.z = 100;
+      
+      renderer = new THREE.WebGLRenderer({
+        canvas: document.getElementById('heroCanvas'),
+        alpha: true,
+        antialias: true
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+
+      // Load a circular sprite texture for dust
+      const dustTexture = new THREE.TextureLoader().load(
+        'https://raw.githubusercontent.com/Kuntal-Das/textures/main/circle-sprite.png'
+      );
+
+      // Create geometry for dust particles
+      const particleCount = 2000; // tweak if needed
+      const particlesGeometry = new THREE.BufferGeometry();
+      const positions = new Float32Array(particleCount * 3);
+
+      // Limit the spread so it appears like a narrow beam
+      for (let i = 0; i < particleCount; i++) {
+        // X is somewhat wide but not the full screen
+        positions[i * 3] = THREE.MathUtils.randFloatSpread(300) - 100; 
+        // Y is also restricted
+        positions[i * 3 + 1] = THREE.MathUtils.randFloatSpread(300) - 50;
+        // Z is very narrow to keep them from scattering too far
+        positions[i * 3 + 2] = THREE.MathUtils.randFloatSpread(20) - 10;
+      }
+      particlesGeometry.setAttribute(
+        'position', 
+        new THREE.BufferAttribute(positions, 3)
+      );
+
+      // PointsMaterial for dust motes
+      const dustColor = 0xffe3a3; // Warm dusty color
+      const particlesMaterial = new THREE.PointsMaterial({
+        map: dustTexture,
+        color: dustColor,
+        size: 15,            // Larger to make dust visible
+        transparent: true,
+        opacity: 0.5,
+        alphaTest: 0.01,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+
+      particleSystem = new THREE.Points(particlesGeometry, particlesMaterial);
+      scene.add(particleSystem);
+
+      // Subtle rotation animation (GSAP)
+      gsap.to(particleSystem.rotation, {
+        y: 2 * Math.PI,
+        duration: 60,
+        repeat: -1,
+        ease: 'none'
+      });
+    }
+    
+    function animateThree() {
+      requestAnimationFrame(animateThree);
+      renderer.render(scene, camera);
+    }
+    
+    initThree();
+    animateThree();
+    
+    window.addEventListener('resize', function() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+    
+    // Basic AJAX Contact Form Handling
+    $('#contactForm').on('submit', function(e) {
+      e.preventDefault();
+      alert('Message sent!');
+      this.reset();
+    });
+    
+    // Service Worker Registration for PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(function(registration) {
+            console.log('ServiceWorker registered with scope:', registration.scope);
+          })
+          .catch(function(err) {
+            console.log('ServiceWorker registration failed:', err);
+          });
+      });
+    }
+  </script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>CoffeeHouse - Coffee Theme</title>
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,17 +14,29 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
   <style>
     /* Global Reset */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Roboto', sans-serif; background: var(--bg); color: var(--primary); line-height: 1.6; }
-    a { text-decoration: none; color: inherit; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--bg);
+      color: var(--primary);
+      line-height: 1.6;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
     
-    /* CSS Variables for Coffee Theme */
+    /* CSS Variables for Modern Coffee Shop Palette */
     :root {
-      --primary: #4B3621; /* Dark Coffee Bean Brown */
-      --secondary: #C19A6B; /* Warm Mocha */
-      --accent: #A67B5B;    /* Rich Espresso */
-      --light: #F8F4E0;     /* Cream */
-      --bg: #F5F3EE;        /* Soft Off-White */
+      --primary: #00704A;   /* Rich Coffee Green */
+      --secondary: #5D4037; /* Warm Coffee Brown */
+      --accent: #C0A98E;    /* Subtle Accent Hue */
+      --light: #FFFFFF;     /* Crisp White */
+      --bg: #F5F5F5;        /* Soft Light Grey Background */
     }
     
     /* Header */
@@ -37,9 +49,13 @@
       transition: background 0.3s ease, color 0.3s ease;
       padding: 20px 0;
     }
-    header.scrolled { background: var(--primary); }
+    header.scrolled {
+      background: var(--primary);
+    }
     header.scrolled nav .logo a,
-    header.scrolled nav ul li a { color: var(--light); }
+    header.scrolled nav ul li a {
+      color: var(--light);
+    }
     nav {
       max-width: 1200px;
       margin: auto;
@@ -48,17 +64,34 @@
       align-items: center;
       padding: 0 20px;
     }
-    .logo a { font-size: 1.8rem; font-weight: 700; color: var(--light); transition: color 0.3s ease; }
-    nav ul { list-style: none; display: flex; }
-    nav ul li { margin-left: 30px; }
-    nav ul li a { color: var(--light); font-weight: 500; transition: color 0.3s ease; }
-    nav ul li a:hover { color: var(--secondary); }
+    .logo a {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--light);
+      transition: color 0.3s ease;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+    }
+    nav ul li {
+      margin-left: 30px;
+    }
+    nav ul li a {
+      color: var(--light);
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    nav ul li a:hover {
+      color: var(--secondary);
+    }
     
     /* Hero Section */
     .hero {
       position: relative;
       height: 100vh;
-      background: linear-gradient(rgba(75,54,33,0.7), rgba(75,54,33,0.7)), url('coffee-corporate.jpg') center/cover no-repeat;
+      background: linear-gradient(rgba(0,112,74,0.7), rgba(0,112,74,0.7)),
+                  url('coffee-corporate.jpg') center/cover no-repeat;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -91,10 +124,14 @@
       cursor: pointer;
       transition: background 0.3s ease;
     }
-    .hero .btn:hover { background: var(--accent); }
+    .hero .btn:hover {
+      background: var(--accent);
+    }
     
     /* Sections */
-    section { padding: 100px 20px; }
+    section {
+      padding: 100px 20px;
+    }
     .section-title {
       text-align: center;
       font-size: 2.8rem;
@@ -120,12 +157,19 @@
       min-width: 300px;
       margin-right: 40px;
     }
-    .about .about-img img { width: 100%; border-radius: 10px; }
+    .about .about-img img {
+      width: 100%;
+      border-radius: 10px;
+    }
     .about .about-text {
       flex: 2;
       min-width: 300px;
     }
-    .about .about-text p { font-size: 1.1rem; color: var(--primary); line-height: 1.8; }
+    .about .about-text p {
+      font-size: 1.1rem;
+      color: var(--primary);
+      line-height: 1.8;
+    }
     
     /* Menu Banners */
     .menu-banner {
@@ -144,15 +188,20 @@
       content: "";
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(75,54,33,0.5);
+      background: rgba(0,112,74,0.5);
     }
     .menu-banner-content {
       position: relative;
       z-index: 1;
       text-align: center;
     }
-    .menu-banner-content h2 { font-size: 2.5rem; margin-bottom: 10px; }
-    .menu-banner-content p { font-size: 1.1rem; }
+    .menu-banner-content h2 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    .menu-banner-content p {
+      font-size: 1.1rem;
+    }
     
     /* Contact Section */
     .contact {
@@ -170,7 +219,8 @@
       gap: 20px;
       margin-top: 30px;
     }
-    .contact input, .contact textarea {
+    .contact input,
+    .contact textarea {
       padding: 15px;
       border: 1px solid #ccc;
       border-radius: 5px;
@@ -186,7 +236,9 @@
       cursor: pointer;
       transition: background 0.3s ease;
     }
-    .contact button:hover { background: var(--accent); }
+    .contact button:hover {
+      background: var(--accent);
+    }
     
     /* Footer */
     footer {
@@ -206,16 +258,30 @@
       font-size: 1.5rem;
       transition: color 0.3s ease;
     }
-    .footer-social a:hover { color: var(--secondary); }
-    .footer-text { font-size: 0.9rem; }
+    .footer-social a:hover {
+      color: var(--secondary);
+    }
+    .footer-text {
+      font-size: 0.9rem;
+    }
     
     /* Responsive */
     @media (max-width: 768px) {
-      .hero h1 { font-size: 3rem; }
-      .hero p { font-size: 1.2rem; }
-      .about { flex-direction: column; }
-      .about .about-img { margin: 0 0 30px 0; }
-      nav ul li { margin-left: 20px; }
+      .hero h1 {
+        font-size: 3rem;
+      }
+      .hero p {
+        font-size: 1.2rem;
+      }
+      .about {
+        flex-direction: column;
+      }
+      .about .about-img {
+        margin: 0 0 30px 0;
+      }
+      nav ul li {
+        margin-left: 20px;
+      }
     }
   </style>
   <script>

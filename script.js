@@ -17,11 +17,9 @@ document.getElementById("folderInput").addEventListener("change", function(e) {
     }
   });
 });
-
 // Undo/Redo Stacks
 let undoStack = [];
 let redoStack = [];
-
 // Tab Functionality
 const tabButtons = document.querySelectorAll('.tab-btn');
 const tabContents = document.querySelectorAll('.tab-content');
@@ -175,7 +173,6 @@ function pageObjSubSearch(id, pageArr) {
   }
   return false;
 }
-
 // Section Editor
 function createSectionEditor(pageObj, containerEl, fetchedSectionData = null) {
   const sectionData = fetchedSectionData || {
@@ -374,35 +371,7 @@ function createSectionEditor(pageObj, containerEl, fetchedSectionData = null) {
 // Dummy functions for icons and layout CSS
 function checkIconUse(pageObj, lib) { return false; }
 function getReferencedLayoutCSS(pageObj) { return ""; }
-// FIXED getLayoutCSS function now returns layout-specific CSS
-function getLayoutCSS(layout) {
-  switch(layout) {
-    case "single":
-      return ".layout-container { grid-template-columns: 1fr; }";
-    case "two":
-      return ".layout-container { grid-template-columns: 1fr 1fr; }";
-    case "grid":
-      return ".layout-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }";
-    case "masonry":
-      return ".layout-container { column-count: 3; column-gap: 20px; }";
-    case "cards":
-      return ".layout-container { display: flex; flex-wrap: wrap; gap: 20px; }";
-    case "three":
-      return ".layout-container { grid-template-columns: 1fr 1fr 1fr; }";
-    case "heroGrid":
-      return ".layout-container { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }";
-    case "splitBanner":
-      return ".layout-container { display: flex; }";
-    case "minimalist":
-      return ".layout-container { padding: 10px; }";
-    case "ReferencedSiteLayout":
-      return "";
-    case "raw":
-      return "";
-    default:
-      return "";
-  }
-}
+function getLayoutCSS(layout) { return ""; }
 
 // Build Sections HTML for Preview
 function buildSectionsHTML(sections, pageId) {
@@ -514,7 +483,7 @@ mediaSearchBtn.addEventListener('click', async () => {
   if (!query) { mediaResults.innerHTML = "<p style='color:red;'>Please enter a search term.</p>"; return; }
   mediaResults.innerHTML = "Searching...";
   try {
-    const response = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=50`, {
+    const response = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=500`, {
       headers: { Authorization: "2mxS3gi2IIXAmd4anXuVaaNs5k98X0F6KaTpszZYFCJstNfWXVH71gN1" }
     });
     if (!response.ok) { mediaResults.innerHTML = "<p style='color:red;'>Error fetching images.</p>"; return; }
@@ -524,7 +493,7 @@ mediaSearchBtn.addEventListener('click', async () => {
     mediaResults.innerHTML = "";
     images.forEach(imgObj => {
       const thumbUrl = imgObj.src.small;
-      const largeUrl = imgObj.src.large;
+      const largeUrl = imgObj.src.original;
       const altText = imgObj.alt || "No description";
       const wrapper = document.createElement('div');
       wrapper.classList.add('imageResult');
@@ -771,7 +740,6 @@ fetch('https://api.github.com/repos/mpalmero197/webbuilder/contents/')
     });
   })
   .catch(err => console.error('Error fetching templates:', err));
-
 // Local Template Functions
 function addLocalTemplateToList(filename, content, folder) {
   const localTemplateListContainer = document.getElementById('localTemplateListContainer');

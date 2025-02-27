@@ -2,269 +2,222 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Business Template - Michael's Webby Award Winning Design</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Award-Winning Business Template - Michael's Redesign</title>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
   <style>
     /* Reset and Base Styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Open Sans', sans-serif;
-      line-height: 1.6;
-      color: #333;
-      background-color: #f4f4f4;
-    }
-    .container {
-      width: 90%;
-      max-width: 1200px;
-      margin: auto;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Open Sans', sans-serif; line-height: 1.6; color: #333; background-color: #f9f9f9; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    /* Container */
+    .container { width: 90%; max-width: 1200px; margin: auto; }
     /* Header Styles */
-    header {
-      background: #fff;
-      padding: 20px 0;
-      border-bottom: 1px solid #ddd;
-      position: relative;
-      z-index: 100;
-    }
-    header .logo {
-      font-size: 24px;
-      font-weight: 700;
-      color: #333;
-    }
-    nav {
-      float: right;
-    }
-    nav ul {
-      list-style: none;
-    }
-    nav ul li {
-      display: inline-block;
-      margin-left: 20px;
-    }
-    nav ul li a {
-      text-decoration: none;
-      color: #333;
-      font-weight: 600;
-      transition: color 0.3s;
-    }
-    nav ul li a:hover {
-      color: #007BFF;
+    header { position: fixed; top: 0; left: 0; width: 100%; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 1000; }
+    .header-inner { display: flex; justify-content: space-between; align-items: center; padding: 20px; }
+    .logo { font-size: 28px; font-weight: 700; color: #333; }
+    nav { display: flex; align-items: center; }
+    nav ul { display: flex; }
+    nav ul li { margin-left: 30px; }
+    nav ul li a { font-weight: 600; transition: color 0.3s; }
+    nav ul li a:hover { color: #007BFF; }
+    /* Hamburger Menu for Mobile */
+    .hamburger { display: none; flex-direction: column; cursor: pointer; }
+    .hamburger div { width: 25px; height: 3px; background: #333; margin: 4px 0; transition: all 0.3s; }
+    @media(max-width: 768px) {
+      nav ul { flex-direction: column; position: absolute; top: 70px; right: 0; background: #fff; width: 200px; display: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+      nav ul li { margin: 15px 0; text-align: center; }
+      .hamburger { display: flex; }
     }
     /* Hero Section */
-    .hero {
-      position: relative;
-      background: url('https://via.placeholder.com/1200x600') no-repeat center center/cover;
-      height: 600px;
-      display: flex;
-      align-items: center;
+    .hero { 
+      position: relative; 
+      height: 100vh; 
+      background: #007BFF; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
     }
-    .hero::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 0;
+    /* Removed the overlay to enhance text readability */
+    .hero-content { 
+      position: relative; 
+      color: #fff; 
+      text-align: center; 
+      padding: 20px; 
     }
-    .hero .hero-content {
-      position: relative;
-      z-index: 1;
-      margin-left: 50px;
-      color: #fff;
+    .hero-content h1 { font-size: 48px; margin-bottom: 20px; }
+    .hero-content p { font-size: 20px; margin-bottom: 30px; }
+    .hero-content .btn { 
+      padding: 15px 40px; 
+      background: #0056b3; 
+      color: #fff; 
+      font-weight: 600; 
+      border: none; 
+      border-radius: 30px; 
+      transition: background 0.3s; 
     }
-    .hero h1 {
-      font-size: 48px;
-      margin-bottom: 20px;
-    }
-    .hero p {
-      font-size: 18px;
-      margin-bottom: 30px;
-    }
-    .hero .btn {
-      padding: 10px 30px;
-      background: #007BFF;
-      color: #fff;
-      text-decoration: none;
-      font-weight: 600;
-      border-radius: 5px;
-      transition: background 0.3s;
-    }
-    .hero .btn:hover {
-      background: #0056b3;
-    }
-    /* Section Styles */
-    section {
-      padding: 60px 0;
-    }
-    section h2 {
-      text-align: center;
-      margin-bottom: 40px;
-      font-size: 36px;
-      color: #333;
-    }
+    .hero-content .btn:hover { background: #003f7f; }
+    /* Sections */
+    section { padding: 100px 0; }
+    section h2 { text-align: center; margin-bottom: 60px; font-size: 36px; color: #333; }
     /* Services Section */
-    .services {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .services .service-item {
-      text-align: center;
-      padding: 20px;
-      background: #fff;
-      margin: 15px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      flex: 1;
-      min-width: 250px;
-    }
-    .services .service-item i {
-      font-size: 48px;
-      color: #007BFF;
-      margin-bottom: 20px;
-    }
-    /* About Section */
-    .about {
-      background: #fff;
-      padding: 40px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
+    .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+    .service-item { background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s; }
+    .service-item:hover { transform: translateY(-10px); }
+    .service-item i { font-size: 48px; color: #007BFF; margin-bottom: 20px; }
+    .service-item h3 { margin-bottom: 15px; }
+    /* Testimonials Section */
+    .testimonials { background: #f1f1f1; padding: 60px 0; }
+    .testimonial-item { background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin: 20px; }
+    .testimonial-item p { font-style: italic; margin-bottom: 15px; }
+    .testimonial-item h4 { font-weight: 600; color: #007BFF; }
+    .testimonials-container { display: flex; flex-wrap: wrap; justify-content: center; }
+    /* Newsletter Section */
+    .newsletter { background: #007BFF; color: #fff; padding: 60px 0; text-align: center; }
+    .newsletter input[type="email"] { padding: 10px 20px; border: none; border-radius: 30px; width: 300px; max-width: 80%; margin-right: 10px; }
+    .newsletter button { padding: 10px 30px; border: none; border-radius: 30px; background: #0056b3; color: #fff; font-weight: 600; cursor: pointer; transition: background 0.3s; }
+    .newsletter button:hover { background: #003f7f; }
     /* Contact Section */
-    .contact form {
-      max-width: 600px;
-      margin: auto;
-    }
-    .contact form input,
-    .contact form textarea {
-      width: 100%;
-      padding: 15px;
-      margin-bottom: 20px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
-    .contact form button {
-      display: inline-block;
-      padding: 10px 30px;
-      background: #007BFF;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .contact form button:hover {
-      background: #0056b3;
-    }
-    /* Footer Styles */
-    footer {
-      background: #333;
-      color: #fff;
-      text-align: center;
-      padding: 20px 0;
-    }
-    /* Responsive Design */
-    @media(max-width: 768px) {
-      nav {
-        float: none;
-        text-align: center;
-        margin-top: 15px;
-      }
-      nav ul li {
-        display: block;
-        margin: 10px 0;
-      }
-      .hero {
-        height: 400px;
-      }
-      .hero h1 {
-        font-size: 32px;
-      }
-      .hero .hero-content {
-        margin: 0 auto;
-        text-align: center;
-      }
-    }
+    .contact form { max-width: 600px; margin: auto; background: #fff; padding: 40px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .contact form input, .contact form textarea { width: 100%; padding: 15px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px; }
+    .contact form button { display: inline-block; padding: 15px 40px; background: #007BFF; color: #fff; border: none; border-radius: 30px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
+    .contact form button:hover { background: #0056b3; }
+    /* Footer */
+    footer { background: #333; color: #fff; text-align: center; padding: 30px 0; }
+    footer .social a { margin: 0 10px; color: #fff; font-size: 20px; transition: color 0.3s; }
+    footer .social a:hover { color: #007BFF; }
+    /* Smooth Scrolling */
+    html { scroll-behavior: smooth; }
   </style>
 </head>
 <body>
 
+  <!-- Header -->
   <header>
-    <div class="container">
+    <div class="container header-inner">
       <div class="logo">BusinessName</div>
       <nav>
-        <ul>
+        <div class="hamburger" onclick="toggleMenu()">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <ul id="nav-links">
           <li><a href="#hero">Home</a></li>
           <li><a href="#services">Services</a></li>
-          <li><a href="#about">About</a></li>
+          <li><a href="#testimonials">Testimonials</a></li>
+          <li><a href="#newsletter">Newsletter</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
-      <div style="clear: both;"></div>
     </div>
   </header>
 
+  <!-- Hero Section -->
   <section class="hero" id="hero">
     <div class="hero-content">
-      <h1>Innovative Solutions for Your Business</h1>
-      <p>Transforming ideas into reality with cutting-edge technology and design.</p>
+      <h1>Innovate. Inspire. Impact.</h1>
+      <p>Empowering your business with cutting-edge design and technology.</p>
       <a href="#contact" class="btn">Get Started</a>
     </div>
   </section>
 
-  <section class="services" id="services">
-    <div class="container">
-      <h2>Our Services</h2>
+  <!-- Services Section -->
+  <section class="container" id="services">
+    <h2>Our Services</h2>
+    <div class="services">
       <div class="service-item">
-        <i class="icon">&#9733;</i>
-        <h3>Consulting</h3>
-        <p>Expert advice to boost your business growth.</p>
+        <i class="icon">&#128187;</i>
+        <h3>Digital Strategy</h3>
+        <p>Crafting innovative strategies to elevate your business in the digital world.</p>
       </div>
       <div class="service-item">
-        <i class="icon">&#9881;</i>
-        <h3>Development</h3>
-        <p>Custom solutions built to meet your business needs.</p>
+        <i class="icon">&#128640;</i>
+        <h3>Web Development</h3>
+        <p>Building responsive, high-performance websites tailored to your needs.</p>
       </div>
       <div class="service-item">
-        <i class="icon">&#9998;</i>
-        <h3>Design</h3>
-        <p>Modern and sleek designs that captivate your audience.</p>
+        <i class="icon">&#9997;</i>
+        <h3>Creative Design</h3>
+        <p>Designing visually stunning interfaces that captivate your audience.</p>
+      </div>
+      <div class="service-item">
+        <i class="icon">&#128200;</i>
+        <h3>Data Analytics</h3>
+        <p>Leveraging data insights to drive informed business decisions.</p>
       </div>
     </div>
   </section>
 
-  <section class="about" id="about">
+  <!-- Testimonials Section -->
+  <section class="testimonials" id="testimonials">
     <div class="container">
-      <h2>About Us</h2>
-      <p>We are a team of dedicated professionals committed to delivering innovative and high-quality business solutions. Our mission is to empower businesses with the tools they need to succeed in the digital age.</p>
+      <h2>What Our Clients Say</h2>
+      <div class="testimonials-container">
+        <div class="testimonial-item">
+          <p>"The team transformed our digital presence with exceptional creativity and technical expertise."</p>
+          <h4>Jane Doe, CEO</h4>
+        </div>
+        <div class="testimonial-item">
+          <p>"Their innovative approach and attention to detail set them apart in the industry."</p>
+          <h4>John Smith, Founder</h4>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="contact" id="contact">
+  <!-- Newsletter Section -->
+  <section class="newsletter" id="newsletter">
     <div class="container">
-      <h2>Contact Us</h2>
-      <form action="#" method="post">
-        <input type="text" name="name" placeholder="Your Name" required>
-        <input type="email" name="email" placeholder="Your Email" required>
-        <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
-        <button type="submit">Send Message</button>
+      <h2>Stay Updated</h2>
+      <p>Subscribe to our newsletter for the latest insights and trends.</p>
+      <form action="#" method="post" onsubmit="return subscribeNewsletter(event)">
+        <input type="email" name="newsletter-email" placeholder="Enter your email" required>
+        <button type="submit">Subscribe</button>
       </form>
     </div>
   </section>
 
+  <!-- Contact Section -->
+  <section class="container contact" id="contact">
+    <h2>Contact Us</h2>
+    <form action="#" method="post">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
   <footer>
     <div class="container">
       <p>&copy; 2025 BusinessName. All rights reserved.</p>
+      <div class="social">
+        <a href="#" aria-label="Facebook">&#xf09a;</a>
+        <a href="#" aria-label="Twitter">&#xf099;</a>
+        <a href="#" aria-label="LinkedIn">&#xf0e1;</a>
+      </div>
     </div>
   </footer>
 
+  <!-- JavaScript for Hamburger Menu and Newsletter -->
+  <script>
+    function toggleMenu() {
+      var nav = document.getElementById('nav-links');
+      if(nav.style.display === 'flex') {
+        nav.style.display = 'none';
+      } else {
+        nav.style.display = 'flex';
+        nav.style.flexDirection = 'column';
+      }
+    }
+    function subscribeNewsletter(e) {
+      e.preventDefault();
+      alert('Thank you for subscribing!');
+      return false;
+    }
+  </script>
 </body>
 </html>

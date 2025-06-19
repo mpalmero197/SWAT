@@ -102,8 +102,12 @@ addPageBtn.addEventListener('click', () => { createPageEditor(null); });
 function createPageEditor(parentPage) {
   const pageId = pageCount++;
   const pageObj = { id: pageId, title: "Untitled Page", layout: "single", sections: [], subPages: [], importedParts: null };
-  if (parentPage) { pageObj.parent = parentPage.id; parentPage.subPages.push(pageObj); }
-  else { pages.push(pageObj); }
+  if (parentPage) {
+    pageObj.parent = parentPage.id;
+    parentPage.subPages.push(pageObj);
+  } else {
+    pages.push(pageObj);
+  }
   const pageDiv = document.createElement('div');
   pageDiv.classList.add('pageItem');
   pageDiv.setAttribute('data-pageid', pageId);
@@ -158,6 +162,7 @@ function createPageEditor(parentPage) {
     const addSubPageBtn = pageDiv.querySelector('.addSubPageBtn');
     if(addSubPageBtn) { addSubPageBtn.addEventListener('click', () => { createPageEditor(pageObj); }); }
   }
+  return pageObj;
 }
 function removePage(pageObj, pageDiv) {
   if (pageObj) { pageObjSubSearch(pageObj.id, pages); }
@@ -720,17 +725,17 @@ fetch('https://api.github.com/repos/mpalmero197/webbuilder/contents/')
           .then(htmlContent => {
             const previewFrame = document.getElementById('previewFrame');
             previewFrame.srcdoc = htmlContent;
-            const newPage = {
-              id: pageCount++,
-              title: displayName,
-              layout: "raw",
-              rawHTML: htmlContent,
-              sections: [],
-              subPages: []
-            };
-            pages = [newPage];
+            pages = [];
             pagesContainer.innerHTML = "";
-            createPageEditor(newPage, null);
+            const newPage = createPageEditor(null);
+            newPage.title = displayName;
+            newPage.layout = "raw";
+            newPage.rawHTML = htmlContent;
+            const pageDiv = document.querySelector(`.pageItem[data-pageid="${newPage.id}"]`);
+            if(pageDiv) {
+              pageDiv.querySelector('.pageTitleInput').value = displayName;
+              pageDiv.querySelector('.pageLayoutSelect').value = "raw";
+            }
             alert('Remote template loaded.');
           })
           .catch(err => console.error('Error loading template:', err));
@@ -752,17 +757,17 @@ function addLocalTemplateToList(filename, content, folder) {
   applyButton.addEventListener('click', () => {
      const previewFrame = document.getElementById('previewFrame');
      previewFrame.srcdoc = content;
-     const newPage = {
-        id: pageCount++,
-        title: displayName,
-        layout: "raw",
-        rawHTML: content,
-        sections: [],
-        subPages: []
-     };
-     pages = [newPage];
+     pages = [];
      pagesContainer.innerHTML = "";
-     createPageEditor(newPage, null);
+     const newPage = createPageEditor(null);
+     newPage.title = displayName;
+     newPage.layout = "raw";
+     newPage.rawHTML = content;
+     const pageDiv = document.querySelector(`.pageItem[data-pageid="${newPage.id}"]`);
+     if(pageDiv) {
+       pageDiv.querySelector('.pageTitleInput').value = displayName;
+       pageDiv.querySelector('.pageLayoutSelect').value = "raw";
+     }
      alert('Local template loaded.');
   });
   templateDiv.appendChild(applyButton);
